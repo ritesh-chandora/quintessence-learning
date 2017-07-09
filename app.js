@@ -7,14 +7,13 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var login = require('./routes/login');
 
 var exphbs = require('express-handlebars');
 
 var app = express();
 
 var firebase = require('firebase');
-
-// Initialize Firebase for the application
 var config = {
     apiKey: "AIzaSyAyMljTvlnQh3VpGPOkGVxErzCBFWzRwoE",
     authDomain: "test-project-692ad.firebaseapp.com",
@@ -23,6 +22,7 @@ var config = {
     storageBucket: "test-project-692ad.appspot.com",
     messagingSenderId: "53496239189"
   };
+
 firebase.initializeApp(config); 
 
 // view engine setup
@@ -94,6 +94,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/login', login);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
