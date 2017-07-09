@@ -2,22 +2,21 @@ var express = require('express');
 var router = express.Router();
 var firebase = require('firebase');
 
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
   res.render('index');
 });
 
-router.get('/profile', isAuthenticated, function(req, res, next){
-	console.log(req.body);
-	res.render('profile', { userInfo: req.body });
+router.get('/profile', isAuthenticated, function(req, res){
+	res.render('profile', {req.body});
 });
 
 function isAuthenticated (req, res, next) {
 	var user = firebase.auth().currentUser;
 	if (user !== null) {
-	req.user = user;
-	next();
+		req.body = {name: user.displayName, email: user.email};
+		next();
 	} else {
-	res.redirect('/login');
+		res.redirect('/login');
 	}
 }
 

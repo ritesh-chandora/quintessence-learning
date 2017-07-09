@@ -7,10 +7,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next){
-	console.log(req.body)
 	firebase.auth().signInWithEmailAndPassword(req.body.email, req.body.password)
 	.then(function(authData){
-		console.log();
 		res.redirect('/profile');	
 	}).catch(function(err){
  		console.log(err);
