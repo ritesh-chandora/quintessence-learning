@@ -3,7 +3,7 @@ var router = express.Router();
 var firebase = require('firebase');
 
 router.get('/', function(req, res, next) {
-	res.render('login');
+	res.render('login.ejs', {message: null});
 });
 
 router.post('/', function(req, res, next){
@@ -12,7 +12,7 @@ router.post('/', function(req, res, next){
 		res.redirect('/profile');	
 	}).catch(function(err){
  		console.log(err);
-		res.redirect('/');
+		res.render('login.ejs', {message: err.message});
  	});
 });
 

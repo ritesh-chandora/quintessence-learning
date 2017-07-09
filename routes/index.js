@@ -3,7 +3,7 @@ var router = express.Router();
 var firebase = require('firebase');
 
 router.get('/', function(req, res) {
-  res.render('index');
+  res.render('index.ejs');
 });
 
 router.get('/profile', isAuthenticated, function(req, res){
