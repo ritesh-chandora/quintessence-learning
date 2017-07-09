@@ -12,6 +12,19 @@ var exphbs = require('express-handlebars');
 
 var app = express();
 
+var firebase = require('firebase');
+
+// Initialize Firebase for the application
+var config = {
+    apiKey: "AIzaSyAyMljTvlnQh3VpGPOkGVxErzCBFWzRwoE",
+    authDomain: "test-project-692ad.firebaseapp.com",
+    databaseURL: "https://test-project-692ad.firebaseio.com",
+    projectId: "test-project-692ad",
+    storageBucket: "test-project-692ad.appspot.com",
+    messagingSenderId: "53496239189"
+  };
+firebase.initializeApp(config); 
+
 // view engine setup
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
