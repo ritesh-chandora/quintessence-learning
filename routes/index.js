@@ -7,7 +7,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/profile', isAuthenticated, function(req, res){
-	res.render('profile', {req.body});
+	res.render('profile.ejs', req.body);
 });
 
 function isAuthenticated (req, res, next) {
