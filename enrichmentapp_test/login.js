@@ -1,3 +1,43 @@
+function create(){
+  //creates two refs for the database, and then the questions collection
+  var root = firebase.database().ref(); 
+  var qref = root.child('Questions');
+  //these two variables are the question text and the tag (replace with other input method)
+  var question = document.getElementById('question').value;
+  var qtag = document.getElementById('tag').value;
+  //checks if current user is signed in
+  if(firebase.auth().currentUser){
+    //pushes object into the questions collection
+    qref.push({text:question,tag:qtag});
+    question.value="";
+    qtag.value="";
+    console.log('pushed successfully');
+  }
+  else {
+    console.log('not logged in');
+  }
+
+}
+
+
+function read(){
+  var root = firebase.database().ref();
+  var qref = root.child('Questions');
+  if(firebase.auth().currentUser){
+    qref.on('value',function(snap) {
+      console.log(snap.val());
+      console.log(snap.key);
+      display(snap.val());
+    });
+  }
+  else {
+    console.log('user logged out');
+  }
+}
+
+function display(data){
+  document.getElementById('db_questions').textContent=JSON.stringify(data, null, '\n');
+}
 function toggleSignIn() {
   if (firebase.auth().currentUser) {
     // [START signout]
@@ -152,7 +192,8 @@ function initApp() {
   document.getElementById('quickstart-sign-up').addEventListener('click', handleSignUp, false);
   document.getElementById('quickstart-verify-email').addEventListener('click', sendEmailVerification, false);
   document.getElementById('quickstart-password-reset').addEventListener('click', sendPasswordReset, false);
-
+  document.getElementById('submit').addEventListener('click',create,false);
+  document.getElementById('read').addEventListener('click',read,false);
   var header=document.getElementById('header')
   var dbref = firebase.database().ref().child('header')
   dbref.on('value',snap => header.innerText=snap.val());
