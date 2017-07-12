@@ -9,6 +9,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var login = require('./routes/login');
 var signup = require('./routes/signup');
+var utils = require('./routes/utils');
 
 var exphbs = require('express-handlebars');
 
@@ -26,64 +27,8 @@ var config = {
 
 firebase.initializeApp(config); 
 
-// view engine setup
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.engine('.htm', exphbs({
-  defaultLayout: 'main',
-  extname: '.htm',
-  helpers: {
-    toJSON: function(object) {
-      return JSON.stringify(object);
-    },
-    cap: function(s){
-      return em.createTitle(s);
-    },
-    eq: function(a, b) {
-      return a === b;
-    },
-    summary: function(str, len) {
-      if (str.length > len) {
-        return str.substr(0, len) + '..';
-      }
-      return str;
-    },
-    cnt: function(str) {
-      return (typeof str !== 'undefined' && str !== '') ? str.split(",").length : 0;
-    },
-    ne: function(v1, v2) {
-      return v1 !== v2;
-    },
-    lt: function(v1, v2) {
-      return v1 < v2;
-    },
-    gt: function(v1, v2) {
-      return v1 > v2;
-    },
-    lte: function(v1, v2) {
-      return v1 <= v2;
-    },
-    gte: function(v1, v2) {
-      return v1 >= v2;
-    },
-    and: function(v1, v2) {
-      return v1 && v2;
-    },
-    or: function(v1, v2) {
-      return v1 || v2;
-    },
-    fmtForEmpty: function(str) {
-      return ('' + str).trim() === '' ? 'None' : str;
-    },
-    nlToBr: function(str) {
-      if (('' + str).trim() === '') {
-        return 'None';
-      }
-      return str.replace(new RegExp('\n', 'g'), '<br>');
-    }
-  }
-}));
-app.set('view engine', 'htm');
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -94,6 +39,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
+app.use('/profile', utils);
 app.use('/users', users);
 app.use('/login', login);
 app.use('/signup', signup);
@@ -113,7 +59,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  // res.render('error');
 });
 
 app.listen(3001, function() {
