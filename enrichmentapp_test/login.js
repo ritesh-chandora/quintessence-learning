@@ -1,3 +1,5 @@
+var tags = ['Learning','Critical Thinking','Analysis'];
+
 function create(){
   //creates two refs for the database, and then the questions collection
   var root = firebase.database().ref(); 
@@ -7,10 +9,15 @@ function create(){
   var qtag = document.getElementById('tag').value;
   //checks if current user is signed in
   if(firebase.auth().currentUser){
+    console.log(root.child('Users'));
     //pushes object into the questions collection
-    qref.push({text:question,tag:qtag});
-    question.value="";
-    qtag.value="";
+    var key = root.child('Users').push().key;
+    var user = firebase.auth().currentUser.uid
+    qref.child(key).set({Text:question,Key:key,Created_By:user});
+    var len = tags.length;
+    for (i=0;i<len;i++){
+      qref.child(key).child('Tags').push(tags[i]);
+    }
     console.log('pushed successfully');
   }
   else {
@@ -21,18 +28,111 @@ function create(){
 
 
 function read(){
+  //root and questions refs
   var root = firebase.database().ref();
   var qref = root.child('Questions');
+  //instantiates question list to be returned
+  var qlist = [];
+  //checks if user is logged in
   if(firebase.auth().currentUser){
-    qref.on('value',function(snap) {
-      console.log(snap.val());
-      console.log(snap.key);
+    //orders the questions in time order descending and then then listens for values
+    qref.orderByKey().on('value',function(snap) {
+      //iterates through each value in the snap
+      snap.forEach(function(snap)
+      {
+        //grabs the text, tags, created by, key
+        var taglist=[];
+        var key= snap.key;
+        var text =snap.child('Text').val();
+        var tags = snap.child('Tags');
+        var created = snap.child('Created_By').val();
+        tags.forEach(function(tag)
+        {
+          taglist.push(tag.val());
+        });
+        //makes a list out of those elements
+        var sublist = new Array(text,taglist,key,created);
+
+        console.log(sublist);
+        //pushes into the question list
+        qlist.push(sublist);
+      });
+      console.log(qlist);
+      //this display function sends values to the front end, isnt really necessary for expresss
       display(snap.val());
     });
   }
   else {
     console.log('user logged out');
   }
+  //returns qlist
+  return qlist;
+}
+
+function remove(){
+  //establishes refs
+  var root = firebase.database().ref();
+  var qref = root.child('Questions');
+
+  //questionKey is the variable that holds the key for the question you are trying to delete
+  var questionKey= document.getElementById('tag').value;
+  //userKey is the current users unique ID
+  var userKey = firebase.auth().currentUser.uid;
+  //checks if the question you are trying to delete is created by the current user
+  qref.child(questionKey).child('Created_By').once('value',function(snap){
+    var question_create = snap.val();
+
+    if (userKey=question_create) {
+    //removes the question
+    qref.child(questionKey).remove(function(err){
+      if (err) {
+        console.log('Question Deletion Error',err);
+      } else {
+        console.log('Question Deleted');
+      }
+    });
+  } else {
+    console.log('Question was not created by current user');
+  }
+  
+  });
+
+}
+function update(){
+  //establishes refs
+  var root = firebase.database().ref();
+  var qref = root.child('Questions');
+  //question key is the unique question key you are updating
+  var questionKey= document.getElementById('tag').value;
+  //userkey is the curret logged in users unique ID
+  var userKey = firebase.auth().currentUser.uid;
+  //newText is the text you are updating the question with
+  var newText = document.getElementById('question').value;
+  //newTags is the list of tags you are updating the question with
+  var newTags = ['new tag 1','new tag 2'];
+  //checks if the question you're trying to update was created by the current user
+  qref.child(questionKey).child('Created_By').once('value',function(snap){
+    var question_create = snap.val();
+    if (userKey=question_create) {
+    //updates the question text
+    qref.child(questionKey).update({Text:newText});
+    //removes old tags
+    qref.child(questionKey).child('Tags').remove(function(err){
+      if (err){
+        console.log('Tag deletion error',err);
+      } else {
+        console.log('Tags deleted');
+      }
+    })
+    //pushes new tags
+    var len = newTags.length;
+    for (i=0;i<len;i++){
+      qref.child(questionKey).child('Tags').push(newTags[i]);
+    }
+  } else {
+    console.log('Question was not created by current user');
+  }
+  });
 }
 
 function display(data){
@@ -194,6 +294,8 @@ function initApp() {
   document.getElementById('quickstart-password-reset').addEventListener('click', sendPasswordReset, false);
   document.getElementById('submit').addEventListener('click',create,false);
   document.getElementById('read').addEventListener('click',read,false);
+  document.getElementById('delete').addEventListener('click',remove,false);
+  document.getElementById('update').addEventListener('click',update,false);
   var header=document.getElementById('header')
   var dbref = firebase.database().ref().child('header')
   dbref.on('value',snap => header.innerText=snap.val());
