@@ -134,13 +134,24 @@ function update(){
   });
 }
 
+function save(){
+  var root = firebase.database().ref();
+  var userRef = root.child('Users');
+  var questionRef = root.child('Questions');
+
+  var questionKey = document.getElementById('tag').value;
+  var userKey=firebase.auth().currentUser.uid;
+  userRef.child(userKey).child('Saved').push(questionKey);
+  console.log('Question Saved');
+}
+
 function display(data){
   document.getElementById('db_questions').textContent=JSON.stringify(data, null, '\n');
 }
 function toggleSignIn() {
   if (firebase.auth().currentUser) {
     // [START signout]
-    var qref=firebase.database().ref().child('Questions').off();
+    var qref = firebase.database().ref().child('Questions').off();
     firebase.auth().signOut();
     // [END signout]
   } else {
@@ -227,9 +238,7 @@ function handleSignUp() {
   // [END createwithemail]
 }
 
-function save(){
 
-}
 
 /**
  * Sends an email verification to the user.
@@ -320,6 +329,7 @@ function initApp() {
   document.getElementById('read').addEventListener('click',read,false);
   document.getElementById('delete').addEventListener('click',remove,false);
   document.getElementById('update').addEventListener('click',update,false);
+  document.getElementById('save').addEventListener('click',save,false);
   var header=document.getElementById('header')
   var dbref = firebase.database().ref().child('header')
   dbref.on('value',snap => header.innerText=snap.val());
