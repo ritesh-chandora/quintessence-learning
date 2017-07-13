@@ -200,7 +200,18 @@ function handleSignUp() {
   
   // Sign in with email and pass.
   // [START createwithemail]
-  firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+  firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
+    var uid = firebase.auth().currentUser.uid;
+    userRef.child(userKey).set(
+    {Current_Question:currentQ,Email:email,
+    Join_Date:joinDate,
+    Key:userKey,
+    Name:name,
+    Trial:trial,
+    Type:type,
+    UID:uid
+    })
+  }).catch(function(error) {
     // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
@@ -212,18 +223,6 @@ function handleSignUp() {
     }
     console.log(error);
     // [END_EXCLUDE]
-  }).then(function(config){
-    console.log(firebase.auth().currentUser);
-    var uid = firebase.auth().currentUser.uid;
-    userRef.child(userKey).set(
-    {Current_Question:currentQ,Email:email,
-    Join_Date:joinDate,
-    Key:userKey,
-    Name:name,
-    Trial:trial,
-    Type:type,
-    UID:uid
-    });
   });
   // [END createwithemail]
 }
