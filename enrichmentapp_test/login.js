@@ -9,9 +9,8 @@ function create(){
   var qtag = document.getElementById('tag').value;
   //checks if current user is signed in
   if(firebase.auth().currentUser){
-    console.log(root.child('Users'));
     //pushes object into the questions collection
-    var key = root.child('Users').push().key;
+    var key = root.child('Questions').push().key;
     var user = firebase.auth().currentUser.uid
     qref.child(key).set({Text:question,Key:key,Created_By:user});
     var len = tags.length;
@@ -189,6 +188,14 @@ function handleSignUp() {
     alert('Please enter a password.');
     return;
   }
+  var root = firebase.database().ref();
+  var userRef = root.child('Users');
+  var currentQ = 0;
+  var joinDate=firebase.database.ServerValue.TIMESTAMP;
+  var name = document.getElementById('name').value;
+  var trial = true;
+  var type = "user";
+  var userKey = userRef.
   // Sign in with email and pass.
   // [START createwithemail]
   firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
