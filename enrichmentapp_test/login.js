@@ -196,16 +196,16 @@ function handleSignUp() {
   var name = document.getElementById('name').value;
   var trial = true;
   var type = "user";
-  var userKey = userRef.push().key;
+  //var userKey = userRef.push().key;
   
   // Sign in with email and pass.
   // [START createwithemail]
   firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
     var uid = firebase.auth().currentUser.uid;
-    userRef.child(userKey).set(
+    userRef.child(uid).set(
     {Current_Question:currentQ,Email:email,
     Join_Date:joinDate,
-    Key:userKey,
+    //Key:userKey,
     Name:name,
     Trial:trial,
     Type:type,
@@ -225,6 +225,10 @@ function handleSignUp() {
     // [END_EXCLUDE]
   });
   // [END createwithemail]
+}
+
+function save(){
+
 }
 
 /**
