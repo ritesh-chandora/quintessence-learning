@@ -140,6 +140,7 @@ function display(data){
 function toggleSignIn() {
   if (firebase.auth().currentUser) {
     // [START signout]
+    var qref=firebase.database().ref().child('Questions').off();
     firebase.auth().signOut();
     // [END signout]
   } else {
@@ -195,7 +196,8 @@ function handleSignUp() {
   var name = document.getElementById('name').value;
   var trial = true;
   var type = "user";
-  var userKey = userRef.
+  var userKey = userRef.push().key;
+  
   // Sign in with email and pass.
   // [START createwithemail]
   firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
@@ -210,6 +212,18 @@ function handleSignUp() {
     }
     console.log(error);
     // [END_EXCLUDE]
+  }).then(function(config){
+    console.log(firebase.auth().currentUser);
+    var uid = firebase.auth().currentUser.uid;
+    userRef.child(userKey).set(
+    {Current_Question:currentQ,Email:email,
+    Join_Date:joinDate,
+    Key:userKey,
+    Name:name,
+    Trial:trial,
+    Type:type,
+    UID:uid
+    });
   });
   // [END createwithemail]
 }
