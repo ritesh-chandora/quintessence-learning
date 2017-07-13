@@ -2,9 +2,8 @@
   "name": "q-learning",
   "version": "0.0.0",
   "private": true,
-  "main": "index.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "react-scripts start",
     "build": "react-scripts build"
   },
   "dependencies": {
@@ -19,6 +18,8 @@
     "pug": "^2.0.0-rc.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-router": "^4.1.1",
+    "react-router-dom": "^4.1.1",
     "react-scripts": "1.0.10",
     "reload": "^1.1.7",
     "serve-favicon": "~2.4.2"

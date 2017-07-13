@@ -27,7 +27,7 @@ var config = {
 
 firebase.initializeApp(config); 
 
-app.use(express.static(path.resolve(__dirname + '/build')));
+app.use(express.static(path.resolve(__dirname, 'build')));
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
