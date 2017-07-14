@@ -3,26 +3,38 @@ var router = express.Router();
 var firebase = require('firebase');
 
 router.post('/create', function(req, res, next){
-	message = create(req.body.question, req.body.tags).catch((error)=>{
-    console.log(error);
-  })
-	res.send({message: message});
-});
-
-function create(question, tags){
-  //creates two refs for the database, and then the questions collection
+  console.log("hi")
   var root = firebase.database().ref(); 
-  var qref = root.child('Questions');	
+  var qref = root.child('Questions'); 
   //checks if current user is signed in
-  console.log(firebase.auth())
-  if(firebase.auth().currentUser){
+  var user = firebase.auth().currentUser
+  console.log("what")
+  if(user !== null){
     //pushes object into the questions collection
-    qref.push({text:question,tag:tags});
-    return 'success'
+    var key = root.child('Questions').push().key;
+    var user = user.uid
+    qref.child(key).set({Text:req.body.question,Key:key,Created_By:user});
+    var len = req.body.tags.length;
+    console.log('k')
+    for (i=0;i<len;i++){
+      qref.child(key).child('Tags').push(req.body.tags[i]);
+    }
+    console.log("o");
+    res.send({message:"success"});
   }
   else {
-    return 'Error: User not logged in!'
+    console.log("wah");
+    res.send({message:'Error: User not logged in!'});
   }
-}
+});
+
+// function test (){
+//   return "what";
+// }
+
+// function create(question, tags){
+//   creates two refs for the database, and then the questions collection
+  
+// }
 
 module.exports = router;

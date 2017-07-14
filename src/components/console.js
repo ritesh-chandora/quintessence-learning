@@ -36,14 +36,16 @@ class Create extends Component {
             this.setState({message: "Please enter tags!"});
         } else {
             axios.post('/profile/create', {
-                question: this.state.email,
-                tags: this.state.password
+                question: this.state.question,
+                tags: this.state.tags
             }).then((response) => {
                 console.log(response.data.message)
                 if (response.data.message === 'success'){
                      this.setState({
                         message: "Created successfully!",
-                        success: true    
+                        success: true,  
+                        question: "", 
+                        tags: "", 
                     })
                 } else {
                     this.setState({
