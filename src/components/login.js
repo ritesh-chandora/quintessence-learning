@@ -1,27 +1,78 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
-export default class Login extends Component { 
+export default class Signup extends Component { 
+	constructor(props){
+		super(props);
+		this.state = {
+			message: null,
+			email : "",
+			password: ""
+		};
+		this.handleEmailChange = this.handleEmailChange.bind(this);
+		this.handlePasswordChange = this.handlePasswordChange.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
+
+	//handle login
+	handleSubmit(event){
+		if (this.state.email.length === 0){
+			this.setState({message: "Please enter an email!"});
+		}
+		else if (this.state.password.length === 0){
+			this.setState({message: "Please enter a password!"});
+		} else {
+			axios.post('/login', {
+				email: this.state.email,
+				password: this.state.password
+			}).then((response) => {
+				console.log(response.data.message)
+				if (response.data.message === 'success'){
+					this.props.history.push('/profile', {
+						email: this.state.email,
+						password: this.state.password
+					});
+				} else {
+					this.setState({message: response.data.message});
+				}
+			}).catch((error) => {
+				this.setState({message: "Unable to connect to signup server!"});
+			})
+		}
+		event.preventDefault();
+	}
+
+	handleEmailChange(event){
+		this.setState({email: event.target.value});
+	}
+
+	handlePasswordChange(event){
+		this.setState({password: event.target.value});
+	}
+
 	render () {
-		return ( 
+		const message = this.state.message === null ? (<div></div>) : (<div className="alert alert-danger"> {this.state.message} </div>);
+		return ( 			
 			<div className="container">
-				<div className="col-sm-6 col-sm-offset-3">
-				    <h1> Login</h1>
-				    <form action="/login" method="post">
-				        <div className="form-group">
-				            <label>Email</label>
-				            <input type="text" className="form-control" name="email"></input>
-				        </div>
-				        <div className="form-group">
-				            <label>Password</label>
-				            <input type="password" className="form-control" name="password"></input>
-				        </div>
-				        <button type="submit" className="btn btn-warning btn-lg">Login</button>
-				    </form>
-				    <hr></hr>
-				    <p>Or, if you need an account: <a href="/signup">Signup</a></p>
-				    <p>Or go <a href="/">home</a>.</p>
+			<div className="col-sm-6 col-sm-offset-3">
+			    <h1>Login</h1>
+			    	{message}
+			    <form onSubmit={this.handleSubmit}>
+			        <div className="form-group">
+			            <label>Email</label>
+			            <input type="text" className="form-control" onChange={this.handleEmailChange}></input>
+			        </div>
+			        <div className="form-group">
+			            <label>Password</label>
+			            <input type="password" className="form-control" onChange={this.handlePasswordChange}></input>
+			        </div>
+			        <button type="submit" className="btn btn-warning btn-lg">Login</button>
+			    </form>
+			    <hr></hr>
+			    <p>Or, if you need an account: <a href="/signup">Signup</a></p>
+			    <p>Or go <a href="/">home</a>.</p>
 				</div>
-				</div>
+			</div>
 			);
 	}
 }
