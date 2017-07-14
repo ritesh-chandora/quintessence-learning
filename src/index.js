@@ -7,35 +7,43 @@ import Login from './components/login'
 import Signup from './components/signup'
 import Console from './components/console'
 
-function requireAuth() {
-  console.log("hello")
-  var loggedIn = false;
-  axios.get('/status')
+class Main extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      loggedIn: null
+    }
+  }
+
+  componentDidMount(){
+    axios.get('/login/status')
     .then((response) => {
-      loggedIn = response.data.loggedIn;
+      this.setState({loggedIn: response.data.loggedIn});
     })
     .catch((error) => { 
-      loggedIn = false;
+      return false;
     });
-    console.log(loggedIn)
-    return loggedIn;
-}
+  }
 
-const Main = () => (
+  render() {
+    return( this.state.loggedIn !== null ? 
     <Switch>
-      <Route exact path='/' component={Home}/>
+      <Route exact path='/' render={() => (
+          this.state.loggedIn ? (<Redirect to="/profile"/>) : (<Home/>)
+        )}/>
       <Route exact path='/login' component={Login}/>
       <Route exact path='/signup' component={Signup}/>
       <Route path='/profile' render={() => (
-        requireAuth() ? (<Console/>) : (<Redirect to="/login"/>)
+          this.state.loggedIn ? (<Console/>) : (<Redirect to="/login"/>)
         )}/>
       <Route render={
         function() {
           return (<p> Not Found </p>)
         }
       }/>
-    </Switch>
-)
+    </Switch> : null)
+  }
+}
 
 const Root = () => (
     <BrowserRouter>

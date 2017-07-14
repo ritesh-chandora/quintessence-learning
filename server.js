@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var login = require('./routes/login');
 var signup = require('./routes/signup');
 var utils = require('./routes/utils');
@@ -47,11 +46,11 @@ app.use(cookieParser());
 
 // app.use('/', index);
 app.use('/profile', utils);
-// app.use('/users', users);
 app.use('/login', login);
 app.use('/signup', signup);
 
 app.get('*', (req, res) => {
+    console.log("wtf");
     res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
 });
 
