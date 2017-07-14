@@ -17,7 +17,7 @@ class Create extends Component {
     }
 
     componentDidMount(){
-        if (typeof(this.props.location.state) != 'undefined') {
+        if (typeof(this.props.location.state) !== 'undefined') {
             axios.post('/login', {
                 email: this.props.location.state.email,
                 password: this.props.location.state.password

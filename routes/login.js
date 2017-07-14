@@ -12,5 +12,10 @@ router.post('/', function(req, res, next){
  	});
 });
 
+router.get('/status', function(req, rest,next){
+    var user = firebase.auth().currentUser
+    var loggedIn = (user !== null) ? true : false;
+    res.send({loggedIn: loggedIn});
+});
 
 module.exports = router;
