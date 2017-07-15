@@ -4,6 +4,7 @@ function create(){
   //creates two refs for the database, and then the questions collection
   var root = firebase.database().ref(); 
   var qref = root.child('Questions');
+  var tagRef = root.child('Tags');
   //these two variables are the question text and the tag (replace with other input method)
   var question = document.getElementById('question').value;
   var qtag = document.getElementById('tag').value;
@@ -16,6 +17,7 @@ function create(){
     var len = tags.length;
     for (i=0;i<len;i++){
       qref.child(key).child('Tags').push(tags[i]);
+      tagRef.child(tags[i]).push(key);
     }
     console.log('pushed successfully');
   }
@@ -144,7 +146,9 @@ function save(){
   userRef.child(userKey).child('Saved').push(questionKey);
   console.log('Question Saved');
 }
-
+function selectQuestion(){
+  
+}
 function display(data){
   document.getElementById('db_questions').textContent=JSON.stringify(data, null, '\n');
 }
