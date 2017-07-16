@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import {withRouter} from "react-router-dom";
 
-export default class Signup extends Component { 
+class Login extends Component { 
 	constructor(props){
 		super(props);
 		this.state = {
@@ -26,7 +27,6 @@ export default class Signup extends Component {
 				email: this.state.email,
 				password: this.state.password
 			}).then((response) => {
-				console.log(response.data.message)
 				if (response.data.message === 'success'){
 					this.props.history.push('/profile', {
 						email: this.state.email,
@@ -36,6 +36,7 @@ export default class Signup extends Component {
 					this.setState({message: response.data.message});
 				}
 			}).catch((error) => {
+				console.log(error)
 				this.setState({message: "Unable to connect to signup server!"});
 			})
 		}
@@ -51,6 +52,7 @@ export default class Signup extends Component {
 	}
 
 	render () {
+		console.log(this)
 		const message = this.state.message === null ? (<div></div>) : (<div className="alert alert-danger"> {this.state.message} </div>);
 		return ( 			
 			<div className="container">
@@ -76,3 +78,4 @@ export default class Signup extends Component {
 			);
 	}
 }
+export default withRouter(Login)

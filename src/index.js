@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Redirect, Switch, Route, BrowserRouter } from 'react-router-dom'
+import { Redirect, Switch, Route, BrowserRouter, withRouter } from 'react-router-dom'
 import axios from 'axios'
 import Home from './components/home'
 import Login from './components/login'
@@ -13,9 +13,14 @@ class Main extends React.Component {
     this.state = {
       loggedIn: null
     }
+    this.getLoginStatus = this.getLoginStatus.bind(this);
   }
 
   componentDidMount(){
+    this.getLoginStatus()
+  }
+
+  getLoginStatus(){
     axios.get('/login/status')
     .then((response) => {
       this.setState({loggedIn: response.data.loggedIn});
@@ -31,8 +36,12 @@ class Main extends React.Component {
       <Route exact path='/' render={() => (
           this.state.loggedIn ? (<Redirect to="/profile"/>) : (<Home/>)
         )}/>
-      <Route exact path='/login' component={Login}/>
-      <Route exact path='/signup' component={Signup}/>
+      <Route exact path='/login' render={() => (
+          this.state.loggedIn ? (<Redirect to="/profile"/>) : (<Login/>)
+        )}/>
+      <Route exact path='/signup' render={() => (
+          this.state.loggedIn ? (<Redirect to="/profile"/>) : (<Signup/>)
+        )}/>
       <Route path='/profile' render={() => (
           this.state.loggedIn ? (<Console/>) : (<Redirect to="/login"/>)
         )}/>
@@ -51,4 +60,4 @@ const Root = () => (
     </BrowserRouter>
 )
 
-ReactDOM.render(<Root />, document.getElementById('root'))
+ReactDOM.render(<Root/>, document.getElementById('root'))

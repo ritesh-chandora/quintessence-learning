@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import {withRouter} from "react-router-dom";
 import axios from 'axios';
 
-export default class Signup extends Component { 
+class Signup extends Component { 
 	constructor(props){
 		super(props);
 		this.state = {
@@ -77,3 +78,5 @@ export default class Signup extends Component {
 			);
 	}
 }
+
+export default withRouter(Signup)
