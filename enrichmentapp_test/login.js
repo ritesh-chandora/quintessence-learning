@@ -13,7 +13,8 @@ function create(){
     //pushes object into the questions collection
     var key = root.child('Questions').push().key;
     var user = firebase.auth().currentUser.uid
-    qref.child(key).set({Text:question,Key:key,Created_By:user});
+    var ctime = firebase.database.ServerValue.TIMESTAMP;
+    qref.child(key).set({Text:question,Key:key,Created_By:user,cTime:ctime});
     var len = tags.length;
     for (i=0;i<len;i++){
       qref.child(key).child('Tags').push(tags[i]);
@@ -241,8 +242,42 @@ function handleSignUp() {
   });
   // [END createwithemail]
 }
+function returnQuestionInfo(qKey){
+  var root = firebase.database().ref();
+  var questionRef = root.child('Questions');
+
+  var question = [];
+  var query = questionRef.child(qKey).once('value', function(snap){
+    var createdBy = snap.child('Created_By').val();
+    var key = snap.child('Key').val();
+    var text = snap.child('Text').val();
+    var cTime = snap.child('cTime').val();
+    var tags = [];
+    snap.child('Tags').forEach(function(child){
+      tags.push(child.val());
+    })
+    question.push(new Array(createdBy,key,text,cTime,tags));
+  })
+  return question;
+}
+
+function selectTags(){
+  var root = firebase.database().ref();
+  var tagRef = root.child('Tags');
+  var questions=[];
+  var tag = document.getElementById('tag').value;
+  var query = tagRef.child(tag).orderByKey().once('value',function(snap){
+    snap.forEach(function(child){
+      qKeys.push(returnQuestionInfo(child.val()));
+    });
+  });
+  return questions; 
+
+  //options: limitToFirst()/limitToLast(),
+  //Orders: orderByChild(),orderByKey(),orderByValue()
 
 
+}
 
 /**
  * Sends an email verification to the user.
@@ -334,6 +369,7 @@ function initApp() {
   document.getElementById('delete').addEventListener('click',remove,false);
   document.getElementById('update').addEventListener('click',update,false);
   document.getElementById('save').addEventListener('click',save,false);
+  document.getElementById('selectTag').addEventListener('click',selectTags,false);
   var header=document.getElementById('header')
   var dbref = firebase.database().ref().child('header')
   dbref.on('value',snap => header.innerText=snap.val());
