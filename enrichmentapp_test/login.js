@@ -282,10 +282,12 @@ function selectTagName(){
   var questions=[];
   tagRef.once('value',function(snap){
     snap.forEach(function(child){
+      console.log(child.key);
       questions.push(child.key);
     })
-  });
-  console.log(questions); 
+  }).then(function(){
+    console.log(questions);
+  }); 
 
   //options: limitToFirst()/limitToLast(),
   //Orders: orderByChild(),orderByKey(),orderByValue()
