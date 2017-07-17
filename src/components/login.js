@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {withRouter} from "react-router-dom";
+import {createBrowserHistory} from 'history'
+
+const history = createBrowserHistory({
+  forceRefresh: true
+})
 
 class Login extends Component { 
 	constructor(props){
@@ -28,10 +33,7 @@ class Login extends Component {
 				password: this.state.password
 			}).then((response) => {
 				if (response.data.message === 'success'){
-					this.props.history.push('/profile', {
-						email: this.state.email,
-						password: this.state.password
-					});
+					this.props.history.push('/profile');
 				} else {
 					this.setState({message: response.data.message});
 				}
@@ -52,7 +54,6 @@ class Login extends Component {
 	}
 
 	render () {
-		console.log(this)
 		const message = this.state.message === null ? (<div></div>) : (<div className="alert alert-danger"> {this.state.message} </div>);
 		return ( 			
 			<div className="container">

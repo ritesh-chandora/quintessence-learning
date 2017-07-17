@@ -2,6 +2,16 @@
     margin-top: 2%
 }
 
+.option {
+    float:right;
+    border: none;
+    background: white;
+}
+
+.option:hover {
+    background: grey;
+}
+
 li {
     list-style:none;
     padding: 5px 10px;

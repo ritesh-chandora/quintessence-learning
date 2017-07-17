@@ -31,7 +31,7 @@ router.get('/read', function(req, res, next){
   //instantiates question list to be returned
   var qlist = [];
   //checks if user is logged in
-  if(firebase.auth().currentUser){
+  // if(firebase.auth().currentUser){
     //orders the questions in time order descending and then then listens for values
     qref.orderByKey().on('value',function(snap) {
       //iterates through each value in the snap
@@ -60,7 +60,7 @@ router.get('/read', function(req, res, next){
         });
       });
     });
-  }
+  // }
   res.send({questions: qlist});
 });
 

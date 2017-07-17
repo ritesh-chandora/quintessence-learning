@@ -29,10 +29,7 @@ class Signup extends Component {
 			}).then((response) => {
 				console.log(response.data.message)
 				if (response.data.message === 'success'){
-					this.props.history.push('/profile', {
-						email: this.state.email,
-						password: this.state.password
-					});
+					this.props.history.push('/profile');
 				} else {
 					this.setState({message: response.data.message});
 				}

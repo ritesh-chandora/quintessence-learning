@@ -15,7 +15,7 @@ class Main extends React.Component {
     }
     this.getLoginStatus = this.getLoginStatus.bind(this);
   }
-
+  
   componentDidMount(){
     this.getLoginStatus()
   }
@@ -42,9 +42,15 @@ class Main extends React.Component {
       <Route exact path='/signup' render={() => (
           this.state.loggedIn ? (<Redirect to="/profile"/>) : (<Signup/>)
         )}/>
-      <Route path='/profile' render={() => (
-          this.state.loggedIn ? (<Console/>) : (<Redirect to="/login"/>)
-        )}/>
+      <Route path='/profile' 
+             render={() => (
+                this.state.loggedIn ? (<Console/>) : (<Redirect to="/login"/>)
+             )} 
+             onEnter={()=>{
+                if (!this.state.loggedIn){
+                  this.getLoginStatus()
+                }
+              }}/>
       <Route render={
         function() {
           return (<p> Not Found </p>)
