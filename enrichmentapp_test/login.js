@@ -247,6 +247,7 @@ function handleSignUp() {
   });
   // [END createwithemail]
 }
+
 function returnQuestionInfo(qKey){
   var root = firebase.database().ref();
   var questionRef = root.child('Questions');
@@ -264,6 +265,13 @@ function returnQuestionInfo(qKey){
     question.push(new Array(createdBy,key,text,cTime,tags));
   })
   return question;
+}
+
+function saveQuestion(qKey){
+	var root = firebase.database().ref();
+	var userRef = root.child('Users');
+	var userKey = firebase.auth().currentUser.uid;
+	userRef.child(userKey).child('Saved').push(qKey);
 }
 
 function selectTags(){
