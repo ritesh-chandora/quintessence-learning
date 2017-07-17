@@ -84,7 +84,7 @@ function remove(){
   qref.child(questionKey).child('Created_By').once('value',function(snap){
     var question_create = snap.val();
 
-    if (userKey=question_create) {
+    if (userKey===question_create) {
     //removes the question
     qref.child(questionKey).remove(function(err){
       if (err) {
@@ -115,7 +115,7 @@ function update(){
   //checks if the question you're trying to update was created by the current user
   qref.child(questionKey).child('Created_By').once('value',function(snap){
     var question_create = snap.val();
-    if (userKey=question_create) {
+    if (userKey===question_create) {
     //updates the question text
     qref.child(questionKey).update({Text:newText});
     //removes old tags
@@ -275,7 +275,29 @@ function selectTags(){
 
   //options: limitToFirst()/limitToLast(),
   //Orders: orderByChild(),orderByKey(),orderByValue()
+}
+function selectTagName(){
+  var root = firebase.database().ref();
+  var tagRef = root.child('Tags');
+  var questions=[];
+  tagRef.once('value',function(snap){
+    snap.forEach(function(child){
+      console.log(child.key);
+      questions.push(child.key);
+    })
+  }).then(function(){
+    console.log(questions);
+  }); 
 
+  //options: limitToFirst()/limitToLast(),
+  //Orders: orderByChild(),orderByKey(),orderByValue()
+}
+
+function selectTagsAnd(tag1,tag2)
+{
+  var and = [];
+  var tags1=selectTags(tag1);
+  var tags2=selectTags(tag2);
 
 }
 
@@ -369,7 +391,7 @@ function initApp() {
   document.getElementById('delete').addEventListener('click',remove,false);
   document.getElementById('update').addEventListener('click',update,false);
   document.getElementById('save').addEventListener('click',save,false);
-  document.getElementById('selectTag').addEventListener('click',selectTags,false);
+  document.getElementById('selectTag').addEventListener('click',selectTagName,false);
   var header=document.getElementById('header')
   var dbref = firebase.database().ref().child('header')
   dbref.on('value',snap => header.innerText=snap.val());
