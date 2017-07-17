@@ -24,7 +24,35 @@ const DeleteButton = (props) => {
 };
 
 const EditButton = (props) => {
-    return (<button className="option"><i className="fa fa-pencil" aria-hidden="true"></i></button>)
+    const editQuestion = () => {
+        console.log(props.tags)
+        var newText = "";
+        while (newText === ""){
+            newText = window.prompt('Modify the question (Tags on next prompt):', props.text);
+        }
+        if (newText !== null) {
+            var newTags = "";
+            while (newTags === ""){
+                newTags = window.prompt('Modify tags (separate by comma):', props.tags);
+            }
+            if (newTags !== null) {
+                newTags = newTags.split(',');
+                axios.post('/profile/update', {
+                    key: props.qkey,
+                    newText: newText,
+                    newTags: newTags
+                })
+                .then((response)=>{
+                    window.location.reload();
+                })
+                .catch((error)=> {
+                    window.alert(error.response.data.message)
+                });
+                }
+        }
+    }
+
+    return (<button onClick={editQuestion} className="option"><i className="fa fa-pencil" aria-hidden="true"></i></button>)
 };
 
 class QuestionTable extends Component {
@@ -73,7 +101,7 @@ class QuestionTable extends Component {
                       {question.text} 
                       <span>
                       <DeleteButton qkey={question.key}/>
-                      <EditButton qkey={question.key}/>
+                      <EditButton qkey={question.key} text={question.text} tags={question.taglist}/>
                       </span>
                     </li>
                     )

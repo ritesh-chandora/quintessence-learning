@@ -96,4 +96,43 @@ router.post('/delete', function(req, res, next){
   
 });
 
+router.post('/update', function(req, res, next){
+  var root = firebase.database().ref();
+  var qref = root.child('Questions');
+  //question key is the unique question key you are updating
+  var questionKey = req.body.key;
+  //userkey is the curret logged in users unique ID
+  var userKey = firebase.auth().currentUser.uid;
+  //newText is the text you are updating the question with
+  var newText = req.body.newText;
+  //newTags is the list of tags you are updating the question with
+  var newTags = req.body.newTags;
+  //checks if the question you're trying to update was created by the current user
+  qref.child(questionKey).child('Created_By').once('value',function(snap){
+    var question_create = snap.val();
+    if (userKey === question_create) {
+    //updates the question text
+    qref.child(questionKey).update({Text:newText});
+    //removes old tags
+    qref.child(questionKey).child('Tags').remove(function(err){
+      if (err){
+        console.log(err);
+        res.status(400).send({message: 'Unable to update tags.'});
+      } else {
+        console.log('Tags deleted');
+      }
+    })
+    //pushes new tags
+    var len = newTags.length;
+    for (i=0;i<len;i++){
+      qref.child(questionKey).child('Tags').push(newTags[i]);
+    }
+    res.status(200).end();
+  } else {
+    console.log('Question was not created by current user');
+    res.status(400).send({message: 'You did not create this question!'});
+  }
+  });
+});
+
 module.exports = router;
