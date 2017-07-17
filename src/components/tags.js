@@ -254,8 +254,8 @@ class Tags extends Component{
 
     return (
     <MuiThemeProvider>
-      <div>
-        <div>
+      <span>
+        <span>
           <AutoComplete {...this.props.textField}
           ref="textField"
           disableFocusRipple={false}
@@ -267,12 +267,12 @@ class Tags extends Component{
           errorText={this.state.errorText}
           onKeyPress={this.handleKeyPress.bind(this)} />
           {button}
-        </div>
-        <div style={this.getContainerStyle()} className={this.getContainerClassName()} >
+        </span>
+        <span style={this.getContainerStyle()} className={this.getContainerClassName()} >
           {tags}
-        </div>
+        </span>
         
-      </div>
+      </span>
     </MuiThemeProvider>
     );
 

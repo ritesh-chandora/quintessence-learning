@@ -9,6 +9,7 @@ var index = require('./routes/index');
 var login = require('./routes/login');
 var signup = require('./routes/signup');
 var utils = require('./routes/utils');
+var tags = require('./routes/tags');
 
 var exphbs = require('express-handlebars');
 
@@ -46,6 +47,7 @@ app.use(cookieParser());
 
 // app.use('/', index);
 app.use('/profile', utils);
+app.use('/profile/tags', tags);
 app.use('/login', login);
 app.use('/signup', signup);
 

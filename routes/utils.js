@@ -139,21 +139,4 @@ router.post('/update', function(req, res, next){
   });
 });
 
-/**
- * TAG MANIPULATION
- */
-
-router.get('/tags', function(req, res, next){
-  var root = firebase.database().ref();
-  var tagRef = root.child('Tags');
-  var tags = [];
-  tagRef.once('value',function(snap){
-     snap.forEach(function(child){
-      console.log(child)
-       tags.push(child.key);
-     })
-    res.send({tags: tags});
-  });
-}); 
-
 module.exports = router;
