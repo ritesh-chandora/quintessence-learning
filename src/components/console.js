@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import {withRouter} from "react-router-dom";
 import axios from 'axios';
 import '../css/console.css'
-import Tags from 'react-material-tags';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
+import Tags from './tags'
 
 const DeleteButton = (props) => {
     const deleteQuestion = () => { 
         var isOK = window.confirm('Are you sure you want to delete this question?');
         if (isOK){
-            console.log(props.qkey)
             axios.post('/profile/delete', {
                 key: props.qkey
             })
@@ -70,6 +66,7 @@ class QuestionTable extends Component {
             questions: [],
             tags: [],
             filterText: "",
+            filterTags: [],
             loaded: null
         }
 
@@ -79,13 +76,11 @@ class QuestionTable extends Component {
     componentDidMount(){
         axios.get('/profile/read')
             .then((response) => {
-                console.log(response.data.questions);
                 this.setState({
                     questions: response.data.questions,
                 });
                 axios.get('/profile/tags')
                     .then((response) => {
-                        console.log(response.data.tags)
                         var tags = response.data.tags.map((tag) => {
                             return {label: tag};
                         })
@@ -94,15 +89,16 @@ class QuestionTable extends Component {
                             loaded: true
                         });
                     }).catch((error) => {
-                        console.log(error)
+                        window.alert(error)
                     });
             }).catch((error) => {
-                console.log(error)
+                window.alert(error)
         });
     }
 
-    handleAddition(tag){
-        console.log('filler')
+    handleAddition(tag, allTags){
+        console.log(allTags);
+        this.setState({filterTags: allTags});
     }
 
     updateFilter(event){
@@ -110,10 +106,11 @@ class QuestionTable extends Component {
     }
 
     render(){   
-        console.log (this.state.tags)
         let filteredQuestions = this.state.questions.filter(
             (question) => {
-                return question.text.toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1;
+                var inTextFilter = question.text.toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1;
+                var inTagFilter = this.state.filterTags.every(function(val) { return question.taglist.indexOf(val.label) !== -1; });
+                return inTagFilter && inTextFilter;
             }
         );
         return(
@@ -125,9 +122,12 @@ class QuestionTable extends Component {
                 
                 <span> Filter by tags: </span>
                 <span>
-                <MuiThemeProvider>
-                    <Tags sourceTags={this.state.tags} onlyFromSource={true}/>
-                </MuiThemeProvider>
+                
+                    <Tags sourceTags={this.state.tags} 
+                          onlyFromSource={true} 
+                          onRemove={this.handleAddition}
+                          onAdd={this.handleAddition}/>
+                
                 </span>
                 <ul>
                 {filteredQuestions.map((question, index) => {

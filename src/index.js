@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Redirect, Switch, Route, BrowserRouter, withRouter } from 'react-router-dom'
+import { Redirect, Switch, Route, BrowserRouter } from 'react-router-dom'
 import axios from 'axios'
 import Home from './components/home'
 import Login from './components/login'
