@@ -2,6 +2,10 @@ var express = require('express');
 var router = express.Router();
 var firebase = require('firebase');
 
+/**
+ *  BASIC CRUD OPERATIONS ON QUESTIONS
+ */
+
 router.post('/create', function(req, res, next){
   var root = firebase.database().ref(); 
   var qref = root.child('Questions'); 
@@ -76,7 +80,7 @@ router.post('/delete', function(req, res, next){
   qref.child(questionKey).child('Created_By').once('value',function(snap){
     var question_create = snap.val();
 
-    if (userKey===question_create) {
+    if(userKey === question_create) {
     //removes the question
     qref.child(questionKey).remove(function(err){
       if (err) {
@@ -134,5 +138,22 @@ router.post('/update', function(req, res, next){
   }
   });
 });
+
+/**
+ * TAG MANIPULATION
+ */
+
+router.get('/tags', function(req, res, next){
+  var root = firebase.database().ref();
+  var tagRef = root.child('Tags');
+  var tags = [];
+  tagRef.once('value',function(snap){
+     snap.forEach(function(child){
+      console.log(child)
+       tags.push(child.key);
+     })
+    res.send({tags: tags});
+  });
+}); 
 
 module.exports = router;

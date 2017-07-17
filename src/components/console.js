@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import {withRouter} from "react-router-dom";
 import axios from 'axios';
 import '../css/console.css'
+import Tags from 'react-material-tags';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
 
 const DeleteButton = (props) => {
     const deleteQuestion = () => { 
@@ -20,7 +24,9 @@ const DeleteButton = (props) => {
         }
     }
 
-    return (<button onClick={deleteQuestion} className="option"><i className="fa fa-trash" aria-hidden="true"></i></button>)
+    return (<button onClick={deleteQuestion} className="option">
+                <i className="fa fa-trash" aria-hidden="true"></i>
+            </button>)
 };
 
 const EditButton = (props) => {
@@ -52,7 +58,9 @@ const EditButton = (props) => {
         }
     }
 
-    return (<button onClick={editQuestion} className="option"><i className="fa fa-pencil" aria-hidden="true"></i></button>)
+    return (<button onClick={editQuestion} className="option">
+                <i className="fa fa-pencil" aria-hidden="true"></i>
+            </button>)
 };
 
 class QuestionTable extends Component {
@@ -60,9 +68,12 @@ class QuestionTable extends Component {
         super(props);
         this.state = {
             questions: [],
+            tags: [],
             filterText: "",
             loaded: null
         }
+
+        this.handleAddition = this.handleAddition.bind(this);
     }
 
     componentDidMount(){
@@ -71,11 +82,27 @@ class QuestionTable extends Component {
                 console.log(response.data.questions);
                 this.setState({
                     questions: response.data.questions,
-                    loaded: true
                 });
+                axios.get('/profile/tags')
+                    .then((response) => {
+                        console.log(response.data.tags)
+                        var tags = response.data.tags.map((tag) => {
+                            return {label: tag};
+                        })
+                        this.setState({
+                            tags: tags,
+                            loaded: true
+                        });
+                    }).catch((error) => {
+                        console.log(error)
+                    });
             }).catch((error) => {
                 console.log(error)
-            });
+        });
+    }
+
+    handleAddition(tag){
+        console.log('filler')
     }
 
     updateFilter(event){
@@ -83,6 +110,7 @@ class QuestionTable extends Component {
     }
 
     render(){   
+        console.log (this.state.tags)
         let filteredQuestions = this.state.questions.filter(
             (question) => {
                 return question.text.toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1;
@@ -94,6 +122,13 @@ class QuestionTable extends Component {
             <h1>Questions</h1>
                 <span> Filter by text: </span>
                 <input type="text" value={this.state.filterText} onChange={this.updateFilter.bind(this)}/> 
+                
+                <span> Filter by tags: </span>
+                <span>
+                <MuiThemeProvider>
+                    <Tags sourceTags={this.state.tags} onlyFromSource={true}/>
+                </MuiThemeProvider>
+                </span>
                 <ul>
                 {filteredQuestions.map((question, index) => {
                   return (
@@ -115,8 +150,8 @@ class QuestionTable extends Component {
 
 const CreateContainer = () => (
     <div>
-            <CreateQuestionBox/>
-            <CreateTagsBox/>
+        <CreateQuestionBox/>
+        <CreateTagsBox/>
     </div>
     )
 
@@ -267,17 +302,6 @@ class CreateQuestionBox extends Component {
 }
 
 class Console extends Component {
-
-    componentDidMount(){
-        if (typeof(this.props.location.state) !== 'undefined') {
-            axios.post('/login', {
-                email: this.props.location.state.email,
-                password: this.props.location.state.password
-            }).catch((error) => {
-                this.props.history.goBack();
-            })
-        }
-    }
 
     render() {
         return (
