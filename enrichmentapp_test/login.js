@@ -29,7 +29,7 @@ function create(){
 }
 
 
-function read(){
+function read(ascending=false){
   //root and questions refs
   var root = firebase.database().ref();
   var qref = root.child('Questions');
@@ -57,18 +57,23 @@ function read(){
 
         console.log(sublist);
         //pushes into the question list
-        qlist.push(sublist);
+        if (ascending===true) {
+          qlist.push(sublist);
+        } else {
+          qlist.unshift(sublist);
+        }
       });
       console.log(qlist);
+
       //this display function sends values to the front end, isnt really necessary for expresss
       display(snap.val());
+      return qlist;
     });
   }
   else {
     console.log('user logged out');
   }
   //returns qlist
-  return qlist;
 }
 
 function remove(){
@@ -298,7 +303,12 @@ function selectTagsAnd(tag1,tag2)
   var and = [];
   var tags1=selectTags(tag1);
   var tags2=selectTags(tag2);
+  and.push(tags1);
+  and.push(tags2);
 
+  and.sort(function(a,b){
+
+  })
 }
 
 /**
