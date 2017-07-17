@@ -34,6 +34,7 @@ class Login extends Component {
 			}).then((response) => {
 				if (response.data.message === 'success'){
 					this.props.history.push('/profile');
+					window.location.reload();
 				} else {
 					this.setState({message: response.data.message});
 				}

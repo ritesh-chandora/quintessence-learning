@@ -4,7 +4,23 @@ import axios from 'axios';
 import '../css/console.css'
 
 const DeleteButton = (props) => {
-        return (<button className="option"><i className="fa fa-trash" aria-hidden="true"></i></button>)
+    const deleteQuestion = () => { 
+        var isOK = window.confirm('Are you sure you want to delete this question?');
+        if (isOK){
+            console.log(props.qkey)
+            axios.post('/profile/delete', {
+                key: props.qkey
+            })
+            .then((response)=>{
+                window.location.reload();
+            })
+            .catch((error)=> {
+                window.alert(error.response.data.message)
+            });
+        }
+    }
+
+    return (<button onClick={deleteQuestion} className="option"><i className="fa fa-trash" aria-hidden="true"></i></button>)
 };
 
 const EditButton = (props) => {

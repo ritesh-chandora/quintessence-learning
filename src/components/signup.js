@@ -30,6 +30,7 @@ class Signup extends Component {
 				console.log(response.data.message)
 				if (response.data.message === 'success'){
 					this.props.history.push('/profile');
+					window.location.reload();
 				} else {
 					this.setState({message: response.data.message});
 				}

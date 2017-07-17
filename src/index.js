@@ -43,14 +43,16 @@ class Main extends React.Component {
           this.state.loggedIn ? (<Redirect to="/profile"/>) : (<Signup/>)
         )}/>
       <Route path='/profile' 
-             render={() => (
-                this.state.loggedIn ? (<Console/>) : (<Redirect to="/login"/>)
-             )} 
-             onEnter={()=>{
+              onEnter={()=>{
+              console.log('what')
                 if (!this.state.loggedIn){
                   this.getLoginStatus()
                 }
-              }}/>
+              }}
+             render={() => (
+                this.state.loggedIn ? (<Console/>) : (<Redirect to="/login"/>)
+             )} 
+             />
       <Route render={
         function() {
           return (<p> Not Found </p>)

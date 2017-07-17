@@ -13,7 +13,7 @@ router.post('/create', function(req, res, next){
     var user = user.uid
     qref.child(key).set({Text:req.body.question,Key:key,Created_By:user});
     var len = req.body.tags.length;
-    console.log('k')
+
     for (i=0;i<len;i++){
       qref.child(key).child('Tags').push(req.body.tags[i]);
     }
@@ -49,8 +49,6 @@ router.get('/read', function(req, res, next){
         });
         //makes a list out of those elements
         var sublist = new Array(text,taglist,key,created);
-
-        console.log(sublist);
         //pushes into the question list
         qlist.push({
           text: text,
@@ -64,5 +62,38 @@ router.get('/read', function(req, res, next){
   res.send({questions: qlist});
 });
 
+router.post('/delete', function(req, res, next){
+  //establishes refs
+  var root = firebase.database().ref();
+  var qref = root.child('Questions');
+
+  //questionKey is the variable that holds the key for the question you are trying to delete
+  var questionKey = req.body.key;
+  //userKey is the current users unique ID
+  var userKey = firebase.auth().currentUser.uid;
+  console.log(questionKey);
+  //checks if the question you are trying to delete is created by the current user
+  qref.child(questionKey).child('Created_By').once('value',function(snap){
+    var question_create = snap.val();
+
+    if (userKey===question_create) {
+    //removes the question
+    qref.child(questionKey).remove(function(err){
+      if (err) {
+        console.log(err);
+        res.status(400).send({message: 'Question Deletion Error'});
+      } else {
+        console.log('Question Deleted');
+        res.status(200).end();
+      }
+    });
+  } else {
+    console.log('Question was not created by current user');
+    res.status(400).send({message: 'You did not create this question!'});
+  }
+  
+  });
+  
+});
 
 module.exports = router;
