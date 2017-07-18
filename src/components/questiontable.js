@@ -3,97 +3,27 @@ import {withRouter} from "react-router-dom";
 import axios from 'axios';
 import '../css/console.css'
 import Tags from './tags'
-
-const DeleteButton = (props) => {
-    const deleteQuestion = () => { 
-        var isOK = window.confirm('Are you sure you want to delete this question?');
-        if (isOK){
-            axios.post('/profile/delete', {
-                key: props.qkey
-            })
-            .then((response)=>{
-                window.location.reload();
-            })
-            .catch((error)=> {
-                window.alert(error.response.data.message)
-            });
-        }
-    }
-
-    return (<button onClick={deleteQuestion} className="option">
-                <i className="fa fa-trash" aria-hidden="true"></i>
-            </button>)
-};
-
-const EditButton = (props) => {
-    const editQuestion = () => {
-        console.log(props.tags)
-        var newText = "";
-        while (newText === ""){
-            newText = window.prompt('Modify the question (Tags on next prompt):', props.text);
-        }
-        if (newText !== null) {
-            var newTags = "";
-            while (newTags === ""){
-                newTags = window.prompt('Modify tags (separate by comma):', props.tags);
-            }
-            if (newTags !== null) {
-                newTags = newTags.split(',');
-                axios.post('/profile/update', {
-                    key: props.qkey,
-                    newText: newText,
-                    newTags: newTags
-                })
-                .then((response)=>{
-                    window.location.reload();
-                })
-                .catch((error)=> {
-                    window.alert(error.response.data.message)
-                });
-                }
-        }
-    }
-
-    return (<button onClick={editQuestion} className="option">
-                <i className="fa fa-pencil" aria-hidden="true"></i>
-            </button>)
-};
+import { EditButton, DeleteButton } from './buttons'
 
 class QuestionTable extends Component {
     constructor(props){
         super(props);
         this.state = {
-            questions: [],
-            tags: [],
             filterText: "",
             filterTags: [],
-            loaded: null
         }
-
         this.handleAddition = this.handleAddition.bind(this);
+        this.deleteQuestion = this.deleteQuestion.bind(this);
+        this.editQuestion = this.editQuestion.bind(this);
+        this.updateFilter = this.updateFilter.bind(this);
     }
 
     componentDidMount(){
-        axios.get('/profile/read')
-            .then((response) => {
-                this.setState({
-                    questions: response.data.questions,
-                });
-                axios.get('/profile/tags')
-                    .then((response) => {
-                        var tags = response.data.tags.map((tag) => {
-                            return {label: tag};
-                        })
-                        this.setState({
-                            tags: tags,
-                            loaded: true
-                        });
-                    }).catch((error) => {
-                        window.alert(error)
-                    });
-            }).catch((error) => {
-                window.alert(error)
-        });
+        this.props.getQuestions();   
+    }
+
+    updateFilter(event){
+        this.setState({filterText: event.target.value});
     }
 
     handleAddition(tag, allTags){
@@ -101,12 +31,50 @@ class QuestionTable extends Component {
         this.setState({filterTags: allTags});
     }
 
-    updateFilter(event){
-        this.setState({filterText: event.target.value});
+    editQuestion(text, tags, qkey) {
+        var newText = "";
+        while (newText === ""){
+            newText = window.prompt('Modify the question (Tags on next prompt):', text);
+        }
+        if (newText !== null) {
+            var newTags = "";
+            while (newTags === ""){
+                newTags = window.prompt('Modify tags (separate by comma):', tags);
+            }
+            if (newTags !== null) {
+                newTags = newTags.split(',');
+                axios.post('/profile/update', {
+                    key: qkey,
+                    newText: newText,
+                    newTags: newTags
+                })
+                .then((response)=>{
+                   this.props.getQuestions();
+                })
+                .catch((error)=> {
+                    window.alert(error.response.data.message)
+                });
+            }
+        }
+    }
+
+    deleteQuestion(qkey){ 
+        var isOK = window.confirm('Are you sure you want to delete this question?');
+        if (isOK){
+            axios.post('/profile/delete', {
+                key: qkey
+            })
+            .then((response)=>{
+                this.props.getQuestions();    
+            })
+            .catch((error)=> {
+                window.alert(error.response.data.message)
+            });
+        }
     }
 
     render(){   
-        let filteredQuestions = this.state.questions.filter(
+        let filteredQuestions = this.props.questions.filter(
             (question) => {
                 var inTextFilter = question.text.toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1;
                 var inTagFilter = this.state.filterTags.every(function(val) { return question.taglist.indexOf(val.label) !== -1; });
@@ -114,7 +82,6 @@ class QuestionTable extends Component {
             }
         );
         return(
-            this.state.loaded !== null ? (
             <div>
             <h1>Questions</h1>
                 <span> Filter by text: </span>
@@ -122,8 +89,7 @@ class QuestionTable extends Component {
                 
                 <span> Filter by tags: </span>
                 <span>
-                
-                    <Tags sourceTags={this.state.tags} 
+                    <Tags sourceTags={this.props.tags} 
                           onlyFromSource={true} 
                           onRemove={this.handleAddition}
                           onAdd={this.handleAddition}/>
@@ -135,16 +101,15 @@ class QuestionTable extends Component {
                     <li className="list" key={index}>
                       {question.text} 
                       <span>
-                      <DeleteButton qkey={question.key}/>
-                      <EditButton qkey={question.key} text={question.text} tags={question.taglist}/>
+                      <DeleteButton qkey={question.key} delete={this.deleteQuestion}/>
+                      <EditButton qkey={question.key} text={question.text} tags={question.taglist} edit={this.editQuestion}/>
                       </span>
                     </li>
                     )
                 })}
                 </ul>
-            </div>) 
-            : null
-        )
+            </div>
+        ); 
     }
 }
 

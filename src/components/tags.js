@@ -35,6 +35,9 @@ class Tags extends Component{
 
   }
 
+  resetTags(){
+    this.setState({tags: []});
+  }
 
   //remove tag
   handleRequestDelete(tagData,key){
