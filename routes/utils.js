@@ -16,16 +16,16 @@ router.post('/create', function(req, res, next){
   var qtag = req.body.tags
   //checks if current user is signed in
   if(firebase.auth().currentUser){
-    
+
     //pushes object into the questions collection
     var key = root.child('Questions').push().key;
     var user = firebase.auth().currentUser.uid
     var ctime = firebase.database.ServerValue.TIMESTAMP;
     qref.child(key).set({Text:question,Key:key,Created_By:user,cTime:ctime});
-    var len = tags.length;
+    var len = qtag.length;
     for (i=0;i<len;i++){
-      qref.child(key).child('Tags').push(tags[i]);
-      tagRef.child(tags[i]).push(key);
+      qref.child(key).child('Tag').push(qtag[i]);
+      tagRef.child(qtag[i]).push(key);
     }console.log('entered');
     res.send({message:"success"});
   }
@@ -60,7 +60,7 @@ router.post('/read', function(req, res, next){
         //makes a list out of those elements
         var sublist = {
           text: text,
-          tagList: taglist,
+          taglist: taglist,
           key:key,
           created: created
         };

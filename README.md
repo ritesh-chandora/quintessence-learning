@@ -1,6 +1,10 @@
 # enrichment-app
 
 ## TODO
-* more elegant solution to refresh certain copmonents (look for whenever window.reload is being used)
-* better popups rather than using window.alert
+* better login (use callbacks to call loginStatus() upon successful login/signup)
+* better popups rather than using window.alert (edit)
+* logout button lol
+* admin vs creator vs user?
 * aka just stop using window functions
+* empty list upon enter
+* autocomplete tags 

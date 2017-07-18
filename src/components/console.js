@@ -13,32 +13,34 @@ class Console extends Component {
             questions: [],
             tags: []
         }
-        this.createTag = this.createTag.bind(this);
+        this.getTags = this.getTags.bind(this);
         this.getQuestions = this.getQuestions.bind(this);
         this.toggleAscending = this.toggleAscending.bind(this);
     }
 
     componentDidMount(){
-        axios.get('/profile/tags')
-            .then((response) => {
-                var tags = response.data.tags.map((tag) => {
-                    return {label: tag};
-                })
-                this.setState({
-                    tags: tags,
-                });
-            }).catch((error) => {
-                window.alert(error)
-            });
-    }
-
-    createTag(tagName){
-        return;
+        this.getQuestions();
+        this.getTags();
     }
 
     toggleAscending(){
-        this.setState({ascending: !this.state.ascending});
-        this.getQuestions();
+        //make sure the calls are synced
+        this.setState({ascending: !this.state.ascending}, 
+            () => this.getQuestions());    
+    }
+
+    getTags(){
+        axios.get('/profile/tags')
+        .then((response) => {
+            var tags = response.data.tags.map((tag) => {
+                return {label: tag};
+            })
+            this.setState({
+                tags: tags,
+            });
+        }).catch((error) => {
+            window.alert(error)
+        });
     }
 
     getQuestions() {
@@ -54,7 +56,6 @@ class Console extends Component {
     }
 
     render() {
-        console.log(this.state.tags)
         return (
             <div className="container container-padding">
                 <div className="row">
@@ -68,7 +69,7 @@ class Console extends Component {
                     <div className="col-md-4">
                         <CreateQuestionBox questions={this.state.questions} 
                                            tags={this.state.tags} 
-                                           createTag={this.props.createTag} 
+                                           tagRefresh={this.getTags} 
                                            getQuestions={this.getQuestions}/>
                     </div>
                 </div>

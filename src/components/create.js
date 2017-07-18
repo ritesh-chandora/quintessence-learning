@@ -32,6 +32,11 @@ class CreateQuestionBox extends Component {
             this.setState({message: "Please enter tags!"});
         } else {
             var tags = this.state.tags.map((tagObj) => { return(tagObj.label) });
+            
+            //see if there are any new tags
+            var newTags = this.state.tags.filter((tagObj) => {return this.props.tags.indexOf(tagObj) === -1})
+            var needRefreshTags = newTags.length !== 0;
+
             axios.post('/profile/create', {
                 question: this.state.question,
                 tags: tags
@@ -43,7 +48,10 @@ class CreateQuestionBox extends Component {
                         question: "", 
                         tags: "", 
                         success: true
-                    })
+                    });
+                    if (needRefreshTags) {
+                        this.props.tagRefresh();
+                    }
                     this.props.getQuestions();
                 } else {
                     this.setState({
@@ -52,6 +60,7 @@ class CreateQuestionBox extends Component {
                     });
                 }
             }).catch((error) => {
+                console.log(error);
                 this.setState({message: "Unable to connect to signup server!"});
             })
         }
