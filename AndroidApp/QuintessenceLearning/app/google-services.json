@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "53496239189",
+    "firebase_url": "https://test-project-692ad.firebaseio.com",
+    "project_id": "test-project-692ad",
+    "storage_bucket": "test-project-692ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53496239189:android:d2338983a30820f5",
+        "android_client_info": {
+          "package_name": "btao.com.quintessencelearning"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "53496239189-2a7inij1d76h468hnnb7499aqeka3fj2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "btao.com.quintessencelearning",
+            "certificate_hash": "887b732127f21e353e3821187a363ac8bb05c6ea"
+          }
+        },
+        {
+          "client_id": "53496239189-eup6douf9jogqig0h9e5aj5ailov8fnu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBvb-pc9Q5WHJAL0ybEf7sK_4tbLMmoic"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "53496239189-eup6douf9jogqig0h9e5aj5ailov8fnu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

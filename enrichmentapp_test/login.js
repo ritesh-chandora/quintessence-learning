@@ -29,16 +29,19 @@ function create(){
 }
 
 
-function read(ascending=false){
+function read(ascending=false,startAt=0,endAt=-1){
   //root and questions refs
   var root = firebase.database().ref();
   var qref = root.child('Questions');
   //instantiates question list to be returned
   var qlist = [];
+  if (endAt===-1){
+  	endAt = String(firebase.database.ServerValue.TIMESTAMP);
+  }
   //checks if user is logged in
   if(firebase.auth().currentUser){
     //orders the questions in time order descending and then then listens for values
-    qref.orderByKey().on('value',function(snap) {
+    qref.orderByChild('cTime').startAt(startAt).endAt(endAt).on('value',function(snap) {
       //iterates through each value in the snap
       snap.forEach(function(snap)
       {
@@ -48,12 +51,13 @@ function read(ascending=false){
         var text =snap.child('Text').val();
         var tags = snap.child('Tags');
         var created = snap.child('Created_By').val();
+        var ctime = snap.child('cTime');
         tags.forEach(function(tag)
         {
           taglist.push(tag.val());
         });
         //makes a list out of those elements
-        var sublist = new Array(text,taglist,key,created);
+        var sublist = new Array(text,taglist,key,created,ctime);
 
         console.log(sublist);
         //pushes into the question list
