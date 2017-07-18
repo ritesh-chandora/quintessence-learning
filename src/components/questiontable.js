@@ -81,6 +81,9 @@ class QuestionTable extends Component {
                 return inTagFilter && inTextFilter;
             }
         );
+
+        let ascendingText = this.props.ascending ? "Oldest to Newest" : "Newest to Oldest";
+
         return(
             <div>
             <h1>Questions</h1>
@@ -93,8 +96,8 @@ class QuestionTable extends Component {
                           onlyFromSource={true} 
                           onRemove={this.handleAddition}
                           onAdd={this.handleAddition}/>
-                
                 </span>
+                Order by <button className="option" onClick={this.props.toggleAscending}>{ascendingText}</button>
                 <ul>
                 {filteredQuestions.map((question, index) => {
                   return (

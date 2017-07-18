@@ -9,11 +9,13 @@ class Console extends Component {
     constructor(props){
         super(props);
         this.state={
+            ascending: false,
             questions: [],
             tags: []
         }
         this.createTag = this.createTag.bind(this);
         this.getQuestions = this.getQuestions.bind(this);
+        this.toggleAscending = this.toggleAscending.bind(this);
     }
 
     componentDidMount(){
@@ -34,9 +36,15 @@ class Console extends Component {
         return;
     }
 
+    toggleAscending(){
+        this.setState({ascending: !this.state.ascending});
+        this.getQuestions();
+    }
+
     getQuestions() {
-        axios.get('/profile/read')
-            .then((response) => {
+        axios.post('/profile/read', {
+            ascending: this.state.ascending
+        }).then((response) => {
                 this.setState({
                     questions: response.data.questions,
                 });
@@ -52,8 +60,10 @@ class Console extends Component {
                 <div className="row">
                     <div className="col-md-8">
                         <QuestionTable questions={this.state.questions} 
-                                       tags={this.state.tags} 
-                                       getQuestions={this.getQuestions}/>
+                                       ascending={this.state.ascending}
+                                       getQuestions={this.getQuestions}
+                                       toggleAscending={this.toggleAscending}
+                                       tags={this.state.tags} />
                     </div>
                     <div className="col-md-4">
                         <CreateQuestionBox questions={this.state.questions} 

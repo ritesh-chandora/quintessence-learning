@@ -2,8 +2,11 @@
     margin-top: 2%
 }
 
-.option {
+.floatright {
     float:right;
+}
+
+.option {
     border: none;
     background: white;
 }

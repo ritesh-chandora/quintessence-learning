@@ -7,20 +7,26 @@ var firebase = require('firebase');
  */
 
 router.post('/create', function(req, res, next){
+  //creates two refs for the database, and then the questions collection
   var root = firebase.database().ref(); 
-  var qref = root.child('Questions'); 
+  var qref = root.child('Questions');
+  var tagRef = root.child('Tags');
+  //these two variables are the question text and the tag (replace with other input method)
+  var question = req.body.question
+  var qtag = req.body.tags
   //checks if current user is signed in
-  var user = firebase.auth().currentUser
-  if(user !== null){
+  if(firebase.auth().currentUser){
+    
     //pushes object into the questions collection
     var key = root.child('Questions').push().key;
-    var user = user.uid
-    qref.child(key).set({Text:req.body.question,Key:key,Created_By:user});
-    var len = req.body.tags.length;
-
+    var user = firebase.auth().currentUser.uid
+    var ctime = firebase.database.ServerValue.TIMESTAMP;
+    qref.child(key).set({Text:question,Key:key,Created_By:user,cTime:ctime});
+    var len = tags.length;
     for (i=0;i<len;i++){
-      qref.child(key).child('Tags').push(req.body.tags[i]);
-    }
+      qref.child(key).child('Tags').push(tags[i]);
+      tagRef.child(tags[i]).push(key);
+    }console.log('entered');
     res.send({message:"success"});
   }
   else {
@@ -28,14 +34,14 @@ router.post('/create', function(req, res, next){
   }
 });
 
-router.get('/read', function(req, res, next){
-  //root and questions refs
+router.post('/read', function(req, res, next){
+  var ascending = req.body.ascending
   var root = firebase.database().ref();
   var qref = root.child('Questions');
   //instantiates question list to be returned
   var qlist = [];
   //checks if user is logged in
-  // if(firebase.auth().currentUser){
+  if(firebase.auth().currentUser){
     //orders the questions in time order descending and then then listens for values
     qref.orderByKey().on('value',function(snap) {
       //iterates through each value in the snap
@@ -52,18 +58,27 @@ router.get('/read', function(req, res, next){
           taglist.push(tag.val());
         });
         //makes a list out of those elements
-        var sublist = new Array(text,taglist,key,created);
-        //pushes into the question list
-        qlist.push({
+        var sublist = {
           text: text,
-          taglist: taglist,
-          key: key,
+          tagList: taglist,
+          key:key,
           created: created
-        });
+        };
+
+        //pushes into the question list
+        if (ascending === true) {
+          qlist.push(sublist);
+        } else {
+          qlist.unshift(sublist);
+        }
       });
     });
-  // }
-  res.send({questions: qlist});
+    res.send({questions: qlist});
+  }
+  else {
+    res.send({message:'Error: User not logged in!'});
+  }
+  res.status(204).end();
 });
 
 router.post('/delete', function(req, res, next){
