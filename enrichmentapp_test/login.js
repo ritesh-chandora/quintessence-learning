@@ -80,7 +80,7 @@ function remove(){
   //establishes refs
   var root = firebase.database().ref();
   var qref = root.child('Questions');
-
+  var tagRef = root.child('Tags');
   //questionKey is the variable that holds the key for the question you are trying to delete
   var questionKey= document.getElementById('tag').value;
   //userKey is the current users unique ID
@@ -90,17 +90,28 @@ function remove(){
     var question_create = snap.val();
 
     if (userKey===question_create) {
-    //removes the question
-    qref.child(questionKey).remove(function(err){
-      if (err) {
-        console.log('Question Deletion Error',err);
-      } else {
-        console.log('Question Deleted');
-      }
-    });
-  } else {
-    console.log('Question was not created by current user');
-  }
+	    //removes the question
+	    qref.child(questionKey).remove(function(err){
+	      if (err) {
+	        console.log('Question Deletion Error',err);
+	      } else {
+	        console.log('Question Deleted');
+	      }
+	    });
+    tagRef.once('value',function (snap){
+	    	snap.forEach(function(child){
+	    		console.log(child.val());
+		    	child.ref.once('value',function(snap){
+		    		snap.forEach(function(child){
+		    			if (child.val() === questionKey) {
+		    				child.ref.remove()
+		    			}
+		    		});
+		    	});
+		    });
+		});
+    	console.log('Question was not created by current user');
+  	}
   
   });
 
