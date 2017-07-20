@@ -12,6 +12,7 @@ class LoginHandlerViewController: UIViewController {
 
     @IBOutlet weak var emailText: UITextField!
     @IBOutlet weak var passField: UITextField!
+    @IBOutlet weak var infoText: UILabel!
     
     @IBOutlet weak var test: UILabel!
     
@@ -26,11 +27,41 @@ class LoginHandlerViewController: UIViewController {
             return
         }
         let params = ["email": emailText!.text!, "password": passField!.text!]
+        guard let reqBody = try? JSONSerialization.data(withJSONObject: params, options: []) else { return }
         
-        let url = URL(string: loginUrl)
-        if let url = urlString {
-            let login = URLSession.shared.dataTask(with: <#T##URL#>)
-        }
+        guard let url = URL(string: loginUrl) else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = reqBody
+        
+        let session = URLSession.shared
+        session.dataTask(with: request) { (data, response, error) in
+            if let response = response {
+                print(response)
+            }
+            
+            if let data = data {
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    if let dict = json as? [String:String] {
+                        if let message = dict["message"] {
+                            print(message)
+                            if (message != "success"){
+                                DispatchQueue.global(qos: .background).async {
+                                    DispatchQueue.main.async {
+                                        self.infoText!.text = message
+                                        self.infoText!.isHidden = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+        }.resume()
     }
     
     @IBAction func registerPress(_ sender: UIButton) {
