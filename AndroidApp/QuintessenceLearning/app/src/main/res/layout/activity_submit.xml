@@ -26,6 +26,13 @@
 
     </FrameLayout>
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="signOut"
+        android:text="Sign Out" />
+
     <EditText
         android:id="@+id/editText3"
         android:layout_width="match_parent"

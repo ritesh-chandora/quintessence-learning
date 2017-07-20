@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ public class SignUp extends AppCompatActivity {
     private FirebaseAuth auth;
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset;
+    private final String TAG = "SignUp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,14 @@ public class SignUp extends AppCompatActivity {
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-                        Toast.makeText(SignUp.this,"account creaed",Toast.LENGTH_SHORT);
+
+                        if (task.isSuccessful()){
+                            Log.d(TAG,"created user successfully");
+                            Toast.makeText(SignUp.this,"account created",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.w(TAG,"did not create user successfully",task.getException());
+                            Toast.makeText(SignUp.this,"account was not created",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }
