@@ -12,6 +12,9 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //TODO: login status get and push to proper viewcontroller
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
 
