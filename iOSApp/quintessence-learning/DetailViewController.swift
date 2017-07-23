@@ -13,14 +13,30 @@ protocol UpdateQuestionDelegate {
     func refreshQuestions()
 }
 
-class ModalViewController: UIViewController {
+class ModalViewController: UIViewController, TagListViewDelegate {
     
     @IBOutlet weak var text: UITextField!
+    @IBOutlet weak var tagField: UITextField!
+    @IBOutlet weak var addTagLabel: UILabel!
+    
     @IBOutlet weak var tagList: TagListView!
+    
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var addTagButton: UIButton!
+    
+    //handles adding tag
+    @IBAction func onAddTag(_ sender: Any) {
+        if (tagField.text!.characters.count > 0) {
+            tagList.addTag(tagField.text!)
+            tagField.text! = ""
+        } else {
+            showError(message: "Input a tag!")
+        }
+        
+    }
     
     //activates edit mode
     @IBAction func onEdit(_ sender: UIButton) {
@@ -30,7 +46,6 @@ class ModalViewController: UIViewController {
     //confirms edits, will push to server and reload table data
     @IBAction func onConfirm(_ sender: UIButton) {
         configButtons(editMode: false)
-        print("hi")
         updateQuestion()
     }
     
@@ -51,15 +66,15 @@ class ModalViewController: UIViewController {
     
     override func viewDidLoad() {
         loadData()
+        tagList.delegate = self
         view.backgroundColor = UIColor.clear
-        view.layer.cornerRadius = 5
-        view.layer.masksToBounds = true
         view.isOpaque = false
     }
 
     //loads default data
     func loadData(){
         text.text! = data!.text
+        tagList.removeAllTags()
         tagList.addTags(data!.tags)
     }
     
@@ -67,16 +82,30 @@ class ModalViewController: UIViewController {
     func configButtons(editMode:Bool){
         closeButton.isEnabled = !editMode
         closeButton.isHidden = editMode
-        
         editButton.isHidden = editMode
+        
         cancelButton.isHidden = !editMode
         confirmButton.isHidden = !editMode
+        addTagButton.isHidden = !editMode
+        
+        addTagLabel.isHidden = !editMode
+        tagField.isHidden = !editMode
         
         text.isEnabled = editMode
+   
+        tagList.enableRemoveButton = editMode
+        tagList.removeButtonIconSize = 6
     }
     
     func updateQuestion(){
-        let params = ["newText": text.text!, "newTags": data.tags, "key": data.key] as [String : Any]
+        
+        //get tags from TagListView
+        var tags = [String]()
+        for tag:TagView in tagList.tagViews {
+            tags.append(tag.titleLabel!.text!)
+        }
+        
+        let params = ["newText": text.text!, "newTags": tags, "key": data.key] as [String : Any]
         guard let reqBody = try? JSONSerialization.data(withJSONObject: params, options: []) else { return }
         
         let urlRoute = self.hostURL + "/profile/update"
@@ -92,12 +121,13 @@ class ModalViewController: UIViewController {
         session.dataTask(with: request) { (data, response, error) in
             if let data = data {
                 do {
-                    //if there is a response body, then it failed to edit
+                    //if there is a response body, then it failed to edit, exit edit mode
                     let json = try JSONSerialization.jsonObject(with: data, options: [])
                         if let dict = json as? [String:String]{
                             DispatchQueue.main.async {
                                 self.showError(message: dict["message"]!)
                             }
+                            self.loadData()
                     } else {
                         //otherwise update the table and close the modal
                         self.updateDelegate.refreshQuestions()
@@ -131,7 +161,25 @@ class ModalViewController: UIViewController {
 
     }
     
+    func tagRemoveButtonPressed(_ title: String, tagView: TagView, sender: TagListView) {
+        print("Tag Remove pressed: \(title), \(sender)")
+        sender.removeTagView(tagView)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 }
+
+extension UIView {
+    @IBInspectable var cornerRadius: CGFloat {
+        get {
+            return self.layer.cornerRadius
+        }
+        set {
+            self.layer.cornerRadius = newValue
+            self.layer.masksToBounds = true
+        }
+    }
+}
+
