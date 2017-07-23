@@ -38,11 +38,7 @@ class QuestionViewController: UITableViewController {
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self, action: #selector(getQuestions), for: UIControlEvents.valueChanged)
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "More...", style: .plain, target: self, action: #selector(showActions))
     }
 
     override func didReceiveMemoryWarning() {
@@ -102,13 +98,6 @@ class QuestionViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    //displays an error
-    func showError() {
-        let ac = UIAlertController(title: "Loading error", message: "There was a problem retrieving questions; please check your connection and try again.", preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default))
-        present(ac, animated: true)
-    }
-    
     func getQuestions(){
         let params = ["ascending": ascending]
         guard let reqBody = try? JSONSerialization.data(withJSONObject: params, options: []) else { return }
@@ -137,7 +126,7 @@ class QuestionViewController: UITableViewController {
                     }
                 }catch {
                     DispatchQueue.main.async {
-                        self.showError()
+                        self.showError(message: "An error occurred in retrieving questions")
                     }
                 }
             }
@@ -148,25 +137,41 @@ class QuestionViewController: UITableViewController {
         }
     }
     
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    func showActions(){
+        let ac = UIAlertController(title: "Search by...", message: nil, preferredStyle: .actionSheet)
+        
+        let sendButton = UIAlertAction(title: "Oldest to Newest", style: .default, handler: { (action) -> Void in
+            self.ascending = true
+            self.getQuestions()
+        })
+        
+        let  deleteButton = UIAlertAction(title: "Newest to Oldest", style: .default, handler: { (action) -> Void in
+            self.ascending = false
+            self.getQuestions()
+        })
+        
+        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        
+        ac.addAction(sendButton)
+        ac.addAction(deleteButton)
+        ac.addAction(cancelButton)
+        
+        self.navigationController!.present(ac, animated: true, completion: nil)
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    //displays an error
+    func showError(message:String) {
+        let ac = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        
+        let alertWindow = UIWindow(frame: UIScreen.main.bounds)
+        alertWindow.rootViewController = UIViewController()
+        alertWindow.windowLevel = UIWindowLevelAlert + 1;
+        alertWindow.makeKeyAndVisible()
+        alertWindow.rootViewController?.present(ac, animated: true, completion: nil)
+        
     }
-    */
 }
 
 extension QuestionViewController : UpdateQuestionDelegate {
