@@ -229,9 +229,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="53.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="tbK-Ra-IUd" kind="presentation" modalPresentationStyle="overCurrentContext" id="Sb5-zj-PtB"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -243,12 +240,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kpH-ZE-0hL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4656.8000000000002" y="-600.44977511244383"/>
+            <point key="canvasLocation" x="4593" y="-600"/>
         </scene>
         <!--Modal View Controller-->
         <scene sceneID="uJ5-nX-Tnu">
             <objects>
-                <viewController storyboardIdentifier="modal" id="tbK-Ra-IUd" customClass="ModalViewController" customModule="quintessence_learning" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="question" id="tbK-Ra-IUd" customClass="ModalViewController" customModule="quintessence_learning" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="JFN-hc-HTe"/>
                         <viewControllerLayoutGuide type="bottom" id="KUs-Bx-zcQ"/>

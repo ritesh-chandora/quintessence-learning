@@ -20,12 +20,13 @@ class QuestionViewController: UITableViewController {
     let hostURL = "http://localhost:3001"
     
     var questions = [Question]()
+    var filteredQuestions = [Question]()
     var ascending = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchController.searchResultsUpdater = self as? UISearchResultsUpdating
+        searchController.searchResultsUpdater = self as UISearchResultsUpdating
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
@@ -51,13 +52,16 @@ class QuestionViewController: UITableViewController {
 
     //number of cells to render
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+         if searchController.isActive && searchController.searchBar.text != "" {
+            return filteredQuestions.count
+        }
         return questions.count
     }
     
     //renders the cell with the title as the question
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let question = questions[indexPath.row]
+        let question = (searchController.isActive && searchController.searchBar.text != "") ? filteredQuestions[indexPath.row] : questions[indexPath.row]
         cell.textLabel?.text = question.text
         return cell
     }
@@ -80,19 +84,22 @@ class QuestionViewController: UITableViewController {
         }
     }
     
-    //handles tapping of question to segue to modal
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let modalViewController = segue.destination as! ModalViewController
-        if let cell = sender as? UITableViewCell {
-            let indexPath = tableView.indexPath(for: cell)!
-            modalViewController.data = questions[indexPath.row]
-            modalViewController.updateDelegate = self
-            self.tableView.deselectRow(at: indexPath, animated: true)
-        } else {
-            DispatchQueue.main.async { [unowned self] in
-                self.showError()
-            }
+    //handle tap on cell to display modal for respective question
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let modalViewController = storyboard?.instantiateViewController(withIdentifier: "question") as! ModalViewController
+        let question = (searchController.isActive && searchController.searchBar.text != "") ? filteredQuestions[indexPath.row] : questions[indexPath.row]
+        modalViewController.data = question
+        modalViewController.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(modalViewController, animated: true, completion: nil)
+    }
+    
+    //filters based on text
+    func filterContentForSearchText(searchText: String, scope: String = "All") {
+        filteredQuestions = questions.filter { question in
+            return question.text.lowercased().contains(searchText.lowercased())
         }
+        
+        tableView.reloadData()
     }
     
     //displays an error
@@ -165,6 +172,12 @@ class QuestionViewController: UITableViewController {
 extension QuestionViewController : UpdateQuestionDelegate {
     func refreshQuestions() {
          self.getQuestions()
+    }
+}
+
+extension QuestionViewController: UISearchResultsUpdating {
+    func updateSearchResults(for: UISearchController) {
+        filterContentForSearchText(searchText: searchController.searchBar.text!)
     }
 }
 
