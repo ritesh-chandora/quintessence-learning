@@ -116,6 +116,7 @@ router.post('/delete', function(req, res, next){
 });
 
 router.post('/update', function(req, res, next){
+  console.log(req.body)
   var root = firebase.database().ref();
   var qref = root.child('Questions');
   //question key is the unique question key you are updating
@@ -144,6 +145,7 @@ router.post('/update', function(req, res, next){
     //pushes new tags
     var len = newTags.length;
     for (i=0;i<len;i++){
+      console.log(newTags[i])
       qref.child(questionKey).child('Tags').push(newTags[i]);
     }
     res.status(200).end();

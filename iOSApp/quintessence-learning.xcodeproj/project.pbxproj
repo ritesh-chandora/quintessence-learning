@@ -14,6 +14,8 @@
 		2C72CB5E1F1DC15F009868D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C72CB5D1F1DC15F009868D6 /* Assets.xcassets */; };
 		2C72CB611F1DC15F009868D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C72CB5F1F1DC15F009868D6 /* LaunchScreen.storyboard */; };
 		2CB2B69A1F2151A200DA1D50 /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB2B6991F2151A200DA1D50 /* QuestionViewController.swift */; };
+		2CB2B69C1F21B51800DA1D50 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB2B69B1F21B51800DA1D50 /* DetailViewController.swift */; };
+		B6B9ACEA1539585127AFA88D /* Pods_quintessence_learning.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9DC36B159E0625930BC53D5 /* Pods_quintessence_learning.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,10 @@
 		2C72CB601F1DC15F009868D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2C72CB621F1DC15F009868D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2CB2B6991F2151A200DA1D50 /* QuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
+		2CB2B69B1F21B51800DA1D50 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		603BB9305DEE39DEE7482495 /* Pods-quintessence-learning.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quintessence-learning.debug.xcconfig"; path = "Pods/Target Support Files/Pods-quintessence-learning/Pods-quintessence-learning.debug.xcconfig"; sourceTree = "<group>"; };
+		F491CD342D5EFDBE2109D5F2 /* Pods-quintessence-learning.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quintessence-learning.release.xcconfig"; path = "Pods/Target Support Files/Pods-quintessence-learning/Pods-quintessence-learning.release.xcconfig"; sourceTree = "<group>"; };
+		F9DC36B159E0625930BC53D5 /* Pods_quintessence_learning.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_quintessence_learning.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6B9ACEA1539585127AFA88D /* Pods_quintessence_learning.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,6 +62,8 @@
 			children = (
 				2C72CB551F1DC15F009868D6 /* quintessence-learning */,
 				2C72CB541F1DC15F009868D6 /* Products */,
+				4919DF4FFE1CD2E19301E440 /* Pods */,
+				364073937BABE905286EF115 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,8 +83,26 @@
 				2C45FE0D1F1FA1AE004C6332 /* Supporting Files */,
 				2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */,
 				2CB2B6991F2151A200DA1D50 /* QuestionViewController.swift */,
+				2CB2B69B1F21B51800DA1D50 /* DetailViewController.swift */,
 			);
 			path = "quintessence-learning";
+			sourceTree = "<group>";
+		};
+		364073937BABE905286EF115 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F9DC36B159E0625930BC53D5 /* Pods_quintessence_learning.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4919DF4FFE1CD2E19301E440 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				603BB9305DEE39DEE7482495 /* Pods-quintessence-learning.debug.xcconfig */,
+				F491CD342D5EFDBE2109D5F2 /* Pods-quintessence-learning.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -85,9 +112,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2C72CB651F1DC15F009868D6 /* Build configuration list for PBXNativeTarget "quintessence-learning" */;
 			buildPhases = (
+				C6CFEC8FAEE72E710D866645 /* [CP] Check Pods Manifest.lock */,
 				2C72CB4F1F1DC15F009868D6 /* Sources */,
 				2C72CB501F1DC15F009868D6 /* Frameworks */,
 				2C72CB511F1DC15F009868D6 /* Resources */,
+				14F93963FB7161C809639196 /* [CP] Embed Pods Frameworks */,
+				655CF6DBFE9418D85F1E0891 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -146,6 +176,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		14F93963FB7161C809639196 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-quintessence-learning/Pods-quintessence-learning-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		655CF6DBFE9418D85F1E0891 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-quintessence-learning/Pods-quintessence-learning-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C6CFEC8FAEE72E710D866645 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		2C72CB4F1F1DC15F009868D6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -153,6 +231,7 @@
 			files = (
 				2C72CB591F1DC15F009868D6 /* ViewController.swift in Sources */,
 				2C45FE0F1F1FACD5004C6332 /* LoginHandlerViewController.swift in Sources */,
+				2CB2B69C1F21B51800DA1D50 /* DetailViewController.swift in Sources */,
 				2CB2B69A1F2151A200DA1D50 /* QuestionViewController.swift in Sources */,
 				2C72CB571F1DC15F009868D6 /* AppDelegate.swift in Sources */,
 			);
@@ -275,7 +354,9 @@
 		};
 		2C72CB661F1DC15F009868D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 603BB9305DEE39DEE7482495 /* Pods-quintessence-learning.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = WAC8TS3C8H;
 				INFOPLIST_FILE = "quintessence-learning/Info.plist";
@@ -283,12 +364,15 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "efeng.quintessence-learning";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Debug;
 		};
 		2C72CB671F1DC15F009868D6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F491CD342D5EFDBE2109D5F2 /* Pods-quintessence-learning.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = WAC8TS3C8H;
 				INFOPLIST_FILE = "quintessence-learning/Info.plist";
@@ -296,6 +380,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "efeng.quintessence-learning";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Release;
 		};

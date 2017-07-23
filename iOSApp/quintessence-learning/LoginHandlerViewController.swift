@@ -64,7 +64,7 @@ class LoginHandlerViewController: UIViewController {
                             }
                             //otherwise present the proper view to user
                             else {
-                                DispatchQueue.main.async {
+                                DispatchQueue.main.async { [unowned self] in
                                     let console = self.storyboard?.instantiateViewController(withIdentifier: "Admin") as! UITabBarController
                                     self.present(console, animated: true, completion: nil)
                                 }
