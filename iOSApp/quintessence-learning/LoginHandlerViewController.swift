@@ -14,10 +14,10 @@ class LoginHandlerViewController: UIViewController {
     @IBOutlet weak var passField: UITextField!
     @IBOutlet weak var infoText: UILabel!
     
-    static let hostURL = "http://localhost:3001"
+    @IBOutlet weak var button: UIButton!
     
-    let loginUrl = hostURL + "/login"
-    let signupUrl = hostURL + "/signup"
+    let loginUrl = Server.hostURL + "/login"
+    let signupUrl = Server.hostURL + "/signup"
     
     @IBAction func loginPress(_ sender: UIButton) {
         userPostReq(urlRoute: loginUrl)
@@ -28,57 +28,45 @@ class LoginHandlerViewController: UIViewController {
     }
     
     //do POST request to proper login route (login or signup)
-    func userPostReq(urlRoute: String){
-        
-        //serialize params into JSON
+    
+    func userPostReq(urlRoute :String){
+        let originalTitle = button.titleLabel!.text!
+        button.titleLabel!.text! = "Loading..."
+        button.isEnabled = false
         let params = ["email": emailText!.text!, "password": passField!.text!]
-        guard let reqBody = try? JSONSerialization.data(withJSONObject: params, options: []) else { return }
-        
-        //set up POST request
-        guard let url = URL(string: urlRoute) else { return }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = reqBody
-        
-        
-        //excute POST request
-        let session = URLSession.shared
-        session.dataTask(with: request) { (data, response, error) in
-            if let data = data {
-                do {
-                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    if let dict = json as? [String:String] {
-                        
-                        //get response message
-                        if let message = dict["message"] {
-                            
-                            //display error from server if not success
-                            if (message != "success"){
-                                DispatchQueue.global(qos: .background).async {
-                                    DispatchQueue.main.async {
-                                        self.infoText!.text = message
-                                        self.infoText!.isHidden = false;
-                                    }
-                                }
-                            }
-                            //otherwise present the proper view to user
-                            else {
-                                DispatchQueue.main.async { [unowned self] in
-                                    let console = self.storyboard?.instantiateViewController(withIdentifier: "Admin") as! UITabBarController
-                                    self.present(console, animated: true, completion: nil)
-                                }
-                            }
+        Server.post(urlRoute: urlRoute, params: params, callback: postCallback(_:), errorMessage: "Login failed!")
+        button.titleLabel!.text! = originalTitle
+        button.isEnabled = true
+    }
+    
+    //callback function when post request is complete
+    func postCallback(_ data:Data) throws {
+        let json = try JSONSerialization.jsonObject(with: data, options: [])
+        if let dict = json as? [String:String] {
+            
+            //get response message
+            if let message = dict["message"] {
+                
+                //display error from server if not success
+                if (message != "success"){
+                    DispatchQueue.global(qos: .background).async {
+                        DispatchQueue.main.async {
+                            self.infoText!.text = message
+                            self.infoText!.isHidden = false;
                         }
                     }
-                } catch {
-                    print(error)
+                }
+                    //otherwise present the proper view to user
+                else {
+                    DispatchQueue.main.async { [unowned self] in
+                        let console = self.storyboard?.instantiateViewController(withIdentifier: "Admin") as! UINavigationController
+                        self.present(console, animated: true, completion: nil)
+                    }
                 }
             }
-            }.resume()
-
+        }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }

@@ -17,7 +17,6 @@ struct Question {
 class QuestionViewController: UITableViewController {
     
     let searchController = UISearchController(searchResultsController: nil)
-    let hostURL = "http://localhost:3001"
     
     var questions = [Question]()
     var filteredQuestions = [Question]()
@@ -85,10 +84,18 @@ class QuestionViewController: UITableViewController {
         let modalViewController = storyboard?.instantiateViewController(withIdentifier: "question") as! ModalViewController
         let question = (searchController.isActive && searchController.searchBar.text != "") ? filteredQuestions[indexPath.row] : questions[indexPath.row]
         modalViewController.data = question
+        modalViewController.row = indexPath
+        modalViewController.updateDelegate = self
         modalViewController.modalPresentationStyle = .overCurrentContext
         self.navigationController?.present(modalViewController, animated: true, completion: nil)
     }
     
+    @IBAction func addQuestion(_ sender: UIBarButtonItem) {
+        let createViewController = storyboard?.instantiateViewController(withIdentifier: "Create") as! CreateViewController
+        createViewController.updateDelegate = self
+        createViewController.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(createViewController, animated: true, completion: nil)
+    }
     //filters based on text
     func filterContentForSearchText(searchText: String, scope: String = "All") {
         filteredQuestions = questions.filter { question in
@@ -98,39 +105,23 @@ class QuestionViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    func getQuestions(){
-        let params = ["ascending": ascending]
-        guard let reqBody = try? JSONSerialization.data(withJSONObject: params, options: []) else { return }
-        
-        let urlRoute = self.hostURL + "/profile/read"
-        //set up POST request
-        guard let url = URL(string: urlRoute) else { return }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = reqBody
-        
-        //excute POST request
-        let session = URLSession.shared
-        session.dataTask(with: request) { (data, response, error) in
-            if let data = data {
-                do {
-                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    if let dict = json as? [String:[[String:Any]]] {
-                        var responseData = [Question]()
-                        let questionResponse : [[String:Any]] = dict["questions"]!
-                        for question in questionResponse { 
-                            responseData.append(Question(text: question["text"]! as! String, tags: question["taglist"]! as! [String], key: question["key"]! as! String))
-                        }
-                        self.questions = responseData
-                    }
-                }catch {
-                    DispatchQueue.main.async {
-                        self.showError(message: "An error occurred in retrieving questions")
-                    }
-                }
+    func qCallback(data: Data) throws {
+        let json = try JSONSerialization.jsonObject(with: data, options: [])
+        if let dict = json as? [String:[[String:Any]]] {
+            var responseData = [Question]()
+            let questionResponse : [[String:Any]] = dict["questions"]!
+            for question in questionResponse {
+                responseData.append(Question(text: question["text"]! as! String, tags: question["taglist"]! as! [String], key: question["key"]! as! String))
             }
-        }.resume()
+            self.questions = responseData
+        }
+    }
+    func getQuestions(){
+        let urlRoute = Server.hostURL + "/profile/read"
+        let params = ["ascending": ascending]
+        
+        Server.post(urlRoute: urlRoute, params: params, callback: qCallback, errorMessage: "An error occurred in retrieving questions!")
+        
         DispatchQueue.main.async { [unowned self] in
             self.refreshControl?.endRefreshing()
             self.tableView.reloadData()
@@ -159,24 +150,15 @@ class QuestionViewController: UITableViewController {
         
         self.navigationController!.present(ac, animated: true, completion: nil)
     }
-    
-    //displays an error
-    func showError(message:String) {
-        let ac = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default))
-        
-        let alertWindow = UIWindow(frame: UIScreen.main.bounds)
-        alertWindow.rootViewController = UIViewController()
-        alertWindow.windowLevel = UIWindowLevelAlert + 1;
-        alertWindow.makeKeyAndVisible()
-        alertWindow.rootViewController?.present(ac, animated: true, completion: nil)
-        
-    }
 }
 
 extension QuestionViewController : UpdateQuestionDelegate {
     func refreshQuestions() {
          self.getQuestions()
+    }
+    
+    func modalClose(row: IndexPath) {
+        tableView.deselectRow(at: row, animated: true)
     }
 }
 

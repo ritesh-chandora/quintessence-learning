@@ -11,6 +11,7 @@ import TagListView
 
 protocol UpdateQuestionDelegate {
     func refreshQuestions()
+    func modalClose(row: IndexPath)
 }
 
 class ModalViewController: UIViewController, TagListViewDelegate {
@@ -33,7 +34,7 @@ class ModalViewController: UIViewController, TagListViewDelegate {
             tagList.addTag(tagField.text!)
             tagField.text! = ""
         } else {
-            showError(message: "Input a tag!")
+            Server.showError(message: "Input a tag!")
         }
         
     }
@@ -61,8 +62,8 @@ class ModalViewController: UIViewController, TagListViewDelegate {
     }
     
     var data : Question!
+    var row : IndexPath!
     var updateDelegate: UpdateQuestionDelegate!
-    let hostURL = "http://localhost:3001"
     
     override func viewDidLoad() {
         loadData()
@@ -73,9 +74,11 @@ class ModalViewController: UIViewController, TagListViewDelegate {
 
     //loads default data
     func loadData(){
-        text.text! = data!.text
-        tagList.removeAllTags()
-        tagList.addTags(data!.tags)
+        DispatchQueue.main.async { [unowned self] in
+            self.text.text! = self.data!.text
+            self.tagList.removeAllTags()
+            self.tagList.addTags(self.data!.tags)
+        }
     }
     
     //configures the buttons to enter edit mode or exit
@@ -106,59 +109,35 @@ class ModalViewController: UIViewController, TagListViewDelegate {
         }
         
         let params = ["newText": text.text!, "newTags": tags, "key": data.key] as [String : Any]
-        guard let reqBody = try? JSONSerialization.data(withJSONObject: params, options: []) else { return }
+          let urlRoute = Server.hostURL + "/profile/update"
         
-        let urlRoute = self.hostURL + "/profile/update"
-        //set up POST request
-        guard let url = URL(string: urlRoute) else { return }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = reqBody
-        
-        //excute POST request
-        let session = URLSession.shared
-        session.dataTask(with: request) { (data, response, error) in
-            if let data = data {
-                do {
-                    //if there is a response body, then it failed to edit, exit edit mode
-                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-                        if let dict = json as? [String:String]{
-                            DispatchQueue.main.async {
-                                self.showError(message: dict["message"]!)
-                            }
-                            self.loadData()
-                    } else {
-                        //otherwise update the table and close the modal
-                        self.updateDelegate.refreshQuestions()
-                        self.closeModal()
-                    }
-            } catch {
-                print(error)
-                }
-            }
-        }.resume()
+        Server.post(urlRoute: urlRoute, params: params, callback: editCallback(data:), errorMessage: "Unable to edit question!")
     }
     
+    func editCallback(data:Data) {
+        //if there is a response body, then it failed to edit, exit edit mode
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: [])
+            if let dict = json as? [String:String]{
+                Server.showError(message: dict["message"]!)
+                self.loadData()
+            }
+        } catch {
+            //otherwise update the table and close the modal
+            updateDelegate.refreshQuestions()
+            self.closeModal()
+        }
+    }
+
     func closeModal(){
         if let navController = self.navigationController {
             navController.popViewController(animated: true)
         } else {
             self.dismiss(animated: true, completion: nil)
         }
-    }
-
-    //displays an error
-    func showError(message:String) {
-        let ac = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default))
-        
-        let alertWindow = UIWindow(frame: UIScreen.main.bounds)
-        alertWindow.rootViewController = UIViewController()
-        alertWindow.windowLevel = UIWindowLevelAlert + 1;
-        alertWindow.makeKeyAndVisible()
-        alertWindow.rootViewController?.present(ac, animated: true, completion: nil)
-
+        if (row != nil){
+            updateDelegate.modalClose(row: row)
+        }
     }
     
     func tagRemoveButtonPressed(_ title: String, tagView: TagView, sender: TagListView) {
