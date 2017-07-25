@@ -1,5 +1,5 @@
 //
-//  QuestionViewController.swift
+//  FeedbackViewController.swift
 //  quintessence-learning
 //
 //  Created by Eric Feng on 7/24/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class QuestionViewController: UIViewController {
+class FeedbackViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

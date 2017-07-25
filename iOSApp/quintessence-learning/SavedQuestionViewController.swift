@@ -1,5 +1,5 @@
 //
-//  QuestionViewController.swift
+//  SavedQuestionViewController.swift
 //  quintessence-learning
 //
 //  Created by Eric Feng on 7/24/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class QuestionViewController: UIViewController {
+class SavedQuestionViewController: ModalViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
