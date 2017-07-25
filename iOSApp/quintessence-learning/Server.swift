@@ -15,6 +15,7 @@ class Server: NSObject {
     typealias callbackFunc = (_ data:Data) throws -> Void
     
     static func post(urlRoute: String, params:[String:Any], callback:@escaping callbackFunc, errorMessage:String){
+
         
         //serialize params into JSON
         guard let reqBody = try? JSONSerialization.data(withJSONObject: params, options: []) else { return }

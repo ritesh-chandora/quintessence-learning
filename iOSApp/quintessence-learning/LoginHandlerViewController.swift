@@ -14,6 +14,7 @@ class LoginHandlerViewController: UIViewController {
     @IBOutlet weak var emailText: UITextField!
     @IBOutlet weak var passField: UITextField!
     @IBOutlet weak var infoText: UILabel!
+    @IBOutlet weak var nameField: UITextField!
     
     @IBOutlet weak var button: UIButton!
 
@@ -33,19 +34,27 @@ class LoginHandlerViewController: UIViewController {
     
     @IBAction func registerPress(_ sender: UIButton) {
         Auth.auth().createUser(withEmail: emailText!.text!, password: passField!.text!) { (user, error) in
-            print(error)
             if error != nil {
                 let errorMessage = error!.localizedDescription
                 self.infoText.text! = errorMessage
                 self.infoText!.isHidden = false;
             } else {
-                Auth.auth().signIn(withEmail: self.emailText!.text!, password: self.passField!.text!) { (user, error) in
-                    if error != nil {
-                        let errorMessage = error!.localizedDescription
-                        self.infoText.text! = errorMessage
-                        self.infoText!.isHidden = false;
-                    }
-                }
+                let params = ["email" : self.emailText!.text!, "password": self.passField!.text!, "name": self.nameField!.text!, "uid": user!.uid] as [String: Any]
+                    Server.post(urlRoute: self.signupUrl, params: params, callback: self.signUpCallback(data:), errorMessage: "Unable to sign up!")
+            }
+        }
+    }
+    
+    @IBAction func forgotPasswordPress(_ sender: UIButton) {
+        //TODO
+    }
+    
+    func signUpCallback(data: Data) {
+        Auth.auth().signIn(withEmail: self.emailText!.text!, password: self.passField!.text!) { (user, error) in
+            if error != nil {
+                let errorMessage = error!.localizedDescription
+                self.infoText.text! = errorMessage
+                self.infoText!.isHidden = false;
             }
         }
     }
