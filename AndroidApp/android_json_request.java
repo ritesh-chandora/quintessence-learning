@@ -1,59 +1,4 @@
-package btao.com.quintessencelearning;
-
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.JsonReader;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
-
-public class SignIn extends AppCompatActivity {
-
-    private EditText inputEmail, inputPassword;
-    private FirebaseAuth auth;
-    private ProgressBar progressBar;
-    private Button btnSignup, btnLogin, btnReset;
-    private static final String TAG = "SignIn";
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-        //auth = FirebaseAuth.getInstance();
-        setContentView(R.layout.activity_sign_in);
-
-    }
-
-    public void signIn(View view){
+public void signUp(View view){
         inputEmail = (EditText) findViewById(R.id.text_email);
         inputPassword = (EditText) findViewById(R.id.text_password);
 
@@ -69,7 +14,7 @@ public class SignIn extends AppCompatActivity {
             e.printStackTrace();
         }
         Ion.with(getApplicationContext())
-                .load("http://192.168.1.252:3001/login")
+                .load("http://192.168.1.252:3001/signup")
                 .setHeader("Accept","application/json")
                 .setHeader("Content-Type","application/json")
                 .setJsonObjectBody(params)
@@ -82,13 +27,13 @@ public class SignIn extends AppCompatActivity {
                             String json_result = json.getString("message"); // Get the string "result" inside the Json-object
                             if (json_result.equalsIgnoreCase("success")){ // Checks if the "result"-string is equals to "ok"
                                 // Result is "OK"
-                                Toast.makeText(SignIn.this,"Successfully Logged In", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(SignIn.this,MainActivity.class);
+                                Toast.makeText(getApplicationContext(),"Successfully Created Account", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else {
                                 // Result is NOT "OK"
-                                Toast.makeText(SignIn.this, json_result, Toast.LENGTH_LONG).show(); // This will show the user what went wrong with a toast
+                                Toast.makeText(getApplicationContext(), json_result, Toast.LENGTH_LONG).show(); // This will show the user what went wrong with a toast
                                 //Intent to_main = new Intent(getApplicationContext(), SignIn.class); // New intent to MainActivity
                                 //startActivity(to_main); // Starts MainActivity
                                 //finish(); // Add this to prevent the user to go back to this activity when pressing the back button after we've opened MainActivity
@@ -100,9 +45,3 @@ public class SignIn extends AppCompatActivity {
                     }
                 });
     }
-
-    public void signUp(View view){
-        Intent intent = new Intent(this,SignUp.class);
-        startActivity(intent);
-    }
-}

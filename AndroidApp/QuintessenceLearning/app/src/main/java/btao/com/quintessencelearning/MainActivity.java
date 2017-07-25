@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SubmitActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     private FirebaseAuth auth;
@@ -52,19 +52,19 @@ public class SubmitActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        if (auth.getCurrentUser() == null) {
+        
+        /*if (auth.getCurrentUser() == null) {
             Intent intent = new Intent(this, SignIn.class);
             startActivity(intent);
             finish();
-        }
+        }*/
     }
     public void signOut(View view){
-        auth.signOut();
-        FirebaseUser user = auth.getCurrentUser();
-        if (user == null) {
-            startActivity(new Intent(SubmitActivity.this, SignIn.class));
-            finish();
-        }
+        startActivity(new Intent(MainActivity.this, SignIn.class));
+        finish();
+    }
+
+    public void readQuestions(View view) {
+
     }
 }
