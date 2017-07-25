@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import FirebaseAuth
 struct Question {
     var text:String
     var tags:[String]
@@ -24,6 +24,7 @@ class QuestionTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Questions"
         
         searchController.searchResultsUpdater = self as UISearchResultsUpdating
         searchController.dimsBackgroundDuringPresentation = false
@@ -37,12 +38,12 @@ class QuestionTableViewController: UITableViewController {
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self, action: #selector(getQuestions), for: UIControlEvents.valueChanged)
 
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(showLogout))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "More...", style: .plain, target: self, action: #selector(showActions))
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     //number of cells to render
@@ -86,14 +87,14 @@ class QuestionTableViewController: UITableViewController {
         modalViewController.data = question
         modalViewController.row = indexPath
         modalViewController.updateDelegate = self
-        modalViewController.modalPresentationStyle = .overCurrentContext
+        modalViewController.modalPresentationStyle = .overFullScreen
         self.navigationController?.present(modalViewController, animated: true, completion: nil)
     }
     
     @IBAction func addQuestion(_ sender: UIBarButtonItem) {
         let createViewController = storyboard?.instantiateViewController(withIdentifier: "Create") as! CreateViewController
         createViewController.updateDelegate = self
-        createViewController.modalPresentationStyle = .overCurrentContext
+        createViewController.modalPresentationStyle = .overFullScreen
         self.navigationController?.present(createViewController, animated: true, completion: nil)
     }
     //filters based on text
@@ -125,6 +126,23 @@ class QuestionTableViewController: UITableViewController {
         DispatchQueue.main.async { [unowned self] in
             self.refreshControl?.endRefreshing()
             self.tableView.reloadData()
+        }
+    }
+    
+    func showLogout(){
+        let ac = UIAlertController(title: "Confirm", message: "Are you sure you want to log out?", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Logout", style: .default, handler: logout(action: )))
+        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(ac, animated: true)
+    }
+    
+    func logout(action:UIAlertAction){
+        do {
+            try Auth.auth().signOut()
+            let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! UINavigationController
+            self.navigationController!.present(welcomeScreen, animated: true)
+        } catch {
+            Server.showError(message: error.localizedDescription)
         }
     }
     

@@ -12,6 +12,8 @@
 		2C11B6DA1F267F400039CB0A /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6D91F267F400039CB0A /* FeedbackViewController.swift */; };
 		2C11B6DC1F267FC70039CB0A /* SavedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6DB1F267FC70039CB0A /* SavedTableViewController.swift */; };
 		2C11B6DE1F267FF90039CB0A /* SavedQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6DD1F267FF90039CB0A /* SavedQuestionViewController.swift */; };
+		2C11B6E01F2795080039CB0A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C11B6DF1F2795080039CB0A /* GoogleService-Info.plist */; };
+		2C11B6E31F27B6500039CB0A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */; };
 		2C45FE0F1F1FACD5004C6332 /* LoginHandlerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */; };
 		2C72CB571F1DC15F009868D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C72CB561F1DC15F009868D6 /* AppDelegate.swift */; };
 		2C72CB591F1DC15F009868D6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C72CB581F1DC15F009868D6 /* ViewController.swift */; };
@@ -30,6 +32,9 @@
 		2C11B6D91F267F400039CB0A /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		2C11B6DB1F267FC70039CB0A /* SavedTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedTableViewController.swift; sourceTree = "<group>"; };
 		2C11B6DD1F267FF90039CB0A /* SavedQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedQuestionViewController.swift; sourceTree = "<group>"; };
+		2C11B6DF1F2795080039CB0A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2C11B6E11F27B5690039CB0A /* quintessence-learning.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "quintessence-learning.entitlements"; sourceTree = "<group>"; };
+		2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHandlerViewController.swift; sourceTree = "<group>"; };
 		2C72CB531F1DC15F009868D6 /* quintessence-learning.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "quintessence-learning.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C72CB561F1DC15F009868D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -86,6 +91,7 @@
 				2C11B6D91F267F400039CB0A /* FeedbackViewController.swift */,
 				2C11B6DB1F267FC70039CB0A /* SavedTableViewController.swift */,
 				2C11B6DD1F267FF90039CB0A /* SavedQuestionViewController.swift */,
+				2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */,
 			);
 			name = UserView;
 			sourceTree = "<group>";
@@ -97,6 +103,7 @@
 				2C72CB5D1F1DC15F009868D6 /* Assets.xcassets */,
 				2C72CB5F1F1DC15F009868D6 /* LaunchScreen.storyboard */,
 				2C72CB621F1DC15F009868D6 /* Info.plist */,
+				2C11B6DF1F2795080039CB0A /* GoogleService-Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -122,6 +129,7 @@
 		2C72CB551F1DC15F009868D6 /* quintessence-learning */ = {
 			isa = PBXGroup;
 			children = (
+				2C11B6E11F27B5690039CB0A /* quintessence-learning.entitlements */,
 				2C11B6D41F2646C10039CB0A /* ViewControllers */,
 				2C72CB5A1F1DC15F009868D6 /* Main.storyboard */,
 				2C45FE0D1F1FA1AE004C6332 /* Supporting Files */,
@@ -184,6 +192,11 @@
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = WAC8TS3C8H;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -211,6 +224,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C72CB611F1DC15F009868D6 /* LaunchScreen.storyboard in Resources */,
+				2C11B6E01F2795080039CB0A /* GoogleService-Info.plist in Resources */,
 				2C72CB5E1F1DC15F009868D6 /* Assets.xcassets in Resources */,
 				2C72CB5C1F1DC15F009868D6 /* Main.storyboard in Resources */,
 			);
@@ -277,6 +291,7 @@
 				2C11B6DC1F267FC70039CB0A /* SavedTableViewController.swift in Sources */,
 				2CD0CD631F2644E90078E0DA /* CreateViewController.swift in Sources */,
 				2CB2B69C1F21B51800DA1D50 /* DetailViewController.swift in Sources */,
+				2C11B6E31F27B6500039CB0A /* ProfileViewController.swift in Sources */,
 				2CB2B69A1F2151A200DA1D50 /* QuestionTableViewController.swift in Sources */,
 				2C11B6DE1F267FF90039CB0A /* SavedQuestionViewController.swift in Sources */,
 				2C11B6D81F267F300039CB0A /* QuestionViewController.swift in Sources */,
@@ -406,10 +421,11 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "quintessence-learning/quintessence-learning.entitlements";
 				DEVELOPMENT_TEAM = WAC8TS3C8H;
 				INFOPLIST_FILE = "quintessence-learning/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "efeng.quintessence-learning";
+				PRODUCT_BUNDLE_IDENTIFIER = efeng.qlearning;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
@@ -422,10 +438,11 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "quintessence-learning/quintessence-learning.entitlements";
 				DEVELOPMENT_TEAM = WAC8TS3C8H;
 				INFOPLIST_FILE = "quintessence-learning/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "efeng.quintessence-learning";
+				PRODUCT_BUNDLE_IDENTIFIER = efeng.qlearning;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";

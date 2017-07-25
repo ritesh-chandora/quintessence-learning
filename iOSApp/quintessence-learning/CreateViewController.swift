@@ -38,7 +38,8 @@ class CreateViewController: ModalViewController {
     
     override func viewDidLoad() {
         tagListCreate.delegate = self
-        view.backgroundColor = UIColor.clear
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        view.tintColor = UIColor.black
         view.isOpaque = false
     }
     

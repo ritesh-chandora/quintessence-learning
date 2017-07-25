@@ -7,7 +7,8 @@
 //
 
 import UIKit
-
+import FirebaseAuth
+import FirebaseDatabase
 class LoginHandlerViewController: UIViewController {
 
     @IBOutlet weak var emailText: UITextField!
@@ -15,52 +16,34 @@ class LoginHandlerViewController: UIViewController {
     @IBOutlet weak var infoText: UILabel!
     
     @IBOutlet weak var button: UIButton!
-    
+
     let loginUrl = Server.hostURL + "/login"
     let signupUrl = Server.hostURL + "/signup"
     
     @IBAction func loginPress(_ sender: UIButton) {
-        userPostReq(urlRoute: loginUrl)
+        Auth.auth().signIn(withEmail: emailText!.text!, password: passField!.text!) { (user, error) in
+            if error != nil {
+                let errorMessage = error!.localizedDescription
+                print(errorMessage)
+                self.infoText.text! = errorMessage
+                self.infoText!.isHidden = false;
+            }
+        }
     }
     
     @IBAction func registerPress(_ sender: UIButton) {
-        userPostReq(urlRoute: signupUrl)
-    }
-    
-    //do POST request to proper login route (login or signup)
-    
-    func userPostReq(urlRoute :String){
-        let originalTitle = button.titleLabel!.text!
-        button.titleLabel!.text! = "Loading..."
-        button.isEnabled = false
-        let params = ["email": emailText!.text!, "password": passField!.text!]
-        Server.post(urlRoute: urlRoute, params: params, callback: postCallback(_:), errorMessage: "Login failed!")
-        button.titleLabel!.text! = originalTitle
-        button.isEnabled = true
-    }
-    
-    //callback function when post request is complete
-    func postCallback(_ data:Data) throws {
-        let json = try JSONSerialization.jsonObject(with: data, options: [])
-        if let dict = json as? [String:String] {
-            
-            //get response message
-            if let message = dict["message"] {
-                
-                //display error from server if not success
-                if (message != "success"){
-                    DispatchQueue.global(qos: .background).async {
-                        DispatchQueue.main.async {
-                            self.infoText!.text = message
-                            self.infoText!.isHidden = false;
-                        }
-                    }
-                }
-                    //otherwise present the proper view to user
-                else {
-                    DispatchQueue.main.async { [unowned self] in
-                        let console = self.storyboard?.instantiateViewController(withIdentifier: "Admin") as! UINavigationController
-                        self.present(console, animated: true, completion: nil)
+        Auth.auth().createUser(withEmail: emailText!.text!, password: passField!.text!) { (user, error) in
+            print(error)
+            if error != nil {
+                let errorMessage = error!.localizedDescription
+                self.infoText.text! = errorMessage
+                self.infoText!.isHidden = false;
+            } else {
+                Auth.auth().signIn(withEmail: self.emailText!.text!, password: self.passField!.text!) { (user, error) in
+                    if error != nil {
+                        let errorMessage = error!.localizedDescription
+                        self.infoText.text! = errorMessage
+                        self.infoText!.isHidden = false;
                     }
                 }
             }

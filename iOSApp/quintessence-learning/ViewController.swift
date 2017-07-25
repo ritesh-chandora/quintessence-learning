@@ -7,15 +7,20 @@
 //
 
 import UIKit
-
+import FirebaseAuth
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //TODO: login status get and push to proper viewcontroller
-        
-        // Do any additional setup after loading the view, typically from a nib.
+        //redirects a logged in user to the appropriate view
+        Auth.auth().addStateDidChangeListener() { auth, user in
+            if user != nil {
+                user.
+                let adminViewController = self.storyboard?.instantiateViewController(withIdentifier: "Admin") as! UINavigationController
+                self.present(adminViewController, animated: true)
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {

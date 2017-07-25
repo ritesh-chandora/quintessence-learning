@@ -68,7 +68,7 @@ class ModalViewController: UIViewController, TagListViewDelegate {
     override func viewDidLoad() {
         loadData()
         tagList.delegate = self
-        view.backgroundColor = UIColor.clear
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         view.isOpaque = false
     }
 

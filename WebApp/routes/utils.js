@@ -14,9 +14,6 @@ router.post('/create', function(req, res, next){
   //these two variables are the question text and the tag (replace with other input method)
   var question = req.body.question
   var qtag = req.body.tags
-  //checks if current user is signed in
-  if(firebase.auth().currentUser){
-
     //pushes object into the questions collection
     var key = root.child('Questions').push().key;
     var user = firebase.auth().currentUser.uid
@@ -24,14 +21,10 @@ router.post('/create', function(req, res, next){
     qref.child(key).set({Text:question,Key:key,Created_By:user,cTime:ctime});
     var len = qtag.length;
     for (i=0;i<len;i++){
-      qref.child(key).child('Tag').push(qtag[i]);
+      qref.child(key).child('Tags').push(qtag[i]);
       tagRef.child(qtag[i]).push(key);
     }console.log('entered');
     res.send({message:"success"});
-  }
-  else {
-    res.send({message:'Error: User not logged in!'});
-  }
 });
 
 router.post('/read', function(req, res, next){
@@ -41,7 +34,6 @@ router.post('/read', function(req, res, next){
   //instantiates question list to be returned
   var qlist = [];
   //checks if user is logged in
-  if(firebase.auth().currentUser){
     //orders the questions in time order descending and then then listens for values
     qref.orderByKey().on('value',function(snap) {
       //iterates through each value in the snap
@@ -74,11 +66,6 @@ router.post('/read', function(req, res, next){
       });
     });
     res.send({questions: qlist});
-  }
-  else {
-    res.send({message:'Error: User not logged in!'});
-  }
-  res.status(204).end();
 });
 
 router.post('/delete', function(req, res, next){
