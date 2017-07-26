@@ -52,6 +52,35 @@ public class SignIn extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
     }
+    public void signInAuth(View view){
+        inputEmail = (EditText) findViewById(R.id.text_email);
+        inputPassword = (EditText) findViewById(R.id.text_password);
+
+        auth = FirebaseAuth.getInstance();
+        String email = inputEmail.getText().toString();
+        String password = inputPassword.getText().toString();
+
+        auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(SignIn.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+
+                        if (task.isSuccessful()){
+                            Log.d(TAG,"signin: success");
+                            Toast.makeText(SignIn.this,"Logged In",Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(SignIn.this,MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Log.w(TAG,"signin failure", task.getException());
+                            Toast.makeText(SignIn.this,"Log in Failure",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 
     public void signIn(View view){
         inputEmail = (EditText) findViewById(R.id.text_email);

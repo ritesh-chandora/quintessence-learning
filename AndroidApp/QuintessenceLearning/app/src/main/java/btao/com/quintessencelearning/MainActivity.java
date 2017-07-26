@@ -13,6 +13,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -65,6 +70,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void readQuestions(View view) {
-
+        Ion.with(getApplicationContext())
+                .load("http://192.168.1.252:3001/signup")
+                .setHeader("Accept","application/json")
+                .setHeader("Content-Type","application/json")
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        try {
+                            JSONObject json = new JSONObject(result);    // Converts the string "result" to a JSONObject
+                            String json_result = json.getString("questions"); // Get the string "result" inside the Json-object
+                            
+                        } catch (JSONException err){
+                            // This method will run if something goes wrong with the json, like a typo to the json-key or a broken JSON.
+                            err.printStackTrace();
+                        }
+                    }
+                });
     }
 }
