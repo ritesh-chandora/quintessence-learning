@@ -47,6 +47,7 @@ class Console extends Component {
         axios.post('/profile/read', {
             ascending: this.state.ascending
         }).then((response) => {
+                console.log(response.data)
                 this.setState({
                     questions: response.data.questions,
                 });

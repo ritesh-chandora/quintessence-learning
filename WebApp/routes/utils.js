@@ -11,20 +11,29 @@ router.post('/create', function(req, res, next){
   var root = firebase.database().ref(); 
   var qref = root.child('Questions');
   var tagRef = root.child('Tags');
-  //these two variables are the question text and the tag (replace with other input method)
-  var question = req.body.question
-  var qtag = req.body.tags
+  var count;
+  root.child('Count').on("value", (snapshot) => {
+    console.log(snapshot.val())
+    count = snapshot.val()
+     //these two variables are the question text and the tag (replace with other input method)
+    var question = req.body.question
+    var qtag = req.body.tags
     //pushes object into the questions collection
     var key = root.child('Questions').push().key;
     var user = firebase.auth().currentUser.uid
     var ctime = firebase.database.ServerValue.TIMESTAMP;
-    qref.child(key).set({Text:question,Key:key,Created_By:user,cTime:ctime});
+    qref.child(key).set({Text:question,Key:key,Created_By:user,cTime:ctime,count:count});
     var len = qtag.length;
     for (i=0;i<len;i++){
       qref.child(key).child('Tags').push(qtag[i]);
       tagRef.child(qtag[i]).push(key);
-    }console.log('entered');
-    res.send({message:"success"});
+    }
+    console.log(count)
+  })
+  console.log("hi")
+  root.child('Count').set(count+1)
+  console.log("whers the lamb sauce")
+  res.send({message:"success"});  
 });
 
 router.post('/read', function(req, res, next){
@@ -72,7 +81,6 @@ router.post('/delete', function(req, res, next){
   //establishes refs
   var root = firebase.database().ref();
   var qref = root.child('Questions');
-
   //questionKey is the variable that holds the key for the question you are trying to delete
   var questionKey = req.body.key;
   //userKey is the current users unique ID
