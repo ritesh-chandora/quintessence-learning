@@ -29,7 +29,7 @@ function create(){
 }
 
 
-function read(ascending=false,startAt=0,endAt=-1){
+function read(ascending=false,startAt= 	,endAt=-1){
   //root and questions refs
   var root = firebase.database().ref();
   var qref = root.child('Questions');

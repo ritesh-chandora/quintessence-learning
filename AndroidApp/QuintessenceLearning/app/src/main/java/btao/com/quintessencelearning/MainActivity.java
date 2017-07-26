@@ -13,8 +13,13 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
-public class SubmitActivity extends AppCompatActivity {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     private FirebaseAuth auth;
@@ -52,19 +57,36 @@ public class SubmitActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        if (auth.getCurrentUser() == null) {
+        
+        /*if (auth.getCurrentUser() == null) {
             Intent intent = new Intent(this, SignIn.class);
             startActivity(intent);
             finish();
-        }
+        }*/
     }
     public void signOut(View view){
-        auth.signOut();
-        FirebaseUser user = auth.getCurrentUser();
-        if (user == null) {
-            startActivity(new Intent(SubmitActivity.this, SignIn.class));
-            finish();
-        }
+        startActivity(new Intent(MainActivity.this, SignIn.class));
+        finish();
+    }
+
+    public void readQuestions(View view) {
+        Ion.with(getApplicationContext())
+                .load("http://192.168.1.252:3001/signup")
+                .setHeader("Accept","application/json")
+                .setHeader("Content-Type","application/json")
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        try {
+                            JSONObject json = new JSONObject(result);    // Converts the string "result" to a JSONObject
+                            String json_result = json.getString("questions"); // Get the string "result" inside the Json-object
+                            
+                        } catch (JSONException err){
+                            // This method will run if something goes wrong with the json, like a typo to the json-key or a broken JSON.
+                            err.printStackTrace();
+                        }
+                    }
+                });
     }
 }
