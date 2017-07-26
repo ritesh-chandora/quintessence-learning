@@ -11,11 +11,10 @@ router.post('/create', function(req, res, next){
   var root = firebase.database().ref(); 
   var qref = root.child('Questions');
   var tagRef = root.child('Tags');
-  var count;
-  root.child('Count').on("value", (snapshot) => {
+  var count = null;
+  root.child('Count').once("value").then(function (snapshot) {
     console.log(snapshot.val())
-    count = snapshot.val()
-     //these two variables are the question text and the tag (replace with other input method)
+    count = snapshot.val() 
     var question = req.body.question
     var qtag = req.body.tags
     //pushes object into the questions collection
@@ -25,13 +24,12 @@ router.post('/create', function(req, res, next){
     qref.child(key).set({Text:question,Key:key,Created_By:user,cTime:ctime,count:count});
     var len = qtag.length;
     for (i=0;i<len;i++){
-      qref.child(key).child('Tags').push(qtag[i]);
-      tagRef.child(qtag[i]).push(key);
-    }
-    console.log(count)
-  })
+    qref.child(key).child('Tags').push(qtag[i]);
+    tagRef.child(qtag[i]).push(key);
+  }
   console.log("hi")
   root.child('Count').set(count+1)
+  })
   console.log("whers the lamb sauce")
   res.send({message:"success"});  
 });
