@@ -27,6 +27,13 @@
     </FrameLayout>
 
     <Button
+        android:id="@+id/button_read"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="readQuestions"
+        android:text="Read" />
+
+    <Button
         android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     private FirebaseAuth auth;
-    private final String TAG = "SubmitActivity";
+    private final String TAG = "MainActivity";
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -52,28 +54,41 @@ public class MainActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        setContentView(R.layout.activity_submit);
+        setContentView(R.layout.activity_main);
 
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         
-        /*if (auth.getCurrentUser() == null) {
+        if (auth.getCurrentUser() == null) {
             Intent intent = new Intent(this, SignIn.class);
             startActivity(intent);
             finish();
-        }*/
+        }
     }
     public void signOut(View view){
-        startActivity(new Intent(MainActivity.this, SignIn.class));
-        finish();
+        auth.signOut();
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            startActivity(new Intent(MainActivity.this, SignIn.class));
+            finish();
+        }
     }
 
     public void readQuestions(View view) {
+
+        JsonObject json = new JsonObject();
+        try {
+            json.addProperty("ascending", true);
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        }
+
         Ion.with(getApplicationContext())
-                .load("http://192.168.1.252:3001/signup")
+                .load("http://172.25.201.218:3001/signup")
                 .setHeader("Accept","application/json")
                 .setHeader("Content-Type","application/json")
+                .setJsonObjectBody(json)
                 .asString()
                 .setCallback(new FutureCallback<String>() {
                     @Override
@@ -81,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONObject json = new JSONObject(result);    // Converts the string "result" to a JSONObject
                             String json_result = json.getString("questions"); // Get the string "result" inside the Json-object
-                            
+                            Log.d(TAG,json_result);
+                            mTextMessage.setText(json_result);
                         } catch (JSONException err){
                             // This method will run if something goes wrong with the json, like a typo to the json-key or a broken JSON.
                             err.printStackTrace();
