@@ -18,6 +18,7 @@ class LoginHandlerViewController: UIViewController {
     
     @IBOutlet weak var button: UIButton!
 
+    var ref : Database?
     let loginUrl = Server.hostURL + "/login"
     let signupUrl = Server.hostURL + "/signup"
     
@@ -39,8 +40,20 @@ class LoginHandlerViewController: UIViewController {
                 self.infoText.text! = errorMessage
                 self.infoText!.isHidden = false;
             } else {
-                let params = ["email" : self.emailText!.text!, "password": self.passField!.text!, "name": self.nameField!.text!, "uid": user!.uid] as [String: Any]
-                    Server.post(urlRoute: self.signupUrl, params: params, callback: self.signUpCallback(data:), errorMessage: "Unable to sign up!")
+                let params = ["Current_Question": 0,
+                              "Email" : self.emailText!.text!,
+                              "Join_Date": ServerValue.timestamp(),
+                              "Name": self.nameField!.text!,
+                              "Trial":true,
+                              "Type":"none",
+                              "UID": user!.uid] as NSDictionary
+                self.ref!.reference().child("Users").child(user!.uid).setValue(params) { (err, ref) in
+                    if let err = err {
+                        Server.showError(message: "Error in signing up: " + err.localizedDescription)
+                    } else {
+                        self.signUpCallback()
+                    }
+                }
             }
         }
     }
@@ -49,18 +62,39 @@ class LoginHandlerViewController: UIViewController {
         //TODO
     }
     
-    func signUpCallback(data: Data) {
-        Auth.auth().signIn(withEmail: self.emailText!.text!, password: self.passField!.text!) { (user, error) in
-            if error != nil {
-                let errorMessage = error!.localizedDescription
-                self.infoText.text! = errorMessage
-                self.infoText!.isHidden = false;
-            }
-        }
+    func signUpCallback() {
+        let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Welcome") as! WelcomeViewController
+        present(welcomeScreen, animated: true)
+//        Auth.auth().signIn(withEmail: self.emailText!.text!, password: self.passField!.text!) { (user, error) in
+//            if error != nil {
+//                let errorMessage = error!.localizedDescription
+//                self.infoText.text! = errorMessage
+//                self.infoText!.isHidden = false;
+//            }
+//        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        ref = Database.database()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0{
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y != 0{
+                self.view.frame.origin.y += keyboardSize.height
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {

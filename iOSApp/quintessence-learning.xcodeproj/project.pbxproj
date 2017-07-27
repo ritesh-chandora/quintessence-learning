@@ -14,7 +14,9 @@
 		2C11B6DE1F267FF90039CB0A /* SavedQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6DD1F267FF90039CB0A /* SavedQuestionViewController.swift */; };
 		2C11B6E01F2795080039CB0A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C11B6DF1F2795080039CB0A /* GoogleService-Info.plist */; };
 		2C11B6E31F27B6500039CB0A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */; };
+		2C11B6E51F27E88B0039CB0A /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */; };
 		2C45FE0F1F1FACD5004C6332 /* LoginHandlerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */; };
+		2C51E5D61F296CC200560BB2 /* UserTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C51E5D51F296CC200560BB2 /* UserTabBarController.swift */; };
 		2C72CB571F1DC15F009868D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C72CB561F1DC15F009868D6 /* AppDelegate.swift */; };
 		2C72CB591F1DC15F009868D6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C72CB581F1DC15F009868D6 /* ViewController.swift */; };
 		2C72CB5C1F1DC15F009868D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C72CB5A1F1DC15F009868D6 /* Main.storyboard */; };
@@ -35,7 +37,9 @@
 		2C11B6DF1F2795080039CB0A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2C11B6E11F27B5690039CB0A /* quintessence-learning.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "quintessence-learning.entitlements"; sourceTree = "<group>"; };
 		2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHandlerViewController.swift; sourceTree = "<group>"; };
+		2C51E5D51F296CC200560BB2 /* UserTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTabBarController.swift; sourceTree = "<group>"; };
 		2C72CB531F1DC15F009868D6 /* quintessence-learning.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "quintessence-learning.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C72CB561F1DC15F009868D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C72CB581F1DC15F009868D6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -87,11 +91,13 @@
 		2C11B6D61F267E5B0039CB0A /* UserView */ = {
 			isa = PBXGroup;
 			children = (
+				2C51E5D71F29747500560BB2 /* Settings */,
 				2C11B6D71F267F300039CB0A /* QuestionViewController.swift */,
 				2C11B6D91F267F400039CB0A /* FeedbackViewController.swift */,
 				2C11B6DB1F267FC70039CB0A /* SavedTableViewController.swift */,
 				2C11B6DD1F267FF90039CB0A /* SavedQuestionViewController.swift */,
-				2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */,
+				2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */,
+				2C51E5D51F296CC200560BB2 /* UserTabBarController.swift */,
 			);
 			name = UserView;
 			sourceTree = "<group>";
@@ -106,6 +112,14 @@
 				2C11B6DF1F2795080039CB0A /* GoogleService-Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		2C51E5D71F29747500560BB2 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */,
+			);
+			name = Settings;
 			sourceTree = "<group>";
 		};
 		2C72CB4A1F1DC15F009868D6 = {
@@ -285,12 +299,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C51E5D61F296CC200560BB2 /* UserTabBarController.swift in Sources */,
 				2C11B6D31F2646B90039CB0A /* Server.swift in Sources */,
 				2C72CB591F1DC15F009868D6 /* ViewController.swift in Sources */,
 				2C45FE0F1F1FACD5004C6332 /* LoginHandlerViewController.swift in Sources */,
 				2C11B6DC1F267FC70039CB0A /* SavedTableViewController.swift in Sources */,
 				2CD0CD631F2644E90078E0DA /* CreateViewController.swift in Sources */,
 				2CB2B69C1F21B51800DA1D50 /* DetailViewController.swift in Sources */,
+				2C11B6E51F27E88B0039CB0A /* WelcomeViewController.swift in Sources */,
 				2C11B6E31F27B6500039CB0A /* ProfileViewController.swift in Sources */,
 				2CB2B69A1F2151A200DA1D50 /* QuestionTableViewController.swift in Sources */,
 				2C11B6DE1F267FF90039CB0A /* SavedQuestionViewController.swift in Sources */,

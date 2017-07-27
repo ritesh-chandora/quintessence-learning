@@ -23,12 +23,12 @@ class ViewController: UIViewController {
                     let value = snapshot.value as? NSDictionary
                     let userType = value?["Type"] as? String ?? ""
                     
-                    if (userType == "user"){
-                        let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
-                        self.present(userViewController, animated: true)
-                    } else {
+                    if (userType == "admin"){
                         let adminViewController = self.storyboard?.instantiateViewController(withIdentifier: "Admin") as! UINavigationController
                         self.present(adminViewController, animated: true)
+                    } else if (userType == "user") {
+                        let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
+                        self.present(userViewController, animated: true)
                     }
                     
                 }) { (error) in
@@ -37,7 +37,6 @@ class ViewController: UIViewController {
             }
         }
     }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
