@@ -8,17 +8,53 @@
     tools:layout_editor_absoluteY="0dp"
     tools:layout_editor_absoluteX="0dp">
 
-    <TextView
-        android:id="@+id/text_welcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textAppearance="@android:style/TextAppearance.Material.Title"
-        tools:text="Welcome" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="194dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp">
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button" />
+        <TextView
+            android:id="@+id/text_welcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textSize="48sp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="127dp"
+            tools:text="Welcome" />
+
+        <TextView
+            android:id="@+id/text_get_started"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/get_started"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="210dp" />
+
+        <EditText
+            android:id="@+id/time_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="Pick a Time"
+            android:inputType="time"
+            android:onClick="pickTime"
+            tools:layout_editor_absoluteX="99dp"
+            tools:layout_editor_absoluteY="293dp" />
+
+        <Button
+            android:id="@+id/button_finish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="finish"
+            android:text="Finish"
+            tools:layout_editor_absoluteX="161dp"
+            tools:layout_editor_absoluteY="397dp" />
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
