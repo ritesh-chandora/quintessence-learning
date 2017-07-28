@@ -8,6 +8,8 @@
 
 import UIKit
 import UserNotifications
+import FirebaseAuth
+import FirebaseDatabase
 class WelcomeViewController: UIViewController {
     
     
@@ -33,16 +35,19 @@ class WelcomeViewController: UIViewController {
     }
     
     func enableNotifications(sender: UIAlertAction){
-        let application = UIApplication.shared
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
             (granted, error) in
-            //Parse errors and track state
+            if granted {
+                print("permission granted")
+            } else {
+                print("denied")
+            }
         }
-        application.registerForRemoteNotifications()
     
         let userView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UserTabBarController
         userView.isFirstTime = true
         userView.notifyTime = timePicker.date
+        Database.database().reference().child("Users").child(Auth.auth().currentUser!.uid).child("Type").setValue("User")
         self.present(userView, animated: true)
     }
 
