@@ -6,4 +6,5 @@
     <string name="title_questions">Questions</string>
     <string name="title_account">Account</string>
     <string name="title_feedback">Feedback</string>
+    <string name="get_started">Let\'s get started. First, pick a time that you want to be notified each day with the next question. Then, Click finsh, and you\'ll get your first question!</string>
 </resources>
