@@ -9,14 +9,12 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
-class UserChangeViewController: UITableViewController {
+class UserChangeViewController: ProfileViewController {
 
-    var user:User?
-    var ref:DatabaseReference?
+   
     override func viewDidLoad() {
         super.viewDidLoad()
-        user = Auth.auth().currentUser!
-        ref = Database.database().reference()
+    
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -48,8 +46,6 @@ class UserChangeViewController: UITableViewController {
                 textField.isSecureTextEntry = true
             })
             
-
-            
             ac.addAction(UIAlertAction(title: "Login", style: .default, handler: { (_ sender:UIAlertAction) in
                 let credentials = EmailAuthProvider.credential(withEmail: ac.textFields![0].text!, password: ac.textFields![1].text!)
                 self.user!.reauthenticate(with: credentials, completion: { (error) in
@@ -65,42 +61,14 @@ class UserChangeViewController: UITableViewController {
                                     //if updated sucessfully, do the same in the Users table
                                     self.ref!.child(Common.USER_PATH).child(self.user!.uid).child("Email").setValue(newString)
                                     Common.showSuccess(message: "Email Updated Successfully!")
+                                    tableView.deselectRow(at: indexPath, animated: true)
                                 }
                             })
                         })
                     }
                 })
             }))
-           
             present(ac, animated:  true)
         }
     }
-    
-    //displays an alert controller with two textfields,
-    func showConfirmationDialog(title:String, placeholder:String, isPrivate:Bool, handler:@escaping (_ newString:String) -> Void){
-            let ac = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-            ac.addTextField(configurationHandler: { (_ textField: UITextField) -> Void in
-                textField.placeholder = placeholder
-                textField.isSecureTextEntry = isPrivate
-            })
-            
-            ac.addTextField(configurationHandler: { (_ textField: UITextField) -> Void in
-                textField.placeholder = "Confirm..."
-                textField.isSecureTextEntry = isPrivate
-            })
-            
-            ac.addAction(UIAlertAction(title: "Cancel", style: .destructive))
-            ac.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (_action:UIAlertAction) in
-                if (ac.textFields![0].text! != ac.textFields![1].text!){
-                    //throw error if fields do not match
-                    DispatchQueue.main.async {
-                        Server.showError(message: "Fields do not match!")
-                        self.present(ac, animated: true, completion: nil)
-                    }
-                } else {
-                    handler(ac.textFields![0].text!)
-                }
-            }))
-          present(ac, animated: true)
-        }
 }
