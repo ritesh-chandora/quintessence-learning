@@ -78,12 +78,6 @@ class UserChangeViewController: UITableViewController {
     
     //displays an alert controller with two textfields,
     func showConfirmationDialog(title:String, placeholder:String, isPrivate:Bool, handler:@escaping (_ newString:String) -> Void){
-            let alertWindow = UIWindow(frame: UIScreen.main.bounds)
-            alertWindow.rootViewController = UIViewController()
-            alertWindow.windowLevel = UIWindowLevelAlert + 1;
-            alertWindow.makeKeyAndVisible()
-          
-            
             let ac = UIAlertController(title: title, message: nil, preferredStyle: .alert)
             ac.addTextField(configurationHandler: { (_ textField: UITextField) -> Void in
                 textField.placeholder = placeholder
@@ -101,12 +95,12 @@ class UserChangeViewController: UITableViewController {
                     //throw error if fields do not match
                     DispatchQueue.main.async {
                         Server.showError(message: "Fields do not match!")
-                        alertWindow.rootViewController?.present(ac, animated: true, completion: nil)
+                        self.present(ac, animated: true, completion: nil)
                     }
                 } else {
                     handler(ac.textFields![0].text!)
                 }
             }))
-          alertWindow.rootViewController?.present(ac, animated: true, completion: nil)
+          present(ac, animated: true)
         }
 }

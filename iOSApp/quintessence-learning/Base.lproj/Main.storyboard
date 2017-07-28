@@ -623,7 +623,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="VrY-sC-Kyq" kind="show" action="showDetailViewController:sender:" id="wnl-se-tlb"/>
+                                            <segue destination="VrY-sC-Kyq" kind="show" id="eE0-fH-zIQ"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Payment" id="u5R-lG-xIU">
