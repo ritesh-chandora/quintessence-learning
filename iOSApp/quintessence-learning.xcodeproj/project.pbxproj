@@ -16,7 +16,9 @@
 		2C11B6E31F27B6500039CB0A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */; };
 		2C11B6E51F27E88B0039CB0A /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */; };
 		2C45FE0F1F1FACD5004C6332 /* LoginHandlerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */; };
-		2C51E5D61F296CC200560BB2 /* UserTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C51E5D51F296CC200560BB2 /* UserTabBarController.swift */; };
+		2C6F2E821F2B780700392BD0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6F2E811F2B780700392BD0 /* Constants.swift */; };
+		2C6F2E841F2BA80C00392BD0 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C6F2E831F2B820E00392BD0 /* fontawesome-webfont.ttf */; };
+		2C6F2E861F2BAC1E00392BD0 /* UserChangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6F2E851F2BAC1E00392BD0 /* UserChangeViewController.swift */; };
 		2C72CB571F1DC15F009868D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C72CB561F1DC15F009868D6 /* AppDelegate.swift */; };
 		2C72CB591F1DC15F009868D6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C72CB581F1DC15F009868D6 /* ViewController.swift */; };
 		2C72CB5C1F1DC15F009868D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C72CB5A1F1DC15F009868D6 /* Main.storyboard */; };
@@ -39,7 +41,9 @@
 		2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHandlerViewController.swift; sourceTree = "<group>"; };
-		2C51E5D51F296CC200560BB2 /* UserTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTabBarController.swift; sourceTree = "<group>"; };
+		2C6F2E811F2B780700392BD0 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		2C6F2E831F2B820E00392BD0 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
+		2C6F2E851F2BAC1E00392BD0 /* UserChangeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserChangeViewController.swift; sourceTree = "<group>"; };
 		2C72CB531F1DC15F009868D6 /* quintessence-learning.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "quintessence-learning.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C72CB561F1DC15F009868D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C72CB581F1DC15F009868D6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -97,7 +101,6 @@
 				2C11B6DB1F267FC70039CB0A /* SavedTableViewController.swift */,
 				2C11B6DD1F267FF90039CB0A /* SavedQuestionViewController.swift */,
 				2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */,
-				2C51E5D51F296CC200560BB2 /* UserTabBarController.swift */,
 			);
 			name = UserView;
 			sourceTree = "<group>";
@@ -109,7 +112,9 @@
 				2C72CB5D1F1DC15F009868D6 /* Assets.xcassets */,
 				2C72CB5F1F1DC15F009868D6 /* LaunchScreen.storyboard */,
 				2C72CB621F1DC15F009868D6 /* Info.plist */,
+				2C6F2E831F2B820E00392BD0 /* fontawesome-webfont.ttf */,
 				2C11B6DF1F2795080039CB0A /* GoogleService-Info.plist */,
+				2C6F2E811F2B780700392BD0 /* Constants.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -118,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */,
+				2C6F2E851F2BAC1E00392BD0 /* UserChangeViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -239,6 +245,7 @@
 			files = (
 				2C72CB611F1DC15F009868D6 /* LaunchScreen.storyboard in Resources */,
 				2C11B6E01F2795080039CB0A /* GoogleService-Info.plist in Resources */,
+				2C6F2E841F2BA80C00392BD0 /* fontawesome-webfont.ttf in Resources */,
 				2C72CB5E1F1DC15F009868D6 /* Assets.xcassets in Resources */,
 				2C72CB5C1F1DC15F009868D6 /* Main.storyboard in Resources */,
 			);
@@ -299,11 +306,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C51E5D61F296CC200560BB2 /* UserTabBarController.swift in Sources */,
 				2C11B6D31F2646B90039CB0A /* Server.swift in Sources */,
 				2C72CB591F1DC15F009868D6 /* ViewController.swift in Sources */,
 				2C45FE0F1F1FACD5004C6332 /* LoginHandlerViewController.swift in Sources */,
 				2C11B6DC1F267FC70039CB0A /* SavedTableViewController.swift in Sources */,
+				2C6F2E821F2B780700392BD0 /* Constants.swift in Sources */,
 				2CD0CD631F2644E90078E0DA /* CreateViewController.swift in Sources */,
 				2CB2B69C1F21B51800DA1D50 /* DetailViewController.swift in Sources */,
 				2C11B6E51F27E88B0039CB0A /* WelcomeViewController.swift in Sources */,
@@ -311,6 +318,7 @@
 				2CB2B69A1F2151A200DA1D50 /* QuestionTableViewController.swift in Sources */,
 				2C11B6DE1F267FF90039CB0A /* SavedQuestionViewController.swift in Sources */,
 				2C11B6D81F267F300039CB0A /* QuestionViewController.swift in Sources */,
+				2C6F2E861F2BAC1E00392BD0 /* UserChangeViewController.swift in Sources */,
 				2C11B6DA1F267F400039CB0A /* FeedbackViewController.swift in Sources */,
 				2C72CB571F1DC15F009868D6 /* AppDelegate.swift in Sources */,
 			);

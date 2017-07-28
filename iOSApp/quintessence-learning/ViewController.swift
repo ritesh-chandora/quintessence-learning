@@ -19,18 +19,19 @@ class ViewController: UIViewController {
         //redirects a logged in user to the appropriate view
         Auth.auth().addStateDidChangeListener() { auth, user in
             if user != nil {
-                self.ref!.reference().child("Users").child(user!.uid).observe(.value, with: { (snapshot) in
+                self.ref!.reference().child(Common.USER_PATH).child(user!.uid).observe(.value, with: { (snapshot) in
                     let value = snapshot.value as? NSDictionary
                     let userType = value?["Type"] as? String ?? ""
                     
-                    if (userType == "admin"){
+                    if (userType == "Admin"){
                         let adminViewController = self.storyboard?.instantiateViewController(withIdentifier: "Admin") as! UINavigationController
                         self.present(adminViewController, animated: true)
-                    } else if (userType == "user") {
+                    } else if (userType == "User") {
                         let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
                         self.present(userViewController, animated: true)
+                    } else {
+                        Server.showError(message: "Could not load user profile!")
                     }
-                    
                 }) { (error) in
                     Server.showError(message: error.localizedDescription)
                 }

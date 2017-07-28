@@ -18,6 +18,14 @@ class WelcomeViewController: UIViewController {
     @IBOutlet weak var timeField: UITextField!
     
     @IBAction func getStartedPress(_ sender: UIButton) {
+        let defaults = UserDefaults.standard
+        
+        //set it to initially trigger the next day
+        timePicker.date.addTimeInterval(Common.dayInSeconds)
+        //save the notify time to user defaults
+        defaults.set(timePicker.date, forKey: "NotifyTime")
+        //TODO save hour and minute to defaults
+        
         if timePicked {
             showPushNotifications()
             
@@ -39,15 +47,14 @@ class WelcomeViewController: UIViewController {
             (granted, error) in
             if granted {
                 print("permission granted")
+                Common.setNotificationTimer(date: self.timePicker.date)
             } else {
                 print("denied")
             }
         }
     
-        let userView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UserTabBarController
-        userView.isFirstTime = true
-        userView.notifyTime = timePicker.date
-        Database.database().reference().child("Users").child(Auth.auth().currentUser!.uid).child("Type").setValue("User")
+        let userView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
+        Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Type").setValue("User")
         self.present(userView, animated: true)
     }
 
