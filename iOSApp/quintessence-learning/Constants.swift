@@ -10,7 +10,7 @@ import UIKit
 import UserNotifications
 class Common: NSObject {
     
-//    static let dayInSeconds:Double = 60
+//    static let dayInSeconds:Double = 30
     static let dayInSeconds:Double = 86400
     static let USER_PATH = "Users"
     static let QUESTION_PATH = "Questions"

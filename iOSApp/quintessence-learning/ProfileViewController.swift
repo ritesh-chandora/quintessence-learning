@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+
 class ProfileViewController: UITableViewController {
     
     private var timePickerVisible = false
@@ -26,12 +27,30 @@ class ProfileViewController: UITableViewController {
     @IBOutlet weak var time: UILabel!
     
     @IBAction func timePickerChange(_ sender: Any) {
-        defaults.set(timePicker.date, forKey: "NotifyTime")
+        let currNotifyTime = defaults.object(forKey: "NotifyTime") as? Date
+        let currTime = Date()
+        var pickerDate = timePicker.date
+        
+        let elapsedTime = currTime.timeIntervalSinceReferenceDate - currNotifyTime!.timeIntervalSinceReferenceDate
+        
+        
+        //this is such that the user cannot keep setting later dates to get more questions
+        if (elapsedTime > 0 || elapsedTime < -Common.dayInSeconds){
+            pickerDate.addTimeInterval(Common.dayInSeconds)
+        } else if (elapsedTime < 0 && currTime.timeIntervalSinceReferenceDate - pickerDate.timeIntervalSinceReferenceDate > 0){
+            print("fuck")
+            
+            //user sets time that is before the current time but also before the question for the day is received.
+            //need to store the old time temporarily in order to fire it for the day, otherwise user will miss a question
+            pickerDate.addTimeInterval(Common.dayInSeconds)
+            defaults.set(pickerDate, forKey: "TempTime")
+        }
+        
+        defaults.set(pickerDate, forKey: "NotifyTime")
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .short
-        
-        //TODO check when to next show question
-        
+        print("selected: \(pickerDate)")
+        print("Time picker: \(timePicker.date)")
         time.text = dateFormatter.string(from: timePicker.date)
     }
     
@@ -42,9 +61,9 @@ class ProfileViewController: UITableViewController {
         let notifyTime = defaults.object(forKey: "NotifyTime") as! Date
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .short
-        
-        time.text = dateFormatter.string(from: notifyTime)
-        
+        if let time = time {
+            time.text = dateFormatter.string(from: notifyTime)
+        }
         user = Auth.auth().currentUser!
         ref = Database.database().reference()
     }

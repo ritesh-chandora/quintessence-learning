@@ -10,65 +10,105 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 class UserChangeViewController: ProfileViewController {
-
-   
+    
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var typeLabel: UILabel!
+    @IBOutlet weak var joinLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        getUserData()
+    }
     
+    func getUserData(){
+        self.ref!.child(Common.USER_PATH).child(self.user!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            let userInfo = snapshot.value as? NSDictionary
+            if let userInfo = userInfo {
+                self.nameLabel.text! = userInfo["Name"] as! String
+                self.emailLabel.text! = userInfo["Email"] as! String
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateStyle = .short
+                dateFormatter.timeStyle = .short
+                
+                let isTrial = userInfo["Trial"] as! Bool
+                self.typeLabel.text! = isTrial ? "Free Trial" : "Subscribed!"
+                
+                let joinDateSinceEpoch = userInfo["Join_Date"] as! TimeInterval
+                let joinDate = Date(timeIntervalSince1970: (joinDateSinceEpoch/1000))
+                self.joinLabel.text! = dateFormatter.string(from: joinDate)
+                
+                
+            } else {
+                Server.showError(message: "Unable to retrieve user info!")
+            }
+        })
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            //change name
-            let ac = UIAlertController(title: "Change name...", message: nil, preferredStyle: .alert)
-            ac.addTextField(configurationHandler: { (_ textField: UITextField) -> Void in
-                textField.placeholder = "Enter new name here..."
-            })
-            
-            ac.addAction(UIAlertAction(title: "Cancel", style: .destructive))
-            
-            ac.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (_action:UIAlertAction) in
-                self.ref!.child(Common.USER_PATH).child(self.user!.uid).child("Name").setValue(ac.textFields![0].text!)
-            }))
-            
-            present(ac, animated: true)
-        } else {
-            //change email
-            
-            let ac = UIAlertController(title: "Login", message: "This action requires you to re-login", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "Cancel", style: .destructive))
-            ac.addTextField(configurationHandler: { (_ textField: UITextField) in
-                textField.placeholder = "Email"
-            })
-            
-            ac.addTextField(configurationHandler: { (_ textField: UITextField) in
-                textField.placeholder = "Password"
-                textField.isSecureTextEntry = true
-            })
-            
-            ac.addAction(UIAlertAction(title: "Login", style: .default, handler: { (_ sender:UIAlertAction) in
-                let credentials = EmailAuthProvider.credential(withEmail: ac.textFields![0].text!, password: ac.textFields![1].text!)
-                self.user!.reauthenticate(with: credentials, completion: { (error) in
-                    if let error = error {
-                        Server.showError(message: error.localizedDescription)
-                    } else {
-                        //if successful reauth, show the change dialog
-                        self.showConfirmationDialog(title: "Change Email...", placeholder: "Enter email...", isPrivate: false, handler: { (newString:String) in
-                            self.user!.updateEmail(to: newString, completion: { (_ error:Error?) in
-                                if let error = error {
-                                    Server.showError(message: error.localizedDescription)
-                                } else {
-                                    //if updated sucessfully, do the same in the Users table
-                                    self.ref!.child(Common.USER_PATH).child(self.user!.uid).child("Email").setValue(newString)
-                                    Common.showSuccess(message: "Email Updated Successfully!")
-                                    tableView.deselectRow(at: indexPath, animated: true)
-                                }
-                            })
-                        })
-                    }
+        if indexPath.section == 1 {
+            if indexPath.row == 0 {
+                //change name
+                let ac = UIAlertController(title: "Change name...", message: nil, preferredStyle: .alert)
+                ac.addTextField(configurationHandler: { (_ textField: UITextField) -> Void in
+                    textField.placeholder = "Enter new name here..."
                 })
-            }))
-            present(ac, animated:  true)
+                
+                ac.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { (action) in
+                    self.tableView.deselectRow(at: indexPath, animated: true)
+                }))
+                
+                ac.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (_action:UIAlertAction) in
+                    self.ref!.child(Common.USER_PATH).child(self.user!.uid).child("Name").setValue(ac.textFields![0].text!)
+                    self.getUserData()
+                    self.tableView.deselectRow(at: indexPath, animated: true)
+                }))
+                
+                present(ac, animated: true)
+            } else {
+                //change email
+                
+                let ac = UIAlertController(title: "Login", message: "This action requires you to re-login", preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: {(action) in
+                    self.tableView.deselectRow(at: indexPath, animated: true)
+                }))
+                
+                ac.addTextField(configurationHandler: { (_ textField: UITextField) in
+                    textField.placeholder = "Email"
+                })
+                
+                ac.addTextField(configurationHandler: { (_ textField: UITextField) in
+                    textField.placeholder = "Password"
+                    textField.isSecureTextEntry = true
+                })
+                
+                ac.addAction(UIAlertAction(title: "Login", style: .default, handler: { (_ sender:UIAlertAction) in
+                    let credentials = EmailAuthProvider.credential(withEmail: ac.textFields![0].text!, password: ac.textFields![1].text!)
+                    self.user!.reauthenticate(with: credentials, completion: { (error) in
+                        if let error = error {
+                            Server.showError(message: error.localizedDescription)
+                            self.tableView.deselectRow(at: indexPath, animated: true)
+                        } else {
+                            //if successful reauth, show the change dialog
+                            self.showConfirmationDialog(title: "Change Email...", placeholder: "Enter email...", isPrivate: false, handler: { (newString:String) in
+                                self.user!.updateEmail(to: newString, completion: { (_ error:Error?) in
+                                    if let error = error {
+                                        Server.showError(message: error.localizedDescription)
+                                    } else {
+                                        //if updated sucessfully, do the same in the Users table
+                                        self.ref!.child(Common.USER_PATH).child(self.user!.uid).child("Email").setValue(newString)
+                                        Common.showSuccess(message: "Email Updated Successfully!")
+                                        self.getUserData()
+                                        tableView.deselectRow(at: indexPath, animated: true)
+                                    }
+                                })
+                            })
+                        }
+                    })
+                }))
+                present(ac, animated:  true)
+            }
         }
     }
 }
