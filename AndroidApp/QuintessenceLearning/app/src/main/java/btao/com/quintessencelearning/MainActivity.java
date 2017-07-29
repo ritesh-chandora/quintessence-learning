@@ -38,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference mDatabaseRef;
     private DatabaseReference mQuestionRef;
+    private DatabaseReference mUserRef;
     private DatabaseReference mQuestion;
-
+    private DatabaseReference mUser;
+    Long currentQuestion;
 
     private final String TAG = "MainActivity";
 
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    //mTextMessage.setText(R.string.title_home);
+                    questionNav();
                     return true;
                 case R.id.navigation_dashboard:
                     mTextMessage.setText(R.string.title_dashboard);
@@ -63,19 +65,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
     };
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        auth = FirebaseAuth.getInstance();
-
-        setContentView(R.layout.activity_main);
-
+    public void 
+    public void questionNav(){
         mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        
         if (auth.getCurrentUser() == null) {
             Intent intent = new Intent(this, SignIn.class);
             startActivity(intent);
@@ -83,22 +75,25 @@ public class MainActivity extends AppCompatActivity {
         }
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mQuestionRef = mDatabaseRef.child("Questions");
+        mUserRef = mDatabaseRef.child("Users");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final String userUID = user.getUid();
+        mUser = mUserRef.child(userUID);
 
 
-        ValueEventListener questionListener = new ValueEventListener() {
+        final ValueEventListener questionListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Log.d(TAG, "Inside class");
-                    Question question = child.getValue(Question.class);
-                    //Log.d(TAG,question.getText());
                     String text = (String) child.child("Text").getValue();
-                    mTextMessage.setText(text);
-                    Log.d(TAG,text);
-                    //Log.d(TAG,(String) child.child("Tags").getValue());
-                    //Toast.makeText(getApplicationContext(), "Successful: " + question.text, Toast.LENGTH_SHORT).show();
-                    // ...
+                    Long count = (Long) child.child("count").getValue();
+                    if (count==currentQuestion) {
+                        mTextMessage.setText(text);
+                        Log.d(TAG, text);
+                        break;
+                    }
                 }
             }
 
@@ -110,11 +105,36 @@ public class MainActivity extends AppCompatActivity {
                 // ...
             }
         };
-        Log.d(TAG,"gotem");
 
-        mQuestionRef.addListenerForSingleValueEvent(questionListener);
+        mUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                currentQuestion = (Long) dataSnapshot.child("Current_Question").getValue();
+                mQuestionRef.addListenerForSingleValueEvent(questionListener);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG,"Couldn't get user ref");
+            }
+        });
+
     }
-    public void signOut(View view){
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        auth = FirebaseAuth.getInstance();
+
+        setContentView(R.layout.activity_main);
+
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        questionNav();
+    }
+
+    public void signOut(){
         auth.signOut();
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
@@ -123,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void readQuestions(View view) {
+    /*public void readQuestions() {
 
         JsonObject json = new JsonObject();
         try {
@@ -152,5 +172,5 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
+    }*/
 }
