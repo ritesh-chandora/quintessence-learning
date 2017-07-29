@@ -33,7 +33,7 @@ class UserChangeViewController: ProfileViewController {
                 dateFormatter.timeStyle = .short
                 
                 let isTrial = userInfo["Trial"] as! Bool
-                self.typeLabel.text! = isTrial ? "Free Trial" : "Subscribed!"
+                self.typeLabel.text! = isTrial ? "Free Trial" : "Subscribed"
                 
                 let joinDateSinceEpoch = userInfo["Join_Date"] as! TimeInterval
                 let joinDate = Date(timeIntervalSince1970: (joinDateSinceEpoch/1000))

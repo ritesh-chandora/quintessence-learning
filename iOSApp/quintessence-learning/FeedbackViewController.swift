@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FeedbackViewController: UIViewController {
+class FeedbackViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

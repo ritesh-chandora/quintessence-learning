@@ -10,6 +10,7 @@ var login = require('./routes/login');
 var signup = require('./routes/signup');
 var utils = require('./routes/utils');
 var tags = require('./routes/tags');
+var email = require('./routes/email');
 
 var exphbs = require('express-handlebars');
 
@@ -50,6 +51,7 @@ app.use('/profile', utils);
 app.use('/profile/tags', tags);
 app.use('/login', login);
 app.use('/signup', signup);
+app.use('/email', email)
 
 app.get('*', (req, res) => {
     console.log("wtf");
