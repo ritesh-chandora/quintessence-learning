@@ -1,11 +1,15 @@
 package btao.com.quintessencelearning;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 /**
@@ -14,6 +18,7 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class AccountFragment extends Fragment {
+    public FirebaseAuth auth;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -61,5 +66,7 @@ public class AccountFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_account, container, false);
     }
+
+
 
 }

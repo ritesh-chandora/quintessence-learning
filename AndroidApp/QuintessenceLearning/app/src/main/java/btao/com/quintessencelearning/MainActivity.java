@@ -144,12 +144,11 @@ public class MainActivity extends AppCompatActivity{
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //questionNav();
     }
-
-    public void signOut(){
+    public void signOut(View view){
         auth.signOut();
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
-            startActivity(new Intent(MainActivity.this, SignIn.class));
+            startActivity(new Intent(getApplicationContext(), SignIn.class));
             finish();
         }
     }
