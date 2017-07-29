@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +32,7 @@ import com.koushikdutta.ion.Ion;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +49,8 @@ public class MainActivity extends AppCompatActivity{
     private DatabaseReference mUser;
     Long currentQuestion;
 
+    String result;
+    private QuestionsFragment qFrag;
     private Fragment fragment;
     private FragmentManager fragmentManager;
 
@@ -58,8 +63,11 @@ public class MainActivity extends AppCompatActivity{
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_questions:
-                    fragment = new QuestionsFragment();
-                    //questionNav();
+                    qFrag = new QuestionsFragment();
+                    fragment = qFrag;
+                    final FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.main_container, fragment).commit();
+                    questionNav();
                     break;
                 case R.id.navigation_account:
                     fragment = new AccountFragment();
@@ -74,9 +82,39 @@ public class MainActivity extends AppCompatActivity{
         }
 
     };
-    /*
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        auth = FirebaseAuth.getInstance();
+
+        setContentView(R.layout.activity_main);
+
+        fragmentManager = getSupportFragmentManager();
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+    public void signOut(View view){
+        auth.signOut();
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            startActivity(new Intent(getApplicationContext(), SignIn.class));
+            finish();
+        }
+    }
+
+    public void newQuestionFrag(String text){
+
+        qFrag.setQuestion(text);
+    }
+
     public void questionNav(){
-        mTextMessage = (TextView) findViewById(R.id.message);
+
+        mTextMessage = (TextView) findViewById(R.id.text_message);
         if (auth.getCurrentUser() == null) {
             Intent intent = new Intent(this, SignIn.class);
             startActivity(intent);
@@ -99,8 +137,8 @@ public class MainActivity extends AppCompatActivity{
                     String text = (String) child.child("Text").getValue();
                     Long count = (Long) child.child("count").getValue();
                     if (count==currentQuestion) {
-                        mTextMessage.setText(text);
                         Log.d(TAG, text);
+                        newQuestionFrag(text);
                         break;
                     }
                 }
@@ -128,30 +166,36 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-    }*/
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        auth = FirebaseAuth.getInstance();
-
-        setContentView(R.layout.activity_main);
-
-        fragmentManager = getSupportFragmentManager();
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        //questionNav();
     }
-    public void signOut(View view){
-        auth.signOut();
-        FirebaseUser user = auth.getCurrentUser();
-        if (user == null) {
-            startActivity(new Intent(getApplicationContext(), SignIn.class));
-            finish();
-        }
+
+    public void changeEmail(View view){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.updateEmail("user@example.com")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User email address updated.");
+                        }
+                    }
+                });
     }
+    public void changePassword(View view){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String newPassword = "SOME-SECURE-PASSWORD";
+
+        user.updatePassword(newPassword)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User password updated.");
+                        }
+                    }
+                });
+    }
+
 
     /*public void readQuestions() {
 
