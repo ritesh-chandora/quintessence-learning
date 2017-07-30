@@ -18,8 +18,20 @@ class ContactViewController: UIViewController {
     
     @IBOutlet weak var messageBody: UITextView!
     
+    @IBOutlet weak var submitButton: UIButton!
+    
     @IBAction func sendEmail(_ sender: UIButton) {
-        
+        if (emailField.text! == ""){
+            Server.showError(message: "Enter your email!")
+        } else if (nameField.text! == "") {
+            Server.showError(message: "Enter your name!")
+        } else if (subjectField.text! == ""){
+            Server.showError(message: "Enter your subject!")
+        } else if (messageBody.text! == "") {
+            Server.showError(message: "Enter a message body!")
+        } else {
+            submit()
+        }
     }
     
     override func viewDidLoad() {
@@ -42,5 +54,43 @@ class ContactViewController: UIViewController {
         })
     }
     
-
+    func toggleButtons(toggle:Bool){
+        DispatchQueue.main.async {
+            self.emailField.isEnabled = toggle
+            self.nameField.isEnabled = toggle
+            self.subjectField.isEnabled = toggle
+            self.messageBody.isEditable = toggle
+            self.submitButton.isEnabled = toggle
+            if (!toggle) {
+                self.submitButton.setTitle("Submitting...", for: .disabled)
+            } else {
+                self.submitButton.setTitle("Submit", for: .normal)
+            }
+        }
+    }
+    
+    func submit(){
+        //get user information to include in email body
+        toggleButtons(toggle: false)
+        let user = nameField.text!
+        let email = emailField.text!
+        
+        var body = "<p>\(user),\(email) submitted feedback:</p>"
+        body+="<p>\(messageBody.text!)</p>"
+        
+        let subject = "Feedback from \(email): \(subjectField.text!)"
+        
+        let params = ["subject":subject, "content":body] as [String:Any]
+        
+        Server.post(urlRoute: Server.hostURL + "/email", params: params, callback: self.submitQuestionCallback(data:), errorMessage: "Could not submit question!")
+    }
+    
+    func submitQuestionCallback(data:Data){
+        Common.showSuccess(message: "Submitted feedback!")
+        DispatchQueue.main.async {
+            self.messageBody.text! = ""
+            self.subjectField.text! = ""
+        }
+        toggleButtons(toggle: true)
+    }
 }

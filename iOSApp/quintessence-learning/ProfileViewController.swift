@@ -30,6 +30,7 @@ class ProfileViewController: UITableViewController {
         let currNotifyTime = defaults.object(forKey: "NotifyTime") as? Date
         let currTime = Date()
         var pickerDate = timePicker.date
+        var tempTimeNeeded = false
         
         let elapsedTime = currTime.timeIntervalSinceReferenceDate - currNotifyTime!.timeIntervalSinceReferenceDate
         
@@ -42,8 +43,15 @@ class ProfileViewController: UITableViewController {
             
             //user sets time that is before the current time but also before the question for the day is received.
             //need to store the old time temporarily in order to fire it for the day, otherwise user will miss a question
-            pickerDate.addTimeInterval(Common.dayInSeconds)
             defaults.set(pickerDate, forKey: "TempTime")
+            Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Time").setValue(pickerDate.timeIntervalSince1970)
+            print("temp time: \(pickerDate)")
+            pickerDate.addTimeInterval(Common.dayInSeconds)
+            tempTimeNeeded = true
+        }
+        
+        if(!tempTimeNeeded){
+            Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Time").setValue(pickerDate.timeIntervalSince1970)
         }
         
         defaults.set(pickerDate, forKey: "NotifyTime")

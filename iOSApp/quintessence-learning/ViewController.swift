@@ -29,8 +29,6 @@ class ViewController: UIViewController {
                     } else if (userType == "User") {
                         let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
                         self.present(userViewController, animated: true)
-                    } else {
-                        Server.showError(message: "Could not load user profile!")
                     }
                 }) { (error) in
                     Server.showError(message: error.localizedDescription)

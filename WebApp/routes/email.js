@@ -11,7 +11,7 @@ router.post('/', function(req, res) {
         port: 587, // port for secure SMTP
         auth: {
             user: "testqlearning@outlook.com",
-            pass: //password here
+            pass: "sh0rtpass?"
         },
         tls: {
             ciphers:'SSLv3'

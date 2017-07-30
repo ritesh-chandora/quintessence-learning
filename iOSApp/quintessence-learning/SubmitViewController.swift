@@ -60,9 +60,9 @@ class SubmitViewController: ModalViewController {
             self.submitButton.isEnabled = toggle
             self.closeCreatButton.isEnabled = toggle
             if (toggle == false){
-                self.submitButton.titleLabel!.text = "Submitting..."
+                self.submitButton.setTitle("Submitting...", for: .normal)
             } else {
-                self.submitButton.titleLabel!.text = "Submit"
+                self.submitButton.setTitle("Submit", for: .normal)
             }
         }
     }

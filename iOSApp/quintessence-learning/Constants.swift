@@ -12,6 +12,7 @@ class Common: NSObject {
     
 //    static let dayInSeconds:Double = 30
     static let dayInSeconds:Double = 86400
+    static let trialLength = 14
     static let USER_PATH = "Users"
     static let QUESTION_PATH = "Questions"
     static let USER_COUNT = "Current_Question"

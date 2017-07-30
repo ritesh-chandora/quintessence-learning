@@ -32,13 +32,18 @@ class UserChangeViewController: ProfileViewController {
                 dateFormatter.dateStyle = .short
                 dateFormatter.timeStyle = .short
                 
-                let isTrial = userInfo["Trial"] as! Bool
-                self.typeLabel.text! = isTrial ? "Free Trial" : "Subscribed"
-                
                 let joinDateSinceEpoch = userInfo["Join_Date"] as! TimeInterval
                 let joinDate = Date(timeIntervalSince1970: (joinDateSinceEpoch/1000))
                 self.joinLabel.text! = dateFormatter.string(from: joinDate)
                 
+                let isTrial = userInfo["Trial"] as! Bool
+                if (isTrial) {
+                    //calculate number of days left in trial
+                    let numDays = Common.trialLength - Int((Date().timeIntervalSince1970 - joinDateSinceEpoch/1000)/Common.dayInSeconds)
+                    self.typeLabel.text! = "Free Trial (\(numDays) days left)"
+                } else {
+                    self.typeLabel.text! = "Subscribed!"
+                }
                 
             } else {
                 Server.showError(message: "Unable to retrieve user info!")

@@ -26,12 +26,20 @@ class QuestionViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
-        checkIfNeedUpdate()
+        if(defaults.object(forKey: "NotifyTime") == nil){
+            Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Time").observeSingleEvent(of: .value, with: { (snapshot) in
+                self.notifyTime = Date(timeIntervalSince1970: snapshot.value as! TimeInterval)
+                self.defaults.set(self.notifyTime, forKey: "NotifyTime")
+                self.checkIfNeedUpdate()
+            })
+        } else {
+            checkIfNeedUpdate()
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        notifyTime = defaults.object(forKey: "NotifyTime") as? Date
+        
         user = Auth.auth().currentUser!
         ref = Database.database().reference()
         getQuestion()
@@ -43,13 +51,12 @@ class QuestionViewController: UIViewController {
         print("Checkin to see if update needed")
         
         //if tempTime exists, means there is a leftover question to retrieve
-        if (defaults.object(forKey: "TempTime") != nil) {
-            notifyTime = defaults.object(forKey: "TempTime") as? Date
+        if (defaults.object(forKey: "TempTime") as? Date != nil) {
+            notifyTime = defaults.object(forKey: "TempTime") as! Date
         } else {
             notifyTime = defaults.object(forKey: "NotifyTime") as? Date
         }
         let currTime = Date()
-        
         let timeElapsed = currTime.timeIntervalSinceReferenceDate - notifyTime!.timeIntervalSinceReferenceDate
        
         print(timeElapsed)
@@ -77,6 +84,7 @@ class QuestionViewController: UIViewController {
             //set next question update to next day
             notifyTime!.addTimeInterval(Common.dayInSeconds)
             defaults.set(notifyTime, forKey: "NotifyTime")
+            Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Time").setValue(notifyTime?.timeIntervalSince1970)
         }
         
         let dateFormatter = DateFormatter()
