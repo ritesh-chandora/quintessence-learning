@@ -10,6 +10,7 @@ import UIKit
 import UserNotifications
 import FirebaseAuth
 import FirebaseDatabase
+import TagListView
 class QuestionViewController: UIViewController {
 
     var notifyTime:Date?
@@ -21,6 +22,7 @@ class QuestionViewController: UIViewController {
     let defaults = UserDefaults.standard
     
     @IBOutlet weak var questionLabel: UITextView!
+    @IBOutlet weak var tagsList: TagListView!
     @IBOutlet weak var savedLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     
@@ -124,21 +126,32 @@ class QuestionViewController: UIViewController {
         print("getting question")
         self.questionLabel.text = "Loading Question..."
         //get the count
+
         self.ref!.child(Common.USER_PATH).child(user!.uid).child(Common.USER_COUNT).observeSingleEvent(of: .value, with: { (snapshot) in
             let value = snapshot.value as! Int
             //get the first question greater than or equal to count
             self.ref!.child(Common.QUESTION_PATH).queryOrdered(byChild: "count").queryStarting(atValue: value).queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: {(snapshot) in
+                
+                //this is needed here because it gets tags twice for some reason
+                self.tagsList.removeAllTags()
                 let result = snapshot.children.allObjects as! [DataSnapshot]
                 if (result.count == 0) {
                     self.questionLabel.text = "Unable to load question"
-                }
-                let qbody = result[0].value as? NSDictionary
-                if let qbody = qbody {
-                    self.questionLabel.text = qbody["Text"] as? String ?? "Unable to load question"
-                    self.currentQuestionKey = qbody["Key"] as? String ?? ""
-                    
                 } else {
-                    self.questionLabel.text = "Unable to load question"
+                    let qbody = result[0].value as? NSDictionary
+                    if let qbody = qbody {
+                        self.questionLabel.text = qbody["Text"] as? String ?? "Unable to load question"
+                        self.currentQuestionKey = qbody["Key"] as? String ?? ""
+                        if let tags = qbody["Tags"] as? NSDictionary {
+                            print(tags)
+                            for (_, tag) in tags {
+                                print(tag)
+                                self.tagsList.addTag(tag as? String ?? "")
+                            }
+                        }
+                    } else {
+                        self.questionLabel.text = "Unable to load question"
+                    }
                 }
             })
         }) { (err) in
