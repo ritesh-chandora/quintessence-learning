@@ -28,15 +28,6 @@ import org.w3c.dom.Text;
  * create an instance of this fragment.
  */
 public class QuestionsFragment extends Fragment {
-    private TextView mTextMessage;
-    private FirebaseAuth auth;
-    private DatabaseReference mDatabaseRef;
-    private DatabaseReference mQuestionRef;
-    private DatabaseReference mUserRef;
-    private DatabaseReference mQuestion;
-    private DatabaseReference mUser;
-    Long currentQuestion;
-
     private final String TAG = "MainActivity";
 
 
@@ -96,63 +87,4 @@ public class QuestionsFragment extends Fragment {
         TextView question = (TextView) getView().findViewById(R.id.text_message);
         question.setText(text);
     }
-
-    public void questionNav(){
-        mTextMessage = (TextView) getView().findViewById(R.id.text_message);
-        if (auth.getCurrentUser() == null) {
-            Intent intent = new Intent(getActivity(), SignIn.class);
-            startActivity(intent);
-            getActivity().finish();
-        }
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mQuestionRef = mDatabaseRef.child("Questions");
-        mUserRef = mDatabaseRef.child("Users");
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final String userUID = user.getUid();
-        mUser = mUserRef.child(userUID);
-
-
-        final ValueEventListener questionListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Log.d(TAG, "Inside class");
-                    String text = (String) child.child("Text").getValue();
-                    Long count = (Long) child.child("count").getValue();
-                    if (count==currentQuestion) {
-                        mTextMessage.setText(text);
-                        Log.d(TAG, text);
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Toast.makeText(getActivity(),databaseError.toString(),Toast.LENGTH_SHORT).show();
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        };
-
-        mUser.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                currentQuestion = (Long) dataSnapshot.child("Current_Question").getValue();
-                mQuestionRef.addListenerForSingleValueEvent(questionListener);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d(TAG,"Couldn't get user ref");
-            }
-        });
-
-    }
-
-
-
-
 }

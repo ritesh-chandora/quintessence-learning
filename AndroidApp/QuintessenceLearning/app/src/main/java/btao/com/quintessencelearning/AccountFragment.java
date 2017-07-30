@@ -1,12 +1,17 @@
 package btao.com.quintessencelearning;
 
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -66,6 +71,17 @@ public class AccountFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_account, container, false);
     }
+    public void setName(String name){
+        TextView textName = (TextView) getView().findViewById(R.id.text_name);
+        textName.setText(name);
+    }
+
+    public void setEmail(String email){
+        TextView textEmail = (TextView) getView().findViewById(R.id.text_email);
+        textEmail.setText(email);
+    }
+
+
 
 
 
