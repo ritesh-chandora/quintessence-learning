@@ -1252,7 +1252,7 @@
         <!--Create-->
         <scene sceneID="t8P-fY-J3i">
             <objects>
-                <viewController storyboardIdentifier="Saved" id="De5-fv-bMS" customClass="SubmitViewController" customModule="quintessence_learning" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Submit" id="De5-fv-bMS" customClass="SubmitViewController" customModule="quintessence_learning" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vcp-lc-fGu"/>
                         <viewControllerLayoutGuide type="bottom" id="VId-qR-gva"/>
@@ -1303,9 +1303,6 @@
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <action selector="onAddTag:" destination="De5-fv-bMS" eventType="editingDidEnd" id="UE2-gN-eJ6"/>
-                                        </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add Tag:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fh9-2o-ijz">
                                         <rect key="frame" x="10" y="65" width="68" height="21"/>
@@ -1343,7 +1340,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HaO-0e-ivN">
-                                        <rect key="frame" x="243" y="188" width="49" height="30"/>
+                                        <rect key="frame" x="232" y="188" width="49" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Submit"/>
                                         <userDefinedRuntimeAttributes>
@@ -1352,7 +1349,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="onAddQuestion:" destination="De5-fv-bMS" eventType="touchUpInside" id="g31-fu-f3a"/>
+                                            <action selector="onAddQuestion:" destination="De5-fv-bMS" eventType="touchUpInside" id="M6f-BM-nqU"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1368,8 +1365,11 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Create" id="i7P-Fp-YfL"/>
                     <connections>
-                        <outlet property="tagFieldCreate" destination="7Lt-Kq-Nc3" id="hIy-6w-Pc1"/>
-                        <outlet property="tagListCreate" destination="jT2-UR-ukc" id="sGH-gQ-T3U"/>
+                        <outlet property="closeCreatButton" destination="For-p6-h0I" id="QxT-ug-bnL"/>
+                        <outlet property="listTagField" destination="7Lt-Kq-Nc3" id="K8O-xK-s0x"/>
+                        <outlet property="listTags" destination="jT2-UR-ukc" id="pt9-gX-yL7"/>
+                        <outlet property="submitButton" destination="HaO-0e-ivN" id="WyA-Oh-MZk"/>
+                        <outlet property="tagAddButton" destination="BcI-1D-Qyy" id="10u-wX-lzE"/>
                         <outlet property="textField" destination="i75-pN-jBe" id="AA0-61-NjF"/>
                     </connections>
                 </viewController>
@@ -1550,9 +1550,6 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="De5-fv-bMS" kind="presentation" modalPresentationStyle="overCurrentContext" id="L0D-yu-mdM"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="V3v-RF-SN9">
                                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -1578,7 +1575,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="nzf-Cg-szZ" kind="show" id="8Dn-Jy-hIV"/>
+                                            <segue destination="nzf-Cg-szZ" kind="show" id="dj3-eO-LGS"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="mlx-lG-bVt">

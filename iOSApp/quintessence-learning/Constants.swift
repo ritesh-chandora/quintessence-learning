@@ -17,14 +17,16 @@ class Common: NSObject {
     static let USER_COUNT = "Current_Question"
     
     static func showSuccess(message:String) {
-        let ac = UIAlertController(title: message, message: nil, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default))
-        
-        let alertWindow = UIWindow(frame: UIScreen.main.bounds)
-        alertWindow.rootViewController = UIViewController()
-        alertWindow.windowLevel = UIWindowLevelAlert + 1;
-        alertWindow.makeKeyAndVisible()
-        alertWindow.rootViewController?.present(ac, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            let ac = UIAlertController(title: message, message: nil, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            
+            let alertWindow = UIWindow(frame: UIScreen.main.bounds)
+            alertWindow.rootViewController = UIViewController()
+            alertWindow.windowLevel = UIWindowLevelAlert + 1;
+            alertWindow.makeKeyAndVisible()
+            alertWindow.rootViewController?.present(ac, animated: true, completion: nil)
+        }
     }
     
     //sets the notification timer

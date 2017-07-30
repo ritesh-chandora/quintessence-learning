@@ -35,6 +35,7 @@ class Server: NSObject {
                 do {
                     try callback(data)
                 } catch {
+                    print("fuck")
                     showError(message: errorMessage)
                 }
             }

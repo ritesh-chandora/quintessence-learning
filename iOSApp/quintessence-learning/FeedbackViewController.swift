@@ -12,24 +12,26 @@ class FeedbackViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //modally present user to submit their own question
+        if indexPath.row == 0 {
+            let submitView = self.storyboard?.instantiateViewController(withIdentifier: "Submit") as! SubmitViewController
+            submitView.row = indexPath
+            submitView.updateDelegate = self
+            submitView.modalPresentationStyle = .overFullScreen
+            self.navigationController?.present(submitView, animated: true, completion: nil)
+        }
     }
-    */
+}
 
+extension FeedbackViewController : UpdateQuestionDelegate {
+    func refreshQuestions() {
+        return
+    }
+    
+    func modalClose(row: IndexPath) {
+        tableView.deselectRow(at: row, animated: true)
+    }
 }

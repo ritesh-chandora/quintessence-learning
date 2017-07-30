@@ -25,6 +25,7 @@ class ContactViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //styling to make the textview look like a textfield lol
         messageBody.layer.borderColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0).cgColor
         messageBody.layer.borderWidth = 1.0
         
