@@ -15,6 +15,7 @@
 		2C11B6E01F2795080039CB0A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C11B6DF1F2795080039CB0A /* GoogleService-Info.plist */; };
 		2C11B6E31F27B6500039CB0A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */; };
 		2C11B6E51F27E88B0039CB0A /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */; };
+		2C36AFBD1F2E732F005B87F3 /* EbookPaywallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C36AFBC1F2E732F005B87F3 /* EbookPaywallViewController.swift */; };
 		2C45FE0F1F1FACD5004C6332 /* LoginHandlerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */; };
 		2C5810F71F2D278900B6C561 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5810F61F2D278900B6C561 /* AboutViewController.swift */; };
 		2C5810F91F2D2CEF00B6C561 /* SubmitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5810F81F2D2CEF00B6C561 /* SubmitViewController.swift */; };
@@ -43,6 +44,7 @@
 		2C11B6E11F27B5690039CB0A /* quintessence-learning.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "quintessence-learning.entitlements"; sourceTree = "<group>"; };
 		2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		2C36AFBC1F2E732F005B87F3 /* EbookPaywallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EbookPaywallViewController.swift; sourceTree = "<group>"; };
 		2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHandlerViewController.swift; sourceTree = "<group>"; };
 		2C5810F61F2D278900B6C561 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		2C5810F81F2D2CEF00B6C561 /* SubmitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmitViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				2C5810F61F2D278900B6C561 /* AboutViewController.swift */,
 				2C5810F81F2D2CEF00B6C561 /* SubmitViewController.swift */,
 				2C5810FA1F2D2F0B00B6C561 /* ContactViewController.swift */,
+				2C36AFBC1F2E732F005B87F3 /* EbookPaywallViewController.swift */,
 			);
 			name = FeedbackViews;
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C36AFBD1F2E732F005B87F3 /* EbookPaywallViewController.swift in Sources */,
 				2C11B6D31F2646B90039CB0A /* Server.swift in Sources */,
 				2C72CB591F1DC15F009868D6 /* ViewController.swift in Sources */,
 				2C45FE0F1F1FACD5004C6332 /* LoginHandlerViewController.swift in Sources */,

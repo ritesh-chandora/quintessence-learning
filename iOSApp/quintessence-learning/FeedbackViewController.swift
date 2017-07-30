@@ -7,7 +7,8 @@
 //
 
 import UIKit
-
+import FirebaseAuth
+import FirebaseDatabase
 class FeedbackViewController: UITableViewController {
 
     override func viewDidLoad() {
@@ -22,6 +23,18 @@ class FeedbackViewController: UITableViewController {
             submitView.updateDelegate = self
             submitView.modalPresentationStyle = .overFullScreen
             self.navigationController?.present(submitView, animated: true, completion: nil)
+        } else if indexPath.row == 2 {
+            //ebook
+            Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Ebook").observeSingleEvent(of: .value, with: { (snapshot) in
+                let bought = snapshot.value as! Bool
+                if (bought){
+                    let ebook = self.storyboard?.instantiateViewController(withIdentifier: "ebook")
+                    self.navigationController?.pushViewController(ebook!, animated: true)
+                } else {
+                    let paywall = self.storyboard?.instantiateViewController(withIdentifier: "ebookpaywall") as! EbookPaywallViewController
+                    self.navigationController?.pushViewController(paywall, animated: true)
+                }
+            })
         }
     }
 }
