@@ -18,13 +18,8 @@ class WelcomeViewController: UIViewController {
     @IBOutlet weak var timeField: UITextField!
     
     @IBAction func getStartedPress(_ sender: UIButton) {
-        let defaults = UserDefaults.standard
-        
         //set it to initially trigger the next day
         timePicker.date.addTimeInterval(Common.dayInSeconds)
-        //save the notify time to user defaults
-        defaults.set(timePicker.date, forKey: "NotifyTime")
-        //TODO save hour and minute to defaults
         
         if timePicked {
             showPushNotifications()
@@ -34,14 +29,16 @@ class WelcomeViewController: UIViewController {
         }
     }
     
+    //alert controller to explain the need for push notifs
     func showPushNotifications(){
-        let alert = UIAlertController(title: "Let us send you notifications?", message: "We will send you a question at the time you selected", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Let us send you notifications?", message: "We will alert you when a new question has arrived", preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "Don't Allow", style: .default))
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: enableNotifications(sender: )))
         self.present(alert, animated: true)
     }
     
+    //request notifications and then advances to user dashboard
     func enableNotifications(sender: UIAlertAction){
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
             (granted, error) in
@@ -55,11 +52,14 @@ class WelcomeViewController: UIViewController {
         }
     
         let userView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
+        
+        //initialize the account to be a user and initializes the time
         Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Type").setValue("User")
         Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Time").setValue(timePicker.date.timeIntervalSince1970)
         self.present(userView, animated: true)
     }
 
+    //initializes the time picker to be shown upon tapping the text field
     func createPicker(){
         timePicker.datePickerMode = .time
         
@@ -73,6 +73,7 @@ class WelcomeViewController: UIViewController {
         timeField.inputView = timePicker
     }
     
+    //handler for timePicker done being pressed
     func donePressed(){
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .short

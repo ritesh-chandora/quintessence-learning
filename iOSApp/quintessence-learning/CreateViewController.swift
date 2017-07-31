@@ -62,7 +62,7 @@ class CreateViewController: ModalViewController {
                 Server.showError(message: dict["message"]!)
             } else {
                 //otherwise update the table and close the modal
-                updateDelegate.refreshQuestions()
+                modalDelegate.refreshQuestions()
                 self.closeModal()
             }
         }

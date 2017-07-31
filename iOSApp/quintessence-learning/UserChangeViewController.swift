@@ -21,6 +21,7 @@ class UserChangeViewController: ProfileViewController {
         getUserData()
     }
     
+    //populates user data (name, email, join date, account type)
     func getUserData(){
         self.ref!.child(Common.USER_PATH).child(self.user!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
             let userInfo = snapshot.value as? NSDictionary
@@ -33,6 +34,7 @@ class UserChangeViewController: ProfileViewController {
                 dateFormatter.timeStyle = .short
                 
                 let joinDateSinceEpoch = userInfo["Join_Date"] as! TimeInterval
+                //Firebase uses milliseconds while Swift uses seconds, need to do conversion
                 let joinDate = Date(timeIntervalSince1970: (joinDateSinceEpoch/1000))
                 self.joinLabel.text! = dateFormatter.string(from: joinDate)
                 
@@ -73,7 +75,6 @@ class UserChangeViewController: ProfileViewController {
                 present(ac, animated: true)
             } else {
                 //change email
-                
                 let ac = UIAlertController(title: "Login", message: "This action requires you to re-login", preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: {(action) in
                     self.tableView.deselectRow(at: indexPath, animated: true)

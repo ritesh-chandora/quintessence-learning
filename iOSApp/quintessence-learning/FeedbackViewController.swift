@@ -20,7 +20,7 @@ class FeedbackViewController: UITableViewController {
         if indexPath.row == 0 {
             let submitView = self.storyboard?.instantiateViewController(withIdentifier: "Submit") as! SubmitViewController
             submitView.row = indexPath
-            submitView.updateDelegate = self
+            submitView.modalDelegate = self
             submitView.modalPresentationStyle = .overFullScreen
             self.navigationController?.present(submitView, animated: true, completion: nil)
         } else if indexPath.row == 2 {
@@ -39,7 +39,7 @@ class FeedbackViewController: UITableViewController {
     }
 }
 
-extension FeedbackViewController : UpdateQuestionDelegate {
+extension FeedbackViewController : ModalDelegate {
     func refreshQuestions() {
         return
     }

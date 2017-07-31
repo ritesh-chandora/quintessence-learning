@@ -9,7 +9,7 @@
 import UIKit
 import TagListView
 
-protocol UpdateQuestionDelegate {
+protocol ModalDelegate {
     func refreshQuestions()
     func modalClose(row: IndexPath)
 }
@@ -57,13 +57,13 @@ class ModalViewController: UIViewController, TagListViewDelegate {
         
     }
     
-    @IBAction func onClose(_ sender: Any) {
+    @IBAction func onClose(_ sender: UIButton) {
         closeModal()
     }
     
     var data : Question!
     var row : IndexPath!
-    var updateDelegate: UpdateQuestionDelegate!
+    var modalDelegate: ModalDelegate!
     
     override func viewDidLoad() {
         loadData()
@@ -124,7 +124,7 @@ class ModalViewController: UIViewController, TagListViewDelegate {
             }
         } catch {
             //otherwise update the table and close the modal
-            updateDelegate.refreshQuestions()
+            modalDelegate.refreshQuestions()
             self.closeModal()
         }
     }
@@ -136,7 +136,7 @@ class ModalViewController: UIViewController, TagListViewDelegate {
             self.dismiss(animated: true, completion: nil)
         }
         if (row != nil){
-            updateDelegate.modalClose(row: row)
+            modalDelegate.modalClose(row: row)
         }
     }
     

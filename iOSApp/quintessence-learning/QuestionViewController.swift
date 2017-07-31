@@ -19,31 +19,39 @@ class QuestionViewController: UIViewController {
     var ref:DatabaseReference?
     var currentQuestionKey = ""
     
-    let defaults = UserDefaults.standard
-    
     @IBOutlet weak var questionLabel: UITextView!
     @IBOutlet weak var tagsList: TagListView!
     @IBOutlet weak var savedLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     
+    //checks to see if new question has to be loaded and then loads a timer in case user stays on that screen
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
-        if(defaults.object(forKey: "NotifyTime") == nil){
-            Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Time").observeSingleEvent(of: .value, with: { (snapshot) in
-                self.notifyTime = Date(timeIntervalSince1970: snapshot.value as! TimeInterval)
-                self.defaults.set(self.notifyTime, forKey: "NotifyTime")
+        
+        //if there was a temporary time, load that first and set that to the notifyTime
+        ref!.child("Old_Time").observeSingleEvent(of: .value, with: { (data) in
+            let oldTime = data.value as? TimeInterval ?? nil
+            if oldTime != nil {
+                self.notifyTime = Date(timeIntervalSince1970: oldTime!)
                 self.checkIfNeedUpdate()
-            })
-        } else {
-            checkIfNeedUpdate()
-        }
+            } else {
+                //if no temporary time (see NewTimeVC), then query the standard time
+                self.ref!.child("Time").observeSingleEvent(of: .value, with: { (time) in
+                    self.notifyTime = Date(timeIntervalSince1970: time.value as! TimeInterval)
+                    self.checkIfNeedUpdate()
+                })
+            }
+
+        })
+
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         user = Auth.auth().currentUser!
-        ref = Database.database().reference()
+        ref = Database.database().reference().child(Common.USER_PATH).child(user!.uid)
+        
         getQuestion()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(showSaveOptions))
     }
@@ -52,54 +60,66 @@ class QuestionViewController: UIViewController {
     func checkIfNeedUpdate(){
         print("Checkin to see if update needed")
         
-        //if tempTime exists, means there is a leftover question to retrieve
-        if (defaults.object(forKey: "TempTime") as? Date != nil) {
-            notifyTime = defaults.object(forKey: "TempTime") as! Date
-        } else {
-            notifyTime = defaults.object(forKey: "NotifyTime") as? Date
-        }
-        let currTime = Date()
-        let timeElapsed = currTime.timeIntervalSinceReferenceDate - notifyTime!.timeIntervalSinceReferenceDate
-       
-        print(timeElapsed)
-        //if the time has passed since notification date
-        if (timeElapsed > 0) {
-            var daysMissed = 0
-            if (defaults.object(forKey: "TempTime") != nil) {
-                let newNotifyTime = defaults.object(forKey: "NotifyTime") as? Date
-                //if time has elapsed between old notify time and new notify time, that will count as one day missed 
-                if (timeElapsed > (newNotifyTime!.timeIntervalSinceReferenceDate) - notifyTime!.timeIntervalSinceReferenceDate){
-                    daysMissed += 1
+        //query both old time (if any) and the current notification time
+        ref!.child("Old_Time").observeSingleEvent(of: .value, with: { (data) in
+            self.ref!.child("Time").observeSingleEvent(of: .value, with: { (time) in
+                let oldTime = data.value as? TimeInterval ?? nil
+                
+                //if old time exists, that is the next notification time
+                if oldTime != nil {
+                    self.notifyTime = Date(timeIntervalSince1970: oldTime!)
+                } else {
+                    //if no temporary time (see NewTimeVC), then query the standard time
+                   self.notifyTime = Date(timeIntervalSince1970: time.value as! TimeInterval)
                 }
-                defaults.set(nil, forKey: "TempTime")
-            }
-            //check for missed days and if so, add those questions to saved questions
-            daysMissed += Int(timeElapsed/Common.dayInSeconds)
-            if (daysMissed > 0){
-                print("missed \(daysMissed) of questions!")
-                saveMissedQuestions(days: daysMissed)
-            }
-            
-            //increment the user count
-            setQuestionCount(days: daysMissed + 1)
-            
-            //set next question update to next day
-            notifyTime!.addTimeInterval(Common.dayInSeconds)
-            defaults.set(notifyTime, forKey: "NotifyTime")
-            Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Time").setValue(notifyTime?.timeIntervalSince1970)
-        }
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .short
-        
-        //update with next notification time
-        DispatchQueue.main.async {
-            self.timeLabel.text! = dateFormatter.string(from: self.notifyTime!)
-        }
-        setNextQuestionTimer()
-        getQuestion()
-    }
+                
+                let currTime = Date()
+                let timeElapsed = currTime.timeIntervalSinceReferenceDate - self.notifyTime!.timeIntervalSinceReferenceDate
+                
+                print(timeElapsed)
+                //if the time has passed since notification date
+                if (timeElapsed > 0) {
+                    var daysMissed = 0
+                    
+                    //Handle case if user changed time and then didn't check until after next notification
+                    if (oldTime != nil) {
+                        let newNotifyTime = Date(timeIntervalSince1970: time.value as! TimeInterval)
+                        
+                        //if time has elapsed between old notify time and new notify time, that will count as one day missed
+                        if (timeElapsed > (newNotifyTime.timeIntervalSinceReferenceDate) - self.notifyTime!.timeIntervalSinceReferenceDate){
+                            daysMissed += 1
+                        }
+                        self.ref!.child("Old_Time").setValue(nil)
+                    }
+                    //check for missed days and if so, add those questions to saved questions
+                    daysMissed += Int(timeElapsed/Common.dayInSeconds)
+                    if (daysMissed > 0){
+                        print("missed \(daysMissed) of questions!")
+                        self.saveMissedQuestions(days: daysMissed)
+                    }
+                    
+                    //increment the user count
+                    self.setQuestionCount(days: daysMissed + 1)
+                    
+                    //set next question update to next day
+                    self.notifyTime!.addTimeInterval(Common.dayInSeconds)
+                    self.ref!.child("Time").setValue(self.notifyTime?.timeIntervalSince1970)
+                }
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateStyle = .short
+                dateFormatter.timeStyle = .short
+                
+                //update with next notification time
+                DispatchQueue.main.async {
+                    self.timeLabel.text! = dateFormatter.string(from: self.notifyTime!)
+                }
+                
+                self.setNextQuestionTimer()
+                self.getQuestion()
+            })
+        })
+ }
     
     //sets a timer to retrieve next question if user leaves this view controller running
     func setNextQuestionTimer(){
@@ -115,9 +135,9 @@ class QuestionViewController: UIViewController {
     //gets the next question by incrementing this user's count by the number of days elapsed since last check
     func setQuestionCount(days:Int) {
         print("getting next question after \(days) days")
-        self.ref!.child(Common.USER_PATH).child(user!.uid).child(Common.USER_COUNT).observeSingleEvent(of: .value, with: { (snapshot) in
+        self.ref!.child(Common.USER_COUNT).observeSingleEvent(of: .value, with: { (snapshot) in
             let value = snapshot.value as! Int
-            self.ref!.child(Common.USER_PATH).child(self.user!.uid).child(Common.USER_COUNT).setValue(value+days)
+            self.ref!.child(Common.USER_COUNT).setValue(value+days)
         })
     }
 
@@ -127,14 +147,15 @@ class QuestionViewController: UIViewController {
         self.questionLabel.text = "Loading Question..."
         //get the count
 
-        self.ref!.child(Common.USER_PATH).child(user!.uid).child(Common.USER_COUNT).observeSingleEvent(of: .value, with: { (snapshot) in
+        self.ref!.child(Common.USER_COUNT).observeSingleEvent(of: .value, with: { (snapshot) in
             let value = snapshot.value as! Int
             //get the first question greater than or equal to count
-            self.ref!.child(Common.QUESTION_PATH).queryOrdered(byChild: "count").queryStarting(atValue: value).queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: {(snapshot) in
+            Database.database().reference().child(Common.QUESTION_PATH).queryOrdered(byChild: "count").queryStarting(atValue: value).queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: {(snapshot) in
                 
                 //this is needed here because it gets tags twice for some reason
                 self.tagsList.removeAllTags()
                 let result = snapshot.children.allObjects as! [DataSnapshot]
+                print(result)
                 if (result.count == 0) {
                     self.questionLabel.text = "Unable to load question"
                 } else {
@@ -161,13 +182,13 @@ class QuestionViewController: UIViewController {
  
     //saves a question with the given key
     func saveQuestion(key:String, showError:Bool){
-        self.ref!.child(Common.USER_PATH).child(self.user!.uid).child("Saved").queryOrderedByKey().queryEqual(toValue: key).observeSingleEvent(of: .value, with: { (snapshot) in
+        self.ref!.child("Saved").queryOrderedByKey().queryEqual(toValue: key).observeSingleEvent(of: .value, with: { (snapshot) in
             let data = snapshot.exists()
             print(snapshot.exists())
             if(data){
                 Server.showError(message: "Already saved this question!")
             } else {
-                self.ref!.child(Common.USER_PATH).child(self.user!.uid).child("Saved").updateChildValues([self.currentQuestionKey:true])
+                self.ref!.child("Saved").updateChildValues([self.currentQuestionKey:true])
                 DispatchQueue.main.async {
                     let animatationDuration = 0.5
                     UIView.animate(withDuration: animatationDuration, animations: { () -> Void in
@@ -184,10 +205,10 @@ class QuestionViewController: UIViewController {
     
     //saves each question that was missed
     func saveMissedQuestions(days:Int){
-        self.ref!.child(Common.USER_PATH).child(user!.uid).child(Common.USER_COUNT).observeSingleEvent(of: .value, with: { (snapshot) in
+        self.ref!.child(Common.USER_COUNT).observeSingleEvent(of: .value, with: { (snapshot) in
             let value = snapshot.value as! Int
             //get the first question greater than or equal to count
-            self.ref!.child(Common.QUESTION_PATH).queryOrdered(byChild: "count").queryStarting(atValue: value).queryLimited(toFirst: UInt(days)).observeSingleEvent(of: .value, with: {(snapshot) in
+            Database.database().reference().child(Common.QUESTION_PATH).queryOrdered(byChild: "count").queryStarting(atValue: value).queryLimited(toFirst: UInt(days)).observeSingleEvent(of: .value, with: {(snapshot) in
                 let result = snapshot.children.allObjects as! [DataSnapshot]
                 if (result.count == 0) {
                     self.questionLabel.text = "Unable to load question"

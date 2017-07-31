@@ -602,32 +602,12 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Notification" rowHeight="218" id="DTE-Lb-ZMO">
-                                        <rect key="frame" x="0.0" y="188" width="375" height="218"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DTE-Lb-ZMO" id="fUr-pG-4tc">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="218"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="Tys-Rz-fLV">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="218"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                                    <date key="date" timeIntervalSinceReferenceDate="522963711.99869698">
-                                                        <!--2017-07-28 19:41:51 +0000-->
-                                                    </date>
-                                                    <connections>
-                                                        <action selector="timePickerChange:" destination="WjV-qu-9su" eventType="valueChanged" id="2L4-C3-H6R"/>
-                                                    </connections>
-                                                </datePicker>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Payment" id="Uic-Nl-3xF">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="History" id="QFZ-D5-ccM">
-                                        <rect key="frame" x="0.0" y="434" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="216" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QFZ-D5-ccM" id="6FD-Ex-FhH">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="44"/>
@@ -654,7 +634,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Payment" id="u5R-lG-xIU">
-                                        <rect key="frame" x="0.0" y="478" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="260" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="u5R-lG-xIU" id="Arr-BS-MQI">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="44"/>
@@ -682,7 +662,7 @@
                             <tableViewSection headerTitle="Other" id="bdt-Pi-aFi">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Logout" id="uM8-hS-f6m">
-                                        <rect key="frame" x="0.0" y="550" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="332" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uM8-hS-f6m" id="Ewj-73-4pG">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="44"/>
@@ -721,7 +701,6 @@
                         <outlet property="changeUserEmail" destination="Ppm-le-tOT" id="5gk-zL-vdq"/>
                         <outlet property="logoutLabel" destination="NVU-HR-AbH" id="ixW-s5-9Vw"/>
                         <outlet property="time" destination="Vaa-gc-U0Q" id="15D-nE-MMy"/>
-                        <outlet property="timePicker" destination="Tys-Rz-fLV" id="Zgr-Kw-GcB"/>
                         <outlet property="viewPayment" destination="NZZ-A8-Gc9" id="ifc-EG-mV4"/>
                     </connections>
                 </tableViewController>
@@ -762,7 +741,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="41S-aE-b5I" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7164" y="2304.1979010494756"/>
+            <point key="canvasLocation" x="7236" y="2555"/>
         </scene>
         <!--Change User-->
         <scene sceneID="NAX-tC-RGD">
@@ -964,7 +943,90 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7bV-Xe-5VS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6224.8000000000002" y="1635.832083958021"/>
+            <point key="canvasLocation" x="6225" y="1558"/>
+        </scene>
+        <!--New Time View Controller-->
+        <scene sceneID="1gl-KG-uLH">
+            <objects>
+                <viewController storyboardIdentifier="TimeChange" id="z7Y-tP-3ef" customClass="NewTimeViewController" customModule="quintessence_learning" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="of0-S4-Z9V"/>
+                        <viewControllerLayoutGuide type="bottom" id="tMS-wQ-qGq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Qm3-m6-zyX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aOl-5Q-ye0">
+                                <rect key="frame" x="35" y="216" width="304" height="196"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c57-UM-xJH">
+                                        <rect key="frame" x="8" y="162" width="54" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Cancel"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="onClose:" destination="z7Y-tP-3ef" eventType="touchUpInside" id="Yqd-0m-XbU"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Epy-LU-1hh">
+                                        <rect key="frame" x="230" y="162" width="49" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Submit"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="onSubmit:" destination="z7Y-tP-3ef" eventType="touchUpInside" id="nfJ-mZ-pKz"/>
+                                        </connections>
+                                    </button>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Set a new time..." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="R34-zE-m8k">
+                                        <rect key="frame" x="61" y="98" width="183" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Currently, your notification time is:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dWn-Jh-WH9">
+                                        <rect key="frame" x="21" y="30" width="262" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hkA-oa-dfs">
+                                        <rect key="frame" x="21" y="59" width="262" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="timeField" destination="R34-zE-m8k" id="SJo-eb-oq5"/>
+                        <outlet property="timeLabel" destination="hkA-oa-dfs" id="kwC-00-4Rl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xd3-Z8-edp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7013.6000000000004" y="1807.6461769115444"/>
         </scene>
         <!--Today's Question-->
         <scene sceneID="UjN-fO-OUq">
@@ -1282,6 +1344,34 @@
             </objects>
             <point key="canvasLocation" x="7015" y="894"/>
         </scene>
+        <!--Table View Controller-->
+        <scene sceneID="MSA-77-c4l">
+            <objects>
+                <tableViewController id="ysI-Mr-jxO" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="vGR-SB-21e">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="q05-Bv-0Uy">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="q05-Bv-0Uy" id="Bsc-Pp-HsM">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="ysI-Mr-jxO" id="qwL-3c-gxC"/>
+                            <outlet property="delegate" destination="ysI-Mr-jxO" id="cwg-GG-g1A"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zsq-EG-Og8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7796" y="894"/>
+        </scene>
         <!--Create-->
         <scene sceneID="t8P-fY-J3i">
             <objects>
@@ -1408,7 +1498,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ejh-Aw-UDo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5258" y="2767"/>
+            <point key="canvasLocation" x="5433" y="2767"/>
         </scene>
         <!--Contact View Controller-->
         <scene sceneID="pQ6-VZ-YCw">
@@ -1529,7 +1619,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Fo-oo-zVH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5978" y="2767"/>
+            <point key="canvasLocation" x="6225" y="2767"/>
         </scene>
         <!--Questions-->
         <scene sceneID="eXq-ab-MPi">
@@ -1807,7 +1897,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q3l-Y4-7vl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5257" y="3493"/>
+            <point key="canvasLocation" x="5433" y="3493"/>
         </scene>
         <!--Ebook Paywall View Controller-->
         <scene sceneID="8Ua-PM-jtW">
@@ -1842,7 +1932,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5ED-p3-JGb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5977" y="3493"/>
+            <point key="canvasLocation" x="6225" y="3493"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="WUu-m7-ySj">
@@ -1869,7 +1959,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gYg-P4-B20" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6778" y="3493"/>
+            <point key="canvasLocation" x="6958" y="3493"/>
         </scene>
         <!--Item-->
         <scene sceneID="kuE-4a-Ztz">

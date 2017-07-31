@@ -84,13 +84,13 @@ class SubmitViewController: ModalViewController {
                 let user = userInfo["Name"] as! String
                 let email = userInfo["Email"] as! String
                 
-                var body = "<p>\(user),\(email) submitted a question:</p>"
-                body+="<p>Question:\(self.textField.text!)</p>"
-                body+="<p>Tags:\(tagString)</p>"
+                var content = "<p>\(user),\(email) submitted a question:</p>"
+                content+="<p>Question:\(self.textField.text!)</p>"
+                content+="<p>Tags:\(tagString)</p>"
                 
                 let subject = "New question from \(email)"
                 
-                let params = ["subject":subject, "content":body] as [String:Any]
+                let params = ["subject":subject, "content":content] as [String:Any]
                 
                 Server.post(urlRoute: Server.hostURL + "/email", params: params, callback: self.submitQuestionCallback(data:), errorMessage: "Could not submit question!")
                 

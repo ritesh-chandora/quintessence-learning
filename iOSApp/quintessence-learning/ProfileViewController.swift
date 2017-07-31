@@ -16,8 +16,8 @@ class ProfileViewController: UITableViewController {
     static var notifyTime:Date?
     var user:User?
     var ref:DatabaseReference?
+    let dateFormatter = DateFormatter()
     
-    @IBOutlet weak var timePicker: UIDatePicker!
     @IBOutlet weak var changeUserEmail: UILabel!
     @IBOutlet weak var changePass: UILabel!
     @IBOutlet weak var changeNotif: UILabel!
@@ -26,63 +26,18 @@ class ProfileViewController: UITableViewController {
     @IBOutlet weak var logoutLabel: UILabel!
     @IBOutlet weak var time: UILabel!
     
-    @IBAction func timePickerChange(_ sender: Any) {
-        let currNotifyTime = defaults.object(forKey: "NotifyTime") as? Date
-        let currTime = Date()
-        var pickerDate = timePicker.date
-        var tempTimeNeeded = false
-        
-        let elapsedTime = currTime.timeIntervalSinceReferenceDate - currNotifyTime!.timeIntervalSinceReferenceDate
-        
-        
-        //this is such that the user cannot keep setting later dates to get more questions
-        if (elapsedTime > 0 || elapsedTime < -Common.dayInSeconds){
-            pickerDate.addTimeInterval(Common.dayInSeconds)
-        } else if (elapsedTime < 0 && currTime.timeIntervalSinceReferenceDate - pickerDate.timeIntervalSinceReferenceDate > 0){
-            print("fuck")
-            
-            //user sets time that is before the current time but also before the question for the day is received.
-            //need to store the old time temporarily in order to fire it for the day, otherwise user will miss a question
-            defaults.set(pickerDate, forKey: "TempTime")
-            Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Time").setValue(pickerDate.timeIntervalSince1970)
-            print("temp time: \(pickerDate)")
-            pickerDate.addTimeInterval(Common.dayInSeconds)
-            tempTimeNeeded = true
-        }
-        
-        if(!tempTimeNeeded){
-            Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Time").setValue(pickerDate.timeIntervalSince1970)
-        }
-        
-        defaults.set(pickerDate, forKey: "NotifyTime")
-        let dateFormatter = DateFormatter()
+    override func viewWillAppear(_ animated: Bool) {
         dateFormatter.timeStyle = .short
-        print("selected: \(pickerDate)")
-        print("Time picker: \(timePicker.date)")
-        time.text = dateFormatter.string(from: timePicker.date)
+        //set value of time label
+        ref!.child(Common.USER_PATH).child(user!.uid).child("Time").observeSingleEvent(of: .value, with: { (notifyTime) in
+            let timeToShow = Date(timeIntervalSince1970: notifyTime.value as! TimeInterval)
+            self.time.text = self.dateFormatter.string(from: timeToShow)
+        })
     }
-    
-    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        let notifyTime = defaults.object(forKey: "NotifyTime") as! Date
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        if let time = time {
-            time.text = dateFormatter.string(from: notifyTime)
-        }
         user = Auth.auth().currentUser!
         ref = Database.database().reference()
-    }
-    
-    //adjusts height for table show/hide picker
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if !timePickerVisible && indexPath.section == 1 && indexPath.row == 1 {
-            return 0
-        } else {
-            return super.tableView(tableView, heightForRowAt: indexPath)
-        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -130,10 +85,12 @@ class ProfileViewController: UITableViewController {
             break
             case 1:
                 //change notif
-                timePickerVisible = !timePickerVisible
-                tableView.beginUpdates()
-                tableView.endUpdates()
-                tableView.deselectRow(at: indexPath, animated: true)
+                let timeChangeView = self.storyboard?.instantiateViewController(withIdentifier: "TimeChange") as? NewTimeViewController
+                timeChangeView!.row = indexPath
+                timeChangeView!.modalDelegate = self
+                timeChangeView!.timeLabelDelegate = self
+                timeChangeView!.modalPresentationStyle = .overFullScreen
+                self.navigationController?.present(timeChangeView!, animated: true)
                 break
             case 2:
                 //payment settings
@@ -179,10 +136,6 @@ class ProfileViewController: UITableViewController {
         present(ac, animated: true)
     }
     
-    //NOTIFICATION TIMER
-    
-    //set the notification cell to display a time picker
-    
     
     //LOGOUT FUNCTION
     
@@ -202,3 +155,20 @@ class ProfileViewController: UITableViewController {
         present(ac, animated: true)
     }
 }
+
+extension ProfileViewController : ModalDelegate {
+    func refreshQuestions() {
+        return
+    }
+    
+    func modalClose(row: IndexPath) {
+        tableView.deselectRow(at: row, animated: true)
+    }
+}
+
+extension ProfileViewController : UpdateTimeLabel {
+    func updateTimeLabel(newDate: Date) {
+        self.time.text = dateFormatter.string(from: newDate)
+    }
+}
+

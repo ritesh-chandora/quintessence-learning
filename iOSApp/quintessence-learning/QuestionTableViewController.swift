@@ -86,14 +86,14 @@ class QuestionTableViewController: UITableViewController {
         let question = (searchController.isActive && searchController.searchBar.text != "") ? filteredQuestions[indexPath.row] : questions[indexPath.row]
         modalViewController.data = question
         modalViewController.row = indexPath
-        modalViewController.updateDelegate = self
+        modalViewController.modalDelegate = self
         modalViewController.modalPresentationStyle = .overFullScreen
         self.navigationController?.present(modalViewController, animated: true, completion: nil)
     }
     
     @IBAction func addQuestion(_ sender: UIBarButtonItem) {
         let createViewController = storyboard?.instantiateViewController(withIdentifier: "Create") as! CreateViewController
-        createViewController.updateDelegate = self
+        createViewController.modalDelegate = self
         createViewController.modalPresentationStyle = .overFullScreen
         self.navigationController?.present(createViewController, animated: true, completion: nil)
     }
@@ -170,7 +170,7 @@ class QuestionTableViewController: UITableViewController {
     }
 }
 
-extension QuestionTableViewController : UpdateQuestionDelegate {
+extension QuestionTableViewController : ModalDelegate {
     func refreshQuestions() {
         self.getQuestions()
     }

@@ -16,6 +16,7 @@
 		2C11B6E31F27B6500039CB0A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */; };
 		2C11B6E51F27E88B0039CB0A /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */; };
 		2C36AFBD1F2E732F005B87F3 /* EbookPaywallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C36AFBC1F2E732F005B87F3 /* EbookPaywallViewController.swift */; };
+		2C36AFBF1F2EAE52005B87F3 /* NewTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C36AFBE1F2EAE52005B87F3 /* NewTimeViewController.swift */; };
 		2C45FE0F1F1FACD5004C6332 /* LoginHandlerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */; };
 		2C5810F71F2D278900B6C561 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5810F61F2D278900B6C561 /* AboutViewController.swift */; };
 		2C5810F91F2D2CEF00B6C561 /* SubmitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5810F81F2D2CEF00B6C561 /* SubmitViewController.swift */; };
@@ -45,6 +46,7 @@
 		2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		2C36AFBC1F2E732F005B87F3 /* EbookPaywallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EbookPaywallViewController.swift; sourceTree = "<group>"; };
+		2C36AFBE1F2EAE52005B87F3 /* NewTimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTimeViewController.swift; sourceTree = "<group>"; };
 		2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHandlerViewController.swift; sourceTree = "<group>"; };
 		2C5810F61F2D278900B6C561 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		2C5810F81F2D2CEF00B6C561 /* SubmitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmitViewController.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 			children = (
 				2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */,
 				2C6F2E851F2BAC1E00392BD0 /* UserChangeViewController.swift */,
+				2C36AFBE1F2EAE52005B87F3 /* NewTimeViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 				2C5810F91F2D2CEF00B6C561 /* SubmitViewController.swift in Sources */,
 				2CB2B69A1F2151A200DA1D50 /* QuestionTableViewController.swift in Sources */,
 				2C11B6DE1F267FF90039CB0A /* SavedQuestionViewController.swift in Sources */,
+				2C36AFBF1F2EAE52005B87F3 /* NewTimeViewController.swift in Sources */,
 				2C11B6D81F267F300039CB0A /* QuestionViewController.swift in Sources */,
 				2C6F2E861F2BAC1E00392BD0 /* UserChangeViewController.swift in Sources */,
 				2C11B6DA1F267F400039CB0A /* FeedbackViewController.swift in Sources */,
