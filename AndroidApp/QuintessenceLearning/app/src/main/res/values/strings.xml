@@ -16,4 +16,11 @@
     <string name="change">Change</string>
     <string name="cancel">Cancel</string>
     <string name="change_password">Change Password</string>
+    <string name="about_us">About Us</string>
+    <string name="about_text">
+        \t\t\t\tQuintessence Learning is a mobile app created for parents who want to engage their children in meaningful dialogue to take advantage of the waining time they have with their children.  The app conveniently pushes out daily questions and activities to get the most out of the time with your children and get them off their devices.  We understand how busy parents are today and easy it is to fall into tell me “two things about your day” trap…or even worse the TV and device rabbit hole.
+        \n\t\t\t\tWith standardized testing results as the barometer of a teacher’s success, we also notice that the necessary creative and critical thinking skills are not being developed during school hours.  We are leveraging all the latest research and a 40-year educator who has focused on early childhood and Gifted and Talented Education.  Through decades of lessons plans spanning pre-kindergarten to high school, these are the absolute best questions and activities to foster creative thinking and emotional development.
+    </string>
+    <string name="submit_question">Submit Question</string>
+    <string name="submit_feedback">Submit Feedback</string>
 </resources>

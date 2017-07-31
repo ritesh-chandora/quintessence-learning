@@ -17,6 +17,8 @@ import java.text.SimpleDateFormat;
 
 public class WelcomeScreen extends AppCompatActivity {
     public static EditText time;
+    public static Integer setHour = 0;
+    public static Integer setMinute = 0;
 
     public static class TimePickerFragment extends DialogFragment
             implements TimePickerDialog.OnTimeSetListener {
@@ -49,6 +51,8 @@ public class WelcomeScreen extends AppCompatActivity {
 
             formatter = new SimpleDateFormat("hh:mm a");
             s = formatter.format(calendar.getTime()); // 08:00:00
+            setHour = t.getHour();
+            setMinute = t.getMinute();
 
             String timeString = s;
                     //Integer.toString(hourOfDay) + " : " + Integer.toString(minute) + "  " + a;
@@ -71,6 +75,8 @@ public class WelcomeScreen extends AppCompatActivity {
 
     public void finish(View view){
         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        intent.putExtra("setHour",setHour);
+        intent.putExtra("setMinute",setMinute);
         startActivity(intent);
         finish();
     }

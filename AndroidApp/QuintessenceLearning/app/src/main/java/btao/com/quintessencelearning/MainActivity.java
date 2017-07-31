@@ -31,15 +31,23 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity{
 
     private TextView mTextMessage;
     private FirebaseAuth auth;
-    private DatabaseReference mDatabaseRef;
-    private DatabaseReference mQuestionRef;
-    private DatabaseReference mUserRef;
+    private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mQuestionRef = mDatabaseRef.child("Questions");
+    private DatabaseReference mUserRef = mDatabaseRef.child("Users");
+
     private DatabaseReference mQuestion;
     private DatabaseReference mUser;
     Long currentQuestion;
@@ -50,6 +58,17 @@ public class MainActivity extends AppCompatActivity{
     private FragmentManager fragmentManager;
 
     private final String TAG = "MainActivity";
+
+    Integer hour = 0;
+    Integer minute = 0;
+
+    Long user_current_question;
+    String user_email;
+    Long user_join_date;
+    String user_name;
+    Boolean user_trial;
+    String user_type;
+    String user_uid;
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -84,6 +103,8 @@ public class MainActivity extends AppCompatActivity{
                     break;
                 case R.id.navigation_feedback:
                     fragment = new FeedbackFragment();
+                    transaction.replace(R.id.main_container, fragment).commit();
+                    fragmentManager.executePendingTransactions();
                     break;
             }
             return true;
@@ -101,10 +122,49 @@ public class MainActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_main);
 
+        if (auth.getCurrentUser() == null) {
+            Intent intent = new Intent(getApplicationContext(), SignIn.class);
+            startActivity(intent);
+            finish();
+        }
+
+        if( getIntent().getExtras() != null)
+        {
+            //do here
+            hour = getIntent().getExtras().getInt("setHour");
+            minute = getIntent().getExtras().getInt("setMinute");
+            Log.d(TAG,hour.toString());
+            Log.d(TAG,minute.toString());
+        }
+        if (auth.getCurrentUser()!=null) {
+            final String userUID = user.getUid();
+            mUser = mUserRef.child(userUID);
+
+
+            mUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    user_current_question = (Long) dataSnapshot.child("Current_Question").getValue();
+                    user_email = (String) dataSnapshot.child("Email").getValue();
+                    user_join_date = (Long) dataSnapshot.child("Join_Date").getValue();
+                    user_name = (String) dataSnapshot.child("Name").getValue();
+                    user_trial = (Boolean) dataSnapshot.child("Trial").getValue();
+                    user_type = (String) dataSnapshot.child("Type").getValue();
+                    user_uid = (String) dataSnapshot.child("UID").getValue();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d(TAG, "read failed");
+                }
+            });
+        }
+
         fragmentManager = getSupportFragmentManager();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
     }
     public void signOut(View view){
         auth.signOut();
@@ -115,11 +175,6 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public void newQuestionFrag(String text){
-
-        qFrag.setQuestion(text);
-    }
-
     public void questionNav(){
 
         mTextMessage = (TextView) findViewById(R.id.text_message);
@@ -128,9 +183,7 @@ public class MainActivity extends AppCompatActivity{
             startActivity(intent);
             finish();
         }
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mQuestionRef = mDatabaseRef.child("Questions");
-        mUserRef = mDatabaseRef.child("Users");
+
 
         final String userUID = user.getUid();
         mUser = mUserRef.child(userUID);
@@ -144,9 +197,9 @@ public class MainActivity extends AppCompatActivity{
                     Log.d(TAG, "Inside class");
                     String text = (String) child.child("Text").getValue();
                     Long count = (Long) child.child("count").getValue();
-                    if (count==currentQuestion) {
+                    if (count.equals(currentQuestion)) {
                         Log.d(TAG, text);
-                        newQuestionFrag(text);
+                        qFrag.setQuestion(text);
                         break;
                     }
                 }
@@ -262,5 +315,128 @@ public class MainActivity extends AppCompatActivity{
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public void aboutUs(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(R.string.about_us);
+        LayoutInflater inflater = getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.about_us,null));
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void submitQuestion(View view){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(R.string.submit_question);
+        LayoutInflater inflater = getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.submit_question_dialog,null));
+        builder.setPositiveButton(R.string.change, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                Log.d(TAG,"Positive click");
+                Dialog dialogD = (Dialog) dialog;
+                EditText question_edit = (EditText) dialogD.findViewById(R.id.text_question);
+                EditText question_tags = (EditText) dialogD.findViewById(R.id.text_tags);
+                String question;
+                String tags;
+                question = question_edit.getText().toString();
+                tags = question_tags.getText().toString();
+                //Toast.makeText(getApplicationContext(),"You cannot leave fields blank",Toast.LENGTH_SHORT).show();
+
+                JsonObject params = new JsonObject();
+                String email = auth.getCurrentUser().getEmail();
+                String subject = "New question from " + email;
+
+                String content = "<p>"+user_name+","+email+" submitted a question:</p>";
+                content+="<p>Question:"+question+"</p>";
+                content+="<p>Tags:"+tags+"</p>";
+                Log.d(TAG,content);
+
+                try {
+                    params.addProperty("subject", subject);
+                    params.addProperty("content", content);
+                } catch (JsonParseException e) {
+                    e.printStackTrace();
+                }
+                Ion.with(getApplicationContext())
+                        .load("http://172.25.201.154:3001/email")
+                        .setHeader("Accept","application/json")
+                        .setHeader("Content-Type","application/json")
+                        .setJsonObjectBody(params)
+                        .asString()
+                        .setCallback(new FutureCallback<String>() {
+                            @Override
+                            public void onCompleted(Exception e, String result) {
+                                Toast.makeText(getApplicationContext(),"Question Submitted",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+                Log.d(TAG,"Negative click");
+            }
+        });
+        builder.show();
+    }
+
+    public void submitFeedback(View view){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(R.string.submit_feedback);
+        LayoutInflater inflater = getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.submit_feedback_dialog,null));
+        builder.setPositiveButton(R.string.change, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                Log.d(TAG,"Positive click");
+                Dialog dialogD = (Dialog) dialog;
+                EditText question_edit = (EditText) dialogD.findViewById(R.id.text_question);
+                EditText question_tags = (EditText) dialogD.findViewById(R.id.text_tags);
+                String question;
+                String tags;
+                question = question_edit.getText().toString();
+                tags = question_tags.getText().toString();
+                //Toast.makeText(getApplicationContext(),"You cannot leave fields blank",Toast.LENGTH_SHORT).show();
+
+                JsonObject params = new JsonObject();
+                String email = auth.getCurrentUser().getEmail();
+                String subject = "New question from " + email;
+
+                String content = "<p>"+user_name+","+email+" submitted a question:</p>";
+                content+="<p>Question:"+question+"</p>";
+                content+="<p>Tags:"+tags+"</p>";
+                Log.d(TAG,content);
+
+                try {
+                    params.addProperty("subject", subject);
+                    params.addProperty("content", content);
+                } catch (JsonParseException e) {
+                    e.printStackTrace();
+                }
+                Ion.with(getApplicationContext())
+                        .load("http://172.25.201.154:3001/email")
+                        .setHeader("Accept","application/json")
+                        .setHeader("Content-Type","application/json")
+                        .setJsonObjectBody(params)
+                        .asString()
+                        .setCallback(new FutureCallback<String>() {
+                            @Override
+                            public void onCompleted(Exception e, String result) {
+                                Toast.makeText(getApplicationContext(),"Question Submitted",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+                Log.d(TAG,"Negative click");
+            }
+        });
+        builder.show();
     }
 }

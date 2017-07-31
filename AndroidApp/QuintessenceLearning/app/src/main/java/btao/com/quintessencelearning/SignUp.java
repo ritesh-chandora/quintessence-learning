@@ -16,7 +16,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.koushikdutta.async.future.FutureCallback;
@@ -25,14 +27,21 @@ import com.koushikdutta.ion.Ion;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 public class SignUp extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword, inputName;
-    private FirebaseAuth auth;
-    private ProgressBar progressBar;
-    private Button btnSignup, btnLogin, btnReset;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private final String TAG = "SignUp";
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+    private EditText inputName;
+    private EditText inputEmail;
+    private EditText inputPassword;
+    String name;
+    String email;
+    String password;
+
 
 
     @Override
@@ -47,10 +56,10 @@ public class SignUp extends AppCompatActivity {
         inputEmail = (EditText) findViewById(R.id.text_email);
         inputPassword = (EditText) findViewById(R.id.text_password);
 
-        auth = FirebaseAuth.getInstance();
-        String name = inputName.getText().toString();
-        String email = inputEmail.getText().toString();
-        String password = inputPassword.getText().toString();
+        name = inputName.getText().toString();
+        email = inputEmail.getText().toString();
+        password = inputPassword.getText().toString();
+
         try {
             auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
@@ -62,6 +71,11 @@ public class SignUp extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 FirebaseUser user = auth.getCurrentUser();
                                 String uid = user.getUid();
+
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(name).build();
+                                user.updateProfile(profileUpdates);
+
                                 signUp(view, uid);
                                 Log.d(TAG, "created user successfully");
                                 Toast.makeText(SignUp.this, "Account Created", Toast.LENGTH_SHORT).show();
@@ -82,55 +96,29 @@ public class SignUp extends AppCompatActivity {
     }
 
     public void signUp(View view,String uid){
+        DatabaseReference mUserRef = mDatabase.child("Users");
+
         inputName = (EditText) findViewById(R.id.text_name);
         inputEmail = (EditText) findViewById(R.id.text_email);
-        inputPassword = (EditText) findViewById(R.id.text_password);
 
-        String name = inputName.getText().toString();
-        String email = inputEmail.getText().toString();
-        String password = inputPassword.getText().toString();
-        //JSONObject params = new JSONObject();
-        JsonObject params = new JsonObject();
+        String user_name = inputName.getText().toString();
+        String user_email = inputEmail.getText().toString();
 
-        try {
-            params.addProperty("email", email);
-            params.addProperty("password", password);
-            params.addProperty("name",name);
-            params.addProperty("uid",uid);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        }
-        Ion.with(getApplicationContext())
-                .load("http://172.25.201.218:3001/signup")
-                .setHeader("Accept","application/json")
-                .setHeader("Content-Type","application/json")
-                .setJsonObjectBody(params)
-                .asString()
-                .setCallback(new FutureCallback<String>() {
-                    @Override
-                    public void onCompleted(Exception e, String result) {
-                        try {
-                            JSONObject json = new JSONObject(result);    // Converts the string "result" to a JSONObject
-                            String json_result = json.getString("message"); // Get the string "result" inside the Json-object
-                            if (json_result.equalsIgnoreCase("success")){ // Checks if the "result"-string is equals to "ok"
-                                // Result is "OK"
-                                Log.d(TAG,"successfully created account in db");
-                                /*Toast.makeText(getApplicationContext(),"Successfully Created Account", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                                startActivity(intent);
-                                finish();*/
-                            } else {
-                                // Result is NOT "OK"
-                                Toast.makeText(getApplicationContext(), json_result, Toast.LENGTH_LONG).show(); // This will show the user what went wrong with a toast
-                                //Intent to_main = new Intent(getApplicationContext(), SignIn.class); // New intent to MainActivity
-                                //startActivity(to_main); // Starts MainActivity
-                                //finish(); // Add this to prevent the user to go back to this activity when pressing the back button after we've opened MainActivity
-                            }
-                        } catch (JSONException err){
-                            // This method will run if something goes wrong with the json, like a typo to the json-key or a broken JSON.
-                            err.printStackTrace();
-                        }
-                    }
-                });
+        Calendar c = Calendar.getInstance();
+        Long user_join_date = new Long(c.get(Calendar.SECOND));
+        Log.d(TAG,user_join_date.toString());
+
+        Long user_current_question = new Long(0);
+        String user_type = "user";
+        String user_uid = uid;
+        Boolean user_trial = true;
+
+        mUserRef.child(uid).child("Current_Question").setValue(user_current_question);
+        mUserRef.child(uid).child("Email").setValue(user_email);
+        mUserRef.child(uid).child("Join_Date").setValue(user_join_date);
+        mUserRef.child(uid).child("Name").setValue(user_name);
+        mUserRef.child(uid).child("Trial").setValue(user_trial);
+        mUserRef.child(uid).child("Type").setValue(user_type);
+        mUserRef.child(uid).child("UID").setValue(user_uid);
     }
 }
