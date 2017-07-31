@@ -9,4 +9,11 @@
     <string name="get_started">Let\'s get started. First, pick a time that you want to be notified each day with the next question. Then, Click finsh, and you\'ll get your first question!</string>
     <string name="send_feedback">Send Feedback</string>
     <string name ="todays_question">Today\'s Question: </string>
+    <string name="your_account">Your Account</string>
+    <string name="account_name">Name: </string>
+    <string name="account_email">Email: </string>
+    <string name="change_email">Change Email</string>
+    <string name="change">Change</string>
+    <string name="cancel">Cancel</string>
+    <string name="change_password">Change Password</string>
 </resources>
