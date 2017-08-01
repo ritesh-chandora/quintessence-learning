@@ -17,6 +17,10 @@
 		2C11B6E51F27E88B0039CB0A /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */; };
 		2C36AFBD1F2E732F005B87F3 /* EbookPaywallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C36AFBC1F2E732F005B87F3 /* EbookPaywallViewController.swift */; };
 		2C36AFBF1F2EAE52005B87F3 /* NewTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C36AFBE1F2EAE52005B87F3 /* NewTimeViewController.swift */; };
+		2C36AFC11F30237F005B87F3 /* TagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C36AFC01F30237F005B87F3 /* TagTableViewController.swift */; };
+		2C36AFC71F3025D7005B87F3 /* CreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C36AFC41F3025D7005B87F3 /* CreateViewController.swift */; };
+		2C36AFC81F3025D7005B87F3 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C36AFC51F3025D7005B87F3 /* DetailViewController.swift */; };
+		2C36AFC91F3025D7005B87F3 /* QuestionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C36AFC61F3025D7005B87F3 /* QuestionTableViewController.swift */; };
 		2C45FE0F1F1FACD5004C6332 /* LoginHandlerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */; };
 		2C5810F71F2D278900B6C561 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5810F61F2D278900B6C561 /* AboutViewController.swift */; };
 		2C5810F91F2D2CEF00B6C561 /* SubmitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5810F81F2D2CEF00B6C561 /* SubmitViewController.swift */; };
@@ -29,9 +33,6 @@
 		2C72CB5C1F1DC15F009868D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C72CB5A1F1DC15F009868D6 /* Main.storyboard */; };
 		2C72CB5E1F1DC15F009868D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C72CB5D1F1DC15F009868D6 /* Assets.xcassets */; };
 		2C72CB611F1DC15F009868D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C72CB5F1F1DC15F009868D6 /* LaunchScreen.storyboard */; };
-		2CB2B69A1F2151A200DA1D50 /* QuestionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB2B6991F2151A200DA1D50 /* QuestionTableViewController.swift */; };
-		2CB2B69C1F21B51800DA1D50 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB2B69B1F21B51800DA1D50 /* DetailViewController.swift */; };
-		2CD0CD631F2644E90078E0DA /* CreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD0CD621F2644E90078E0DA /* CreateViewController.swift */; };
 		B6B9ACEA1539585127AFA88D /* Pods_quintessence_learning.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9DC36B159E0625930BC53D5 /* Pods_quintessence_learning.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +48,10 @@
 		2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		2C36AFBC1F2E732F005B87F3 /* EbookPaywallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EbookPaywallViewController.swift; sourceTree = "<group>"; };
 		2C36AFBE1F2EAE52005B87F3 /* NewTimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTimeViewController.swift; sourceTree = "<group>"; };
+		2C36AFC01F30237F005B87F3 /* TagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagTableViewController.swift; sourceTree = "<group>"; };
+		2C36AFC41F3025D7005B87F3 /* CreateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateViewController.swift; sourceTree = "<group>"; };
+		2C36AFC51F3025D7005B87F3 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		2C36AFC61F3025D7005B87F3 /* QuestionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionTableViewController.swift; sourceTree = "<group>"; };
 		2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHandlerViewController.swift; sourceTree = "<group>"; };
 		2C5810F61F2D278900B6C561 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		2C5810F81F2D2CEF00B6C561 /* SubmitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmitViewController.swift; sourceTree = "<group>"; };
@@ -61,9 +66,6 @@
 		2C72CB5D1F1DC15F009868D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C72CB601F1DC15F009868D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2C72CB621F1DC15F009868D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2CB2B6991F2151A200DA1D50 /* QuestionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionTableViewController.swift; sourceTree = "<group>"; };
-		2CB2B69B1F21B51800DA1D50 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		2CD0CD621F2644E90078E0DA /* CreateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateViewController.swift; sourceTree = "<group>"; };
 		603BB9305DEE39DEE7482495 /* Pods-quintessence-learning.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quintessence-learning.debug.xcconfig"; path = "Pods/Target Support Files/Pods-quintessence-learning/Pods-quintessence-learning.debug.xcconfig"; sourceTree = "<group>"; };
 		F491CD342D5EFDBE2109D5F2 /* Pods-quintessence-learning.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quintessence-learning.release.xcconfig"; path = "Pods/Target Support Files/Pods-quintessence-learning/Pods-quintessence-learning.release.xcconfig"; sourceTree = "<group>"; };
 		F9DC36B159E0625930BC53D5 /* Pods_quintessence_learning.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_quintessence_learning.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,20 +88,10 @@
 			children = (
 				2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */,
 				2C72CB581F1DC15F009868D6 /* ViewController.swift */,
-				2C11B6D51F267E420039CB0A /* AdminConsole */,
+				2C36AFCA1F3025DC005B87F3 /* Admin */,
 				2C11B6D61F267E5B0039CB0A /* UserView */,
 			);
 			name = ViewControllers;
-			sourceTree = "<group>";
-		};
-		2C11B6D51F267E420039CB0A /* AdminConsole */ = {
-			isa = PBXGroup;
-			children = (
-				2CB2B6991F2151A200DA1D50 /* QuestionTableViewController.swift */,
-				2CB2B69B1F21B51800DA1D50 /* DetailViewController.swift */,
-				2CD0CD621F2644E90078E0DA /* CreateViewController.swift */,
-			);
-			name = AdminConsole;
 			sourceTree = "<group>";
 		};
 		2C11B6D61F267E5B0039CB0A /* UserView */ = {
@@ -111,8 +103,19 @@
 				2C11B6DB1F267FC70039CB0A /* SavedTableViewController.swift */,
 				2C11B6DD1F267FF90039CB0A /* SavedQuestionViewController.swift */,
 				2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */,
+				2C36AFC01F30237F005B87F3 /* TagTableViewController.swift */,
 			);
 			name = UserView;
+			sourceTree = "<group>";
+		};
+		2C36AFCA1F3025DC005B87F3 /* Admin */ = {
+			isa = PBXGroup;
+			children = (
+				2C36AFC41F3025D7005B87F3 /* CreateViewController.swift */,
+				2C36AFC51F3025D7005B87F3 /* DetailViewController.swift */,
+				2C36AFC61F3025D7005B87F3 /* QuestionTableViewController.swift */,
+			);
+			name = Admin;
 			sourceTree = "<group>";
 		};
 		2C45FE0D1F1FA1AE004C6332 /* Supporting Files */ = {
@@ -330,18 +333,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C36AFBD1F2E732F005B87F3 /* EbookPaywallViewController.swift in Sources */,
+				2C36AFC91F3025D7005B87F3 /* QuestionTableViewController.swift in Sources */,
 				2C11B6D31F2646B90039CB0A /* Server.swift in Sources */,
+				2C36AFC11F30237F005B87F3 /* TagTableViewController.swift in Sources */,
 				2C72CB591F1DC15F009868D6 /* ViewController.swift in Sources */,
 				2C45FE0F1F1FACD5004C6332 /* LoginHandlerViewController.swift in Sources */,
 				2C11B6DC1F267FC70039CB0A /* SavedTableViewController.swift in Sources */,
 				2C6F2E821F2B780700392BD0 /* Constants.swift in Sources */,
+				2C36AFC81F3025D7005B87F3 /* DetailViewController.swift in Sources */,
 				2C5810FB1F2D2F0B00B6C561 /* ContactViewController.swift in Sources */,
-				2CD0CD631F2644E90078E0DA /* CreateViewController.swift in Sources */,
-				2CB2B69C1F21B51800DA1D50 /* DetailViewController.swift in Sources */,
+				2C36AFC71F3025D7005B87F3 /* CreateViewController.swift in Sources */,
 				2C11B6E51F27E88B0039CB0A /* WelcomeViewController.swift in Sources */,
 				2C11B6E31F27B6500039CB0A /* ProfileViewController.swift in Sources */,
 				2C5810F91F2D2CEF00B6C561 /* SubmitViewController.swift in Sources */,
-				2CB2B69A1F2151A200DA1D50 /* QuestionTableViewController.swift in Sources */,
 				2C11B6DE1F267FF90039CB0A /* SavedQuestionViewController.swift in Sources */,
 				2C36AFBF1F2EAE52005B87F3 /* NewTimeViewController.swift in Sources */,
 				2C11B6D81F267F300039CB0A /* QuestionViewController.swift in Sources */,

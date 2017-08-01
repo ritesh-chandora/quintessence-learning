@@ -7,29 +7,25 @@
 //
 
 import UIKit
-
+import TagListView
 class SavedQuestionViewController: ModalViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBOutlet weak var questionText: UITextView!
+    @IBOutlet weak var tagsView: TagListView!
+    
+    @IBAction override func onClose(_ sender: UIButton) {
+        super.onClose(sender)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func viewDidLoad() {
+        DispatchQueue.main.async { [unowned self] in
+            self.questionText.text! = self.data!.text
+            self.tagsView.removeAllTags()
+            self.tagsView.addTags(self.data!.tags)
+        }
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        view.isOpaque = false
     }
-    */
+
 
 }
