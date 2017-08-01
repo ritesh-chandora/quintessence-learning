@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -17,9 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,19 +33,15 @@ import com.google.gson.JsonParseException;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity{
 
-    private TextView mTextMessage;
     private FirebaseAuth auth;
     private DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mQuestionRef = mDatabaseRef.child("Questions");
     private DatabaseReference mUserRef = mDatabaseRef.child("Users");
 
-    private DatabaseReference mQuestion;
     private DatabaseReference mUser;
     Long currentQuestion;
 
@@ -59,8 +52,8 @@ public class MainActivity extends AppCompatActivity{
 
     private final String TAG = "MainActivity";
 
-    Integer hour = 0;
-    Integer minute = 0;
+    Integer notification_hour = 0;
+    Integer notification_minute = 0;
 
     Long user_current_question;
     String user_email;
@@ -85,21 +78,21 @@ public class MainActivity extends AppCompatActivity{
 
                     transaction.replace(R.id.main_container, fragment).commit();
                     fragmentManager.executePendingTransactions();
+
                     questionNav();
+
                     break;
                 case R.id.navigation_account:
-                    String name = auth.getCurrentUser().getDisplayName();
-                    String email = auth.getCurrentUser().getEmail();
-
                     aFrag = new AccountFragment();
                     fragment = aFrag;
                     transaction.replace(R.id.main_container, fragment).commit();
                     fragmentManager.executePendingTransactions();
-                    aFrag.setName(name);
-                    aFrag.setEmail(email);
 
+                    aFrag.setName(user_name);
+                    aFrag.setEmail(user_email);
 
                     fragment = new AccountFragment();
+
                     break;
                 case R.id.navigation_feedback:
                     fragment = new FeedbackFragment();
@@ -131,10 +124,10 @@ public class MainActivity extends AppCompatActivity{
         if( getIntent().getExtras() != null)
         {
             //do here
-            hour = getIntent().getExtras().getInt("setHour");
-            minute = getIntent().getExtras().getInt("setMinute");
-            Log.d(TAG,hour.toString());
-            Log.d(TAG,minute.toString());
+            notification_hour = getIntent().getExtras().getInt("setHour");
+            notification_minute = getIntent().getExtras().getInt("setMinute");
+            Log.d(TAG, notification_hour.toString());
+            Log.d(TAG,notification_minute.toString());
         }
         if (auth.getCurrentUser()!=null) {
             final String userUID = user.getUid();
@@ -164,6 +157,14 @@ public class MainActivity extends AppCompatActivity{
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        qFrag = new QuestionsFragment();
+        fragment = qFrag;
+
+        transaction.replace(R.id.main_container, fragment).commit();
+        fragmentManager.executePendingTransactions();
+
+        questionNav();
 
     }
     public void signOut(View view){
@@ -177,7 +178,6 @@ public class MainActivity extends AppCompatActivity{
 
     public void questionNav(){
 
-        mTextMessage = (TextView) findViewById(R.id.text_message);
         if (auth.getCurrentUser() == null) {
             Intent intent = new Intent(this, SignIn.class);
             startActivity(intent);
@@ -269,9 +269,8 @@ public class MainActivity extends AppCompatActivity{
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-
-
     }
+
     public void changePassword(View view){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -321,7 +320,7 @@ public class MainActivity extends AppCompatActivity{
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(R.string.about_us);
         LayoutInflater inflater = getLayoutInflater();
-        builder.setView(inflater.inflate(R.layout.about_us,null));
+        builder.setView(inflater.inflate(R.layout.about_us_dialog,null));
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -332,7 +331,7 @@ public class MainActivity extends AppCompatActivity{
         builder.setTitle(R.string.submit_question);
         LayoutInflater inflater = getLayoutInflater();
         builder.setView(inflater.inflate(R.layout.submit_question_dialog,null));
-        builder.setPositiveButton(R.string.change, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
                 Log.d(TAG,"Positive click");
@@ -361,7 +360,7 @@ public class MainActivity extends AppCompatActivity{
                     e.printStackTrace();
                 }
                 Ion.with(getApplicationContext())
-                        .load("http://172.25.201.154:3001/email")
+                        .load(R.string.ip+"/email")
                         .setHeader("Accept","application/json")
                         .setHeader("Content-Type","application/json")
                         .setJsonObjectBody(params)
@@ -389,26 +388,26 @@ public class MainActivity extends AppCompatActivity{
         builder.setTitle(R.string.submit_feedback);
         LayoutInflater inflater = getLayoutInflater();
         builder.setView(inflater.inflate(R.layout.submit_feedback_dialog,null));
-        builder.setPositiveButton(R.string.change, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
                 Log.d(TAG,"Positive click");
                 Dialog dialogD = (Dialog) dialog;
-                EditText question_edit = (EditText) dialogD.findViewById(R.id.text_question);
-                EditText question_tags = (EditText) dialogD.findViewById(R.id.text_tags);
-                String question;
-                String tags;
-                question = question_edit.getText().toString();
-                tags = question_tags.getText().toString();
-                //Toast.makeText(getApplicationContext(),"You cannot leave fields blank",Toast.LENGTH_SHORT).show();
+                EditText mYour_name = (EditText) dialogD.findViewById(R.id.text_your_name);
+                EditText mYour_email = (EditText) dialogD.findViewById(R.id.text_your_email);
+                EditText mYour_subject = (EditText) dialogD.findViewById(R.id.text_your_subject);
+                EditText mYour_content = (EditText) dialogD.findViewById(R.id.text_your_content);
+
+                String your_name = mYour_name.getText().toString();
+                String your_email = mYour_email.getText().toString();
+                String your_subject = mYour_subject.getText().toString();
+                String your_content = mYour_content.getText().toString();
 
                 JsonObject params = new JsonObject();
-                String email = auth.getCurrentUser().getEmail();
-                String subject = "New question from " + email;
+                String subject = "Feedback from:  " + your_name+ " ("+your_email+") "+your_subject ;
 
-                String content = "<p>"+user_name+","+email+" submitted a question:</p>";
-                content+="<p>Question:"+question+"</p>";
-                content+="<p>Tags:"+tags+"</p>";
+                String content = "<p>"+your_name+","+your_email+" submitted feedback:</p>";
+                content+="<p>Feedback:" + your_content+"</p>";
                 Log.d(TAG,content);
 
                 try {
@@ -418,7 +417,7 @@ public class MainActivity extends AppCompatActivity{
                     e.printStackTrace();
                 }
                 Ion.with(getApplicationContext())
-                        .load("http://172.25.201.154:3001/email")
+                        .load("http://192.168.1.252:3000/email")
                         .setHeader("Accept","application/json")
                         .setHeader("Content-Type","application/json")
                         .setJsonObjectBody(params)
@@ -426,7 +425,7 @@ public class MainActivity extends AppCompatActivity{
                         .setCallback(new FutureCallback<String>() {
                             @Override
                             public void onCompleted(Exception e, String result) {
-                                Toast.makeText(getApplicationContext(),"Question Submitted",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),"Feedback Submitted",Toast.LENGTH_SHORT).show();
                             }
                         });
             }
@@ -438,5 +437,23 @@ public class MainActivity extends AppCompatActivity{
             }
         });
         builder.show();
+    }
+
+    public void fAQ(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(R.string.FAQ_title);
+        LayoutInflater inflater = getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.faq_dialog,null));
+        builder.show();
+
+    }
+
+    public void eBook(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(R.string.ebook_title);
+        LayoutInflater inflater = getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.ebook_dialog,null));
+        builder.show();
+
     }
 }

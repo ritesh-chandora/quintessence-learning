@@ -11,6 +11,19 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/text_feedback_screen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/feedback"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/feedback_description" />
+
         <Button
             android:id="@+id/button_submit"
             android:layout_width="match_parent"
@@ -22,18 +35,21 @@
             android:id="@+id/button_feedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="submitFeedback"
             android:text="Send Feedback" />
 
         <Button
             android:id="@+id/button_ebook"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="eBook"
             android:text="E-book" />
 
         <Button
             android:id="@+id/button_faq"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="fAQ"
             android:text="FAQ" />
 
         <Button

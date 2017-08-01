@@ -23,4 +23,13 @@
     </string>
     <string name="submit_question">Submit Question</string>
     <string name="submit_feedback">Submit Feedback</string>
+    <string name="feedback">Feedback</string>
+    <string name="feedback_description">You can use this screen to submit questions you have thought of, or any feedback you have about our program!</string>
+    <string name="submit_feedback_description">Fill out the form below if you have any thoughts about our app. We\'ll get back to you as soon as possible!</string>
+    <string name="ip">http://192.168.1.252:3001</string>
+    <string name="submit">Submit</string>
+    <string name="FAQ">FAQ goes here</string>
+    <string name="FAQ_title">Frequently Asked Questions</string>
+    <string name="ebook_title">E-Book</string>
+    <string name="ebook">E-Book goes here</string>
 </resources>
