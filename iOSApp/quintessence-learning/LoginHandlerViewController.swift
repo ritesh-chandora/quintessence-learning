@@ -14,7 +14,10 @@ class LoginHandlerViewController: UIViewController {
     @IBOutlet weak var emailText: UITextField!
     @IBOutlet weak var passField: UITextField!
     @IBOutlet weak var infoText: UILabel!
+    
     @IBOutlet weak var nameField: UITextField!
+    @IBOutlet weak var lastNameField: UITextField!
+    @IBOutlet weak var confirmPassField: UITextField!
     
     @IBOutlet weak var button: UIButton!
 
@@ -37,27 +40,40 @@ class LoginHandlerViewController: UIViewController {
     }
     
     @IBAction func registerPress(_ sender: UIButton) {
-        Auth.auth().createUser(withEmail: emailText!.text!, password: passField!.text!) { (user, error) in
-            if error != nil {
-                let errorMessage = error!.localizedDescription
-                self.infoText.text! = errorMessage
-                self.infoText!.isHidden = false;
-            } else {
-                let params = ["Current_Question": 0,
-                              "Email" : self.emailText!.text!,
-                              "Join_Date": ServerValue.timestamp(),
-                              "Name": self.nameField!.text!,
-                              "Trial":true,
-                              "Type":"none",
-                              "UID": user!.uid] as NSDictionary
-                self.ref!.reference().child("Users").child(user!.uid).setValue(params) { (err, ref) in
-                    if let err = err {
-                        Server.showError(message: "Error in signing up: " + err.localizedDescription)
-                    } else {
-                        self.signUpCallback()
+        if (nameField!.text! == "" || lastNameField!.text! == "") {
+            let errorMessage = "Enter all fields!"
+            self.infoText.text! = errorMessage
+            self.infoText!.isHidden = false;
+        } else if (passField!.text! != confirmPassField!.text!){
+            let errorMessage = "Passwords do not match!"
+            self.infoText.text! = errorMessage
+            self.infoText!.isHidden = false;
+            passField!.text = ""
+            confirmPassField!.text = ""
+        } else {
+            Auth.auth().createUser(withEmail: emailText!.text!, password: passField!.text!) { (user, error) in
+                if error != nil {
+                    let errorMessage = error!.localizedDescription
+                    self.infoText.text! = errorMessage
+                    self.infoText!.isHidden = false;
+                } else {
+                    let params = ["Current_Question": 0,
+                                  "Email" : self.emailText!.text!,
+                                  "Join_Date": ServerValue.timestamp(),
+                                  "Name": "\(self.nameField!.text!) \(self.lastNameField!.text!)",
+                                  "Trial":true,
+                                  "Type":"none",
+                                  "UID": user!.uid] as NSDictionary
+                    self.ref!.reference().child("Users").child(user!.uid).setValue(params) { (err, ref) in
+                        if let err = err {
+                            Server.showError(message: "Error in signing up: " + err.localizedDescription)
+                        } else {
+                            self.signUpCallback()
+                        }
                     }
                 }
             }
+
         }
     }
     

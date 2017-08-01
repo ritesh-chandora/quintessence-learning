@@ -25,6 +25,9 @@ class ViewController: UIViewController {
                     if (userType == "User") {
                         let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
                         self.present(userViewController, animated: true)
+                    } else {
+                        let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! UINavigationController
+                        self.present(welcomeScreen, animated: true)
                     }
                 }) { (error) in
                     Server.showError(message: error.localizedDescription)

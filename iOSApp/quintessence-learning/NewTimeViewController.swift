@@ -32,20 +32,36 @@ class NewTimeViewController: ModalViewController {
     
     @IBAction func onSubmit(_ sender: UIButton) {
         if (timePicked) {
-            userRef!.child("Time").observeSingleEvent(of: .value, with: { (time) in
-                
-                //keep old time for one cycle, then update to the new time
-                let currNotifyTime = Date(timeIntervalSince1970: (time.value as! TimeInterval))
-                let newNotifyTime = self.timePicker.date.addingTimeInterval(Common.dayInSeconds)
-                
-                //TODO if the next time is greater than 24 hours, warn the user
-                
-                self.userRef!.child("Time").setValue(newNotifyTime.timeIntervalSince1970)
-                self.userRef!.child("Old_Time").setValue(currNotifyTime.timeIntervalSince1970)
-                
-                self.timeLabelDelegate?.updateTimeLabel(newDate: newNotifyTime)
-                
-                self.timeField.text = self.dateFormatter.string(from: newNotifyTime)
+            userRef!.child("Old_Time").observeSingleEvent(of: .value, with: { (data) in
+                print("fuck")
+                let oldTime = data.value as? TimeInterval ?? nil
+                self.userRef!.child("Time").observeSingleEvent(of: .value, with: { (time) in
+                    
+                    //keep old time for one cycle, then update to the new time
+                    let currNotifyTime = Date(timeIntervalSince1970: (time.value as! TimeInterval))
+                    
+                    //if the next notification time is too close to the new set notification time (within 12 hours), add another day
+                    if oldTime != nil {
+                        if (abs(currNotifyTime.timeIntervalSince1970 - oldTime!) < Common.dayInSeconds/2){
+                            self.timePicker.date.addTimeInterval(Common.dayInSeconds)
+                        }
+                    }
+                    
+                    let newNotifyTime = self.timePicker.date.addingTimeInterval(Common.dayInSeconds)
+                    
+                    //TODO if the next time is greater than 24 hours, warn the user
+                    
+                    self.userRef!.child("Time").setValue(newNotifyTime.timeIntervalSince1970)
+                    
+                    //if there already isn't an old notification time set
+                    if oldTime == nil {
+                        self.userRef!.child("Old_Time").setValue(currNotifyTime.timeIntervalSince1970)
+                    }
+                    
+                    self.timeLabelDelegate?.updateTimeLabel(newDate: newNotifyTime)
+                    
+                    self.timeField.text = self.dateFormatter.string(from: newNotifyTime)
+                })
             })
             super.onClose(sender)
         } else {

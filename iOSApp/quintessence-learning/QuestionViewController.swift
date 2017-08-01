@@ -164,9 +164,7 @@ class QuestionViewController: UIViewController {
                         self.questionLabel.text = qbody["Text"] as? String ?? "Unable to load question"
                         self.currentQuestionKey = qbody["Key"] as? String ?? ""
                         if let tags = qbody["Tags"] as? NSDictionary {
-                            print(tags)
                             for (_, tag) in tags {
-                                print(tag)
                                 self.tagsList.addTag(tag as? String ?? "")
                             }
                         }

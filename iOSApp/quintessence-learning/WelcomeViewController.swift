@@ -19,6 +19,7 @@ class WelcomeViewController: UIViewController {
     
     @IBAction func getStartedPress(_ sender: UIButton) {
         //set it to initially trigger the next day
+        print(timePicker.date)
         timePicker.date.addTimeInterval(Common.dayInSeconds)
         
         if timePicked {
