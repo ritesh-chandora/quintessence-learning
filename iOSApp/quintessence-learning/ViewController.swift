@@ -29,6 +29,9 @@ class ViewController: UIViewController {
                 }) { (error) in
                     Server.showError(message: error.localizedDescription)
                 }
+            } else {
+                let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! UINavigationController
+                self.present(welcomeScreen, animated: true)
             }
         }
     }

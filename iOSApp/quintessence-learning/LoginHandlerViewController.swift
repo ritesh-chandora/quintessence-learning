@@ -29,6 +29,9 @@ class LoginHandlerViewController: UIViewController {
                 print(errorMessage)
                 self.infoText.text! = errorMessage
                 self.infoText!.isHidden = false;
+            } else {
+                let profileView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
+                self.present(profileView, animated:true)
             }
         }
     }
