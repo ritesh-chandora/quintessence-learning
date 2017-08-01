@@ -48,6 +48,7 @@ class SubmitViewController: ModalViewController {
     }
     
     override func viewDidLoad() {
+        self.hideKeyboardOnTap()
         listTags.delegate = self
         view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         view.isOpaque = false

@@ -9,8 +9,10 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
-class LoginHandlerViewController: UIViewController {
+class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
 
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     @IBOutlet weak var emailText: UITextField!
     @IBOutlet weak var passField: UITextField!
     @IBOutlet weak var infoText: UILabel!
@@ -84,39 +86,27 @@ class LoginHandlerViewController: UIViewController {
     func signUpCallback() {
         let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Welcome") as! WelcomeViewController
         present(welcomeScreen, animated: true)
-//        Auth.auth().signIn(withEmail: self.emailText!.text!, password: self.passField!.text!) { (user, error) in
-//            if error != nil {
-//                let errorMessage = error!.localizedDescription
-//                self.infoText.text! = errorMessage
-//                self.infoText!.isHidden = false;
-//            }
-//        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        self.hideKeyboardOnTap()
     }
     
-    func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0{
-                self.view.frame.origin.y -= keyboardSize.height
-            }
-        }
-    }
+    // - UITEXTFIELD METHODS
     
-    func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y != 0{
-                self.view.frame.origin.y += keyboardSize.height
-            }
-        }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        scrollView.setContentOffset(CGPoint(x:0, y:250), animated: true)
     }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        scrollView.setContentOffset(CGPoint(x:0, y:0), animated: true)
+    }
+    
 }

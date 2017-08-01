@@ -42,3 +42,15 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 }
+
+extension UIViewController {
+    func hideKeyboardOnTap() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}

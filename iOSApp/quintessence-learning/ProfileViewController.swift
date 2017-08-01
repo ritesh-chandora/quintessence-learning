@@ -29,10 +29,12 @@ class ProfileViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         dateFormatter.timeStyle = .short
         //set value of time label
-        ref!.child(Common.USER_PATH).child(user!.uid).child("Time").observeSingleEvent(of: .value, with: { (notifyTime) in
-            let timeToShow = Date(timeIntervalSince1970: notifyTime.value as! TimeInterval)
-            self.time.text = self.dateFormatter.string(from: timeToShow)
-        })
+        if (time != nil){
+            ref!.child(Common.USER_PATH).child(user!.uid).child("Time").observeSingleEvent(of: .value, with: { (notifyTime) in
+                let timeToShow = Date(timeIntervalSince1970: notifyTime.value as! TimeInterval)
+                self.time.text = self.dateFormatter.string(from: timeToShow)
+            })
+        }
     }
     
     override func viewDidLoad() {
@@ -105,6 +107,7 @@ class ProfileViewController: UITableViewController {
         default:
             break
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     //PASSWORD
