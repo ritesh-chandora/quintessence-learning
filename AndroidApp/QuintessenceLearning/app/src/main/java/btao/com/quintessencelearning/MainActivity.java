@@ -1,8 +1,10 @@
 package btao.com.quintessencelearning;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
@@ -74,8 +76,12 @@ public class MainActivity extends AppCompatActivity{
     Boolean user_trial;
     String user_type;
     String user_uid;
+    static Long user_time;
+    static Long user_old_time;
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+    private static PendingIntent pendingIntent;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -166,10 +172,10 @@ public class MainActivity extends AppCompatActivity{
                             PendingIntent.FLAG_UPDATE_CURRENT
                     );
             mBuilder.setContentIntent(resultPendingIntent);
-            mBuilder.setPriority(1);
+            mBuilder.setPriority(Notification.PRIORITY_HIGH);
             Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             mBuilder.setSound(alarmSound);
-            mBuilder.setVibrate(new long[] {500});
+            mBuilder.setVibrate(new long[] {500,500});
             mBuilder.setLights(Color.RED, 3000, 3000);
             NotificationManager mNotificationManager =
                     (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
@@ -195,6 +201,12 @@ public class MainActivity extends AppCompatActivity{
                     user_trial = (Boolean) dataSnapshot.child("Trial").getValue();
                     user_type = (String) dataSnapshot.child("Type").getValue();
                     user_uid = (String) dataSnapshot.child("UID").getValue();
+                    user_time = (Long) dataSnapshot.child("Time").getValue();
+                    if(dataSnapshot.child("Old_Time")==null){
+                        user_old_time = null;
+                    } else {
+                        user_old_time = (Long) dataSnapshot.child("Old_Time").getValue();
+                    }
                 }
 
                 @Override
@@ -534,7 +546,27 @@ public class MainActivity extends AppCompatActivity{
             new_time.clear(Calendar.SECOND); //reset seconds to zero
             Long new_time_sec = new_time.getTimeInMillis()/1000;
             mUser.child("Time").setValue(new_time_sec);
+
+            Calendar old_time = Calendar.getInstance();
+            old_time.set(Calendar.HOUR_OF_DAY, notification_hour);
+            old_time.set(Calendar.MINUTE, notification_minute);
+            old_time.clear(Calendar.SECOND); //reset seconds to zero
+
+            Calendar calendar;
+            if (user_old_time == null) {
+                calendar = new_time;
+            } else {
+                calendar = old_time;
+            }
+            Intent myIntent = new Intent(getActivity(), NotificationReceiver.class);
+
+            pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, myIntent,0);
+
+            AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+
             Toast.makeText(getActivity(),R.string.time_updated,Toast.LENGTH_SHORT).show();
+
 
         }
     }
@@ -556,6 +588,7 @@ public class MainActivity extends AppCompatActivity{
 
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getFragmentManager(),"TimePicker");
+
 
 
 
