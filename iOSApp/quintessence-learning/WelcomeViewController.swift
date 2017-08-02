@@ -46,7 +46,7 @@ class WelcomeViewController: UIViewController {
             if granted {
                 print("permission granted")
                 
-                Common.setNotificationTimer(date: self.timePicker.date)
+                Common.setNotificationTimer(date: self.timePicker.date, repeating: true)
             } else {
                 print("denied")
             }

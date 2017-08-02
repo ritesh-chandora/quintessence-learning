@@ -61,7 +61,7 @@ class SavedTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchController.isActive && searchController.searchBar.text != "" ? filteredQuestions.count : questions.count
+        return (searchController.isActive && searchController.searchBar.text != "") || tagFilteringActive ? filteredQuestions.count : questions.count
     }
     
     //displays a message if no questions loaded
@@ -84,10 +84,11 @@ class SavedTableViewController: UITableViewController {
     
     //displays a modal of the question
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let question = questions[indexPath.row]
+        let question = (searchController.isActive && searchController.searchBar.text != "") || tagFilteringActive ? filteredQuestions[indexPath.row] : questions[indexPath.row]
         let savedQuestionView = self.storyboard?.instantiateViewController(withIdentifier: "Saved") as! SavedQuestionViewController
         savedQuestionView.modalDelegate = self
         savedQuestionView.data = question
+        savedQuestionView.row = indexPath
         savedQuestionView.modalPresentationStyle = .overFullScreen
         self.navigationController?.present(savedQuestionView, animated: true)
     }
@@ -95,11 +96,10 @@ class SavedTableViewController: UITableViewController {
     //question display in cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SavedCell", for: indexPath)
-        let question = questions[indexPath.row]
+        let question = (searchController.isActive && searchController.searchBar.text != "") || tagFilteringActive ? filteredQuestions[indexPath.row] : questions[indexPath.row]
         
         cell.textLabel?.text = question.text
         cell.detailTextLabel?.text = question.tags.joined(separator: ",")
-        print(question.tags.joined(separator: ","))
         
         return cell
     }
@@ -118,7 +118,9 @@ class SavedTableViewController: UITableViewController {
         
         if (tagFilteringActive){
             options.addAction(UIAlertAction(title: "Clear search", style: .default, handler: { (action) in
+                self.filteredQuestions = [Question]()
                 self.tagFilteringActive = false
+                self.tableView.reloadData()
             }))
         }
         
@@ -165,6 +167,7 @@ extension SavedTableViewController : ModalDelegate {
 
 extension SavedTableViewController : TagDelegate {
     func displayWith(tag: String) {
+        tagFilteringActive = true
         self.filteredQuestions = questions.filter { question in
             return question.tags.contains(tag)
         }

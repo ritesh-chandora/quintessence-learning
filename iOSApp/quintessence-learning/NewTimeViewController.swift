@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
-
+import UserNotifications
 protocol UpdateTimeLabel {
     func updateTimeLabel(newDate:Date) -> Void
 }
@@ -53,11 +53,21 @@ class NewTimeViewController: ModalViewController {
                     
                     self.userRef!.child("Time").setValue(newNotifyTime.timeIntervalSince1970)
                     
+                    //cancel all pending notifications
+                    let center = UNUserNotificationCenter.current()
+                    center.removeAllPendingNotificationRequests()
+                    
                     //if there already isn't an old notification time set
                     if oldTime == nil {
                         self.userRef!.child("Old_Time").setValue(currNotifyTime.timeIntervalSince1970)
+                        
+                        //set one notification timer for this last notification at that time
+                        Common.setNotificationTimer(date: currNotifyTime, repeating: false)
                     }
+                    //set new notification timer
+                    Common.setNotificationTimer(date: newNotifyTime, repeating: true)
                     
+                    //update the label on ProfileViewController
                     self.timeLabelDelegate?.updateTimeLabel(newDate: newNotifyTime)
                     
                     self.timeField.text = self.dateFormatter.string(from: newNotifyTime)
