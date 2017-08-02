@@ -76,6 +76,7 @@
             android:id="@+id/button_change_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="setTime"
             android:text="Change Notification Time" />
 
         <Button

@@ -1,24 +1,49 @@
 package btao.com.quintessencelearning;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.icu.util.Calendar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
 
 public class WelcomeScreen extends AppCompatActivity {
+    public static String TAG = "WelcomeScreen";
     public static EditText time;
     public static Integer setHour = 0;
     public static Integer setMinute = 0;
+    static FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    static FirebaseUser user = auth.getCurrentUser();
+
+    static DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    static DatabaseReference mUserRef = mDatabase.child("Users");
+
+    static Long notification_time;
+
+    static DatabaseReference mUser = mUserRef.child(user.getUid());
+
+    private static PendingIntent pendingIntent;
+
+
+
 
     public static class TimePickerFragment extends DialogFragment
             implements TimePickerDialog.OnTimeSetListener {
@@ -48,6 +73,10 @@ public class WelcomeScreen extends AppCompatActivity {
             calendar.set(Calendar.HOUR_OF_DAY, t.getHour());
             calendar.set(Calendar.MINUTE, t.getMinute());
             calendar.clear(Calendar.SECOND); //reset seconds to zero
+            notification_time = calendar.getTimeInMillis()/1000;
+            Log.d(TAG,Long.toString(notification_time));
+
+
 
             formatter = new SimpleDateFormat("hh:mm a");
             s = formatter.format(calendar.getTime()); // 08:00:00
@@ -57,6 +86,14 @@ public class WelcomeScreen extends AppCompatActivity {
             String timeString = s;
                     //Integer.toString(hourOfDay) + " : " + Integer.toString(minute) + "  " + a;
             WelcomeScreen.time.setText(timeString);
+
+            Intent myIntent = new Intent(getActivity(), NotificationReceiver.class);
+            pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, myIntent,0);
+
+            AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+
+
         }
     }
 
@@ -74,9 +111,15 @@ public class WelcomeScreen extends AppCompatActivity {
     }
 
     public void finish(View view){
+        if (notification_time!=null) {
+            mUser.child("Time").setValue(notification_time);
+        } else {
+            Toast.makeText(getApplicationContext(),"You must pick a time",Toast.LENGTH_SHORT).show();
+        }
         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
         intent.putExtra("setHour",setHour);
         intent.putExtra("setMinute",setMinute);
+        intent.putExtra("sender","WelcomeScreen");
         startActivity(intent);
         finish();
     }

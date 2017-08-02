@@ -6,9 +6,9 @@
     <string name="title_questions">Questions</string>
     <string name="title_account">Account</string>
     <string name="title_feedback">Feedback</string>
-    <string name="get_started">Let\'s get started. First, pick a time that you want to be notified each day with the next question. Then, Click finsh, and you\'ll get your first question!</string>
+    <string name="get_started">Let\'s get started. First, pick a time that you want to be notified each day with the next question. Then, Click finsh, and you\'ll get your first question! \n Don\'t worry, you can change this later on in settings</string>
     <string name="send_feedback">Send Feedback</string>
-    <string name ="todays_question">Today\'s Question: </string>
+    <string name="todays_question">Today\'s Question: </string>
     <string name="your_account">Your Account</string>
     <string name="account_name">Name: </string>
     <string name="account_email">Email: </string>
@@ -32,4 +32,7 @@
     <string name="FAQ_title">Frequently Asked Questions</string>
     <string name="ebook_title">E-Book</string>
     <string name="ebook">E-Book goes here</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="password_match">Please make sure your passwords match</string>
+    <string name="time_updated">Notification time has been updated</string>
 </resources>

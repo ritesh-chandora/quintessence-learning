@@ -19,6 +19,7 @@
             android:layout_height="41dp"
             android:ems="10"
             android:hint="Email"
+            android:lines="1"
             android:inputType="textMultiLine|textEmailAddress"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="221dp" />
@@ -29,6 +30,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Password"
+            android:lines="1"
             android:inputType="textMultiLine|textPassword"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="261dp" />
