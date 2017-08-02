@@ -182,7 +182,6 @@ class QuestionViewController: UIViewController {
     func saveQuestion(key:String, showError:Bool){
         self.ref!.child("Saved").queryOrderedByKey().queryEqual(toValue: key).observeSingleEvent(of: .value, with: { (snapshot) in
             let data = snapshot.exists()
-            print(snapshot.exists())
             if(data){
                 Server.showError(message: "Already saved this question!")
             } else {
@@ -212,7 +211,7 @@ class QuestionViewController: UIViewController {
                     self.questionLabel.text = "Unable to load question"
                 }
                 print("Missed \(result.count) questions!")
-                //loop through result and save each question
+                print(result)
             })
         }) { (err) in
             print(err)

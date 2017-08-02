@@ -28,12 +28,14 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
     let signupUrl = Server.hostURL + "/signup"
     
     @IBAction func loginPress(_ sender: UIButton) {
+        toggleButtons(toggle: false)
         Auth.auth().signIn(withEmail: emailText!.text!, password: passField!.text!) { (user, error) in
             if error != nil {
                 let errorMessage = error!.localizedDescription
                 print(errorMessage)
                 self.infoText.text! = errorMessage
                 self.infoText!.isHidden = false;
+                self.toggleButtons(toggle: true)
             } else {
                 let profileView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
                 self.present(profileView, animated:true)
@@ -53,11 +55,13 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
             passField!.text = ""
             confirmPassField!.text = ""
         } else {
+            toggleButtons(toggle: false)
             Auth.auth().createUser(withEmail: emailText!.text!, password: passField!.text!) { (user, error) in
                 if error != nil {
                     let errorMessage = error!.localizedDescription
                     self.infoText.text! = errorMessage
                     self.infoText!.isHidden = false;
+                    self.toggleButtons(toggle: true)
                 } else {
                     let params = ["Current_Question": 0,
                                   "Email" : self.emailText!.text!,
@@ -69,6 +73,7 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
                     self.ref!.reference().child("Users").child(user!.uid).setValue(params) { (err, ref) in
                         if let err = err {
                             Server.showError(message: "Error in signing up: " + err.localizedDescription)
+                            self.toggleButtons(toggle: true)
                         } else {
                             self.signUpCallback()
                         }
@@ -79,8 +84,50 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    //send a reset password link to the user with the given email
     @IBAction func forgotPasswordPress(_ sender: UIButton) {
-        //TODO
+        let ac = UIAlertController(title: "Forgot Password", message: "Please enter your email below", preferredStyle: .alert)
+        
+        ac.addAction(UIAlertAction(title: "Cancel", style: .destructive))
+        ac.addTextField { (textfield) in
+            textfield.placeholder = "Email"
+        }
+        
+        ac.addAction(UIAlertAction(title: "Submit", style: .default, handler: { (action) in
+            let fieldText = ac.textFields?[0].text!
+            if (fieldText! == ""){
+                Server.showError(message: "Enter an email!")
+            } else {
+                Auth.auth().sendPasswordReset(withEmail: fieldText!, completion: { (Error) in
+                    if let error = Error {
+                        Server.showError(message: error.localizedDescription)
+                    } else {
+                        Common.showSuccess(message: "Email sent!")
+                    }
+                })
+            }
+        }))
+        
+        present(ac, animated: true)
+    }
+
+    func toggleButtons(toggle:Bool){
+        DispatchQueue.main.async {
+            self.button.isEnabled = toggle
+            if (toggle){
+                if (self.button.titleLabel?.text! == "Logging In...") {
+                    self.button.setTitle("Login", for: .normal)
+                } else {
+                    self.button.setTitle("Sign Up", for: .normal)
+                }
+            } else {
+                if (self.button.titleLabel?.text! == "Login"){
+                    self.button.setTitle("Logging In...", for: .normal)
+                } else {
+                    self.button.setTitle("Signing Up...", for: .normal)
+                }
+            }
+        }
     }
     
     func signUpCallback() {
