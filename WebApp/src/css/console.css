@@ -25,3 +25,24 @@ ul {
     padding: 0;
     list-style-type: none;
 }
+
+.menu-enter {
+  max-height: 0px;
+  -webkit-transition: max-height 1s ease;
+  overflow: hidden;
+}
+
+.menu-enter.menu-enter-active {
+  height: auto;
+  max-height: 100px;
+}
+
+.menu-leave {
+  max-height: 100px;
+  -webkit-transition: max-height 1s ease;
+}
+
+.menu-leave.menu-leave-active {
+  overflow: hidden;
+  max-height: 0px;
+}

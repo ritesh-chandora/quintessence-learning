@@ -17,4 +17,12 @@ router.post('/', function(req, res, next){
  	});
 });
 
+router.post('/logout', function(req, res, next){
+    firebase.auth().signOut().then(()=>{
+        res.send(200).end();
+    }).catch((error)=>{
+        res.send({message:error});
+    });
+});
+
 module.exports = router;

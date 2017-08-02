@@ -4,6 +4,7 @@ import axios from 'axios';
 import '../css/console.css'
 import CreateQuestionBox from './create'
 import QuestionTable from './questiontable'
+import Menu from './dropdown'
 
 class Console extends Component {
     constructor(props){
@@ -59,6 +60,11 @@ class Console extends Component {
     render() {
         return (
             <div className="container container-padding">
+                <div className="row">
+                    <div className="col-md-offset-10 col-md-2 text-right">
+                        <Menu loginStatus={this.props.loginStatus}/>
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-md-8">
                         <QuestionTable questions={this.state.questions} 

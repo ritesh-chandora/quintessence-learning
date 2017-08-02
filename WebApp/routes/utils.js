@@ -27,10 +27,8 @@ router.post('/create', function(req, res, next){
     qref.child(key).child('Tags').push(qtag[i]);
     tagRef.child(qtag[i]).push(key);
   }
-  console.log("hi")
   root.child('Count').set(count+1)
   })
-  console.log("whers the lamb sauce")
   res.send({message:"success"});  
 });
 
@@ -71,8 +69,8 @@ router.post('/read', function(req, res, next){
           qlist.unshift(sublist);
         }
       });
+       res.send({questions: qlist});
     });
-    res.send({questions: qlist});
 });
 
 router.post('/delete', function(req, res, next){
@@ -146,6 +144,15 @@ router.post('/update', function(req, res, next){
     console.log('Question was not created by current user');
     res.status(400).send({message: 'You did not create this question!'});
   }
+  });
+});
+
+router.post('/pass', function(req, res, next){
+  var auth = firebase.auth();
+   auth.sendPasswordResetEmail(req.body.email).then(function() {
+    res.status(200).end();
+  }).catch(function(error) {
+    res.send({message: error});
   });
 });
 

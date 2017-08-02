@@ -28,8 +28,7 @@ class Login extends Component {
 				password: this.state.password
 			}).then((response) => {
 				if (response.data.message === 'success'){
-					this.props.history.push('/profile');
-					window.location.reload();
+					this.props.loginStatus();
 				} else {
 					this.setState({message: response.data.message});
 				}

@@ -37,14 +37,14 @@ class Main extends React.Component {
           this.state.loggedIn ? (<Redirect to="/profile"/>) : (<Home/>)
         )}/>
       <Route exact path='/login' render={() => (
-          this.state.loggedIn ? (<Redirect to="/profile"/>) : (<Login/>)
+          this.state.loggedIn ? (<Redirect to="/profile"/>) : (<Login loginStatus={this.getLoginStatus}/>)
         )}/>
       <Route exact path='/signup' render={() => (
           this.state.loggedIn ? (<Redirect to="/profile"/>) : (<Signup/>)
         )}/>
       <Route path='/profile' 
              render={() => (
-                this.state.loggedIn ? (<Console/>) : (<Redirect to="/login"/>)
+                this.state.loggedIn ? (<Console loginStatus={this.getLoginStatus}/>) : (<Redirect to="/login"/>)
              )} 
              />
       <Route render={
