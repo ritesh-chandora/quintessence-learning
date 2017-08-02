@@ -534,7 +534,7 @@ public class MainActivity extends AppCompatActivity{
             new_time.clear(Calendar.SECOND); //reset seconds to zero
             Long new_time_sec = new_time.getTimeInMillis()/1000;
             mUser.child("Time").setValue(new_time_sec);
-            Toast.makeText(getActivity(),R.id.time_updated,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),R.string.time_updated,Toast.LENGTH_SHORT).show();
 
         }
     }

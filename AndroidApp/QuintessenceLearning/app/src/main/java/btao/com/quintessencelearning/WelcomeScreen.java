@@ -87,6 +87,20 @@ public class WelcomeScreen extends AppCompatActivity {
                     //Integer.toString(hourOfDay) + " : " + Integer.toString(minute) + "  " + a;
             WelcomeScreen.time.setText(timeString);
 
+
+
+
+            /*Calendar alarm_time = Calendar.getInstance();
+
+            alarm_time.set(Calendar.MONTH, 6);
+            alarm_time.set(Calendar.YEAR, 2013);
+            alarm_time.set(Calendar.DAY_OF_MONTH, 13);
+
+            alarm_time.set(Calendar.HOUR_OF_DAY, 20);
+            alarm_time.set(Calendar.MINUTE, 48);
+            alarm_time.set(Calendar.SECOND, 0);
+            alarm_time.set(Calendar.AM_PM,Calendar.PM);*/
+
             Intent myIntent = new Intent(getActivity(), NotificationReceiver.class);
             pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, myIntent,0);
 
