@@ -25,6 +25,6 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="4dp"
         android:fontFamily="sans-serif"
-        android:hint="Your tags (separate  by comma)"
+        android:hint="Your tags (separate by comma)"
         android:inputType="text" />
 </LinearLayout>
