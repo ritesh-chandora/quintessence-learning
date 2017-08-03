@@ -38,9 +38,8 @@ router.post('/read', function(req, res, next){
   var qref = root.child('Questions');
   //instantiates question list to be returned
   var qlist = [];
-  //checks if user is logged in
     //orders the questions in time order descending and then then listens for values
-    qref.orderByKey().on('value',function(snap) {
+    qref.orderByKey().once('value',function(snap) {
       //iterates through each value in the snap
       snap.forEach(function(snap)
       {
@@ -69,6 +68,7 @@ router.post('/read', function(req, res, next){
           qlist.unshift(sublist);
         }
       });
+      console.log(qlist);
        res.send({questions: qlist});
     });
 });
