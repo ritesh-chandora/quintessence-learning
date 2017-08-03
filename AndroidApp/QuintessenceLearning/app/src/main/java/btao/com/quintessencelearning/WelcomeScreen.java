@@ -41,6 +41,8 @@ public class WelcomeScreen extends AppCompatActivity {
     static DatabaseReference mUser = mUserRef.child(user.getUid());
 
     private static PendingIntent pendingIntent;
+    private static PendingIntent pending_now;
+    static Calendar notif_calendar;
 
 
 
@@ -84,8 +86,9 @@ public class WelcomeScreen extends AppCompatActivity {
             setMinute = t.getMinute();
 
             String timeString = s;
-                    //Integer.toString(hourOfDay) + " : " + Integer.toString(minute) + "  " + a;
             WelcomeScreen.time.setText(timeString);
+
+            notif_calendar = calendar;
 
 
 
@@ -101,11 +104,7 @@ public class WelcomeScreen extends AppCompatActivity {
             alarm_time.set(Calendar.SECOND, 0);
             alarm_time.set(Calendar.AM_PM,Calendar.PM);*/
 
-            Intent myIntent = new Intent(getActivity(), NotificationReceiver.class);
-            pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, myIntent,0);
 
-            AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
 
 
         }
@@ -130,6 +129,20 @@ public class WelcomeScreen extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(),"You must pick a time",Toast.LENGTH_SHORT).show();
         }
+        notif_calendar.add(Calendar.DATE,1);
+        Calendar today = Calendar.getInstance();
+        Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
+        pending_now = PendingIntent.getBroadcast(getApplicationContext(),1,myIntent,0);
+
+
+        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (100), pending_now);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,notif_calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+
+        //alarmManager.cancel(pendingIntent);
+
         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
         intent.putExtra("setHour",setHour);
         intent.putExtra("setMinute",setMinute);

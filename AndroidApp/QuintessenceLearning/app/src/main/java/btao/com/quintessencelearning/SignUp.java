@@ -116,7 +116,7 @@ public class SignUp extends AppCompatActivity {
         Long user_join_date = new Long(c.get(Calendar.MILLISECOND));
         Log.d(TAG,user_join_date.toString());
 
-        Long user_current_question = new Long(0);
+        Long user_current_question = new Long(-1);
         String user_type = "user";
         String user_uid = uid;
         Boolean user_trial = true;

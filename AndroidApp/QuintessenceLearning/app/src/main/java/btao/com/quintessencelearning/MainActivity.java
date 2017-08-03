@@ -8,6 +8,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -30,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -47,6 +49,11 @@ import com.google.gson.JsonParseException;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -64,7 +71,7 @@ public class MainActivity extends AppCompatActivity{
     private Fragment fragment;
     private FragmentManager fragmentManager;
 
-    private final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
 
     static Integer notification_hour = 0;
     static Integer notification_minute = 0;
@@ -78,6 +85,10 @@ public class MainActivity extends AppCompatActivity{
     String user_uid;
     static Long user_time;
     static Long user_old_time;
+
+    static String current_question_text;
+    static String current_question_key;
+    static List<String> tags = new ArrayList<String>();
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -134,13 +145,14 @@ public class MainActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_main);
 
+
         if (auth.getCurrentUser() == null) {
             Intent intent = new Intent(getApplicationContext(), SignIn.class);
             startActivity(intent);
             finish();
         }
 
-        if( getIntent().getExtras()!=null && getIntent().getExtras().get("sender").equals("WelcomeScreen"))
+        /*if( getIntent().getExtras()!=null && getIntent().getExtras().get("sender").equals("WelcomeScreen"))
         {
             //do here
             notification_hour = getIntent().getExtras().getInt("setHour");
@@ -185,7 +197,7 @@ public class MainActivity extends AppCompatActivity{
             // number to NotificationManager.cancel().
             mNotificationManager.notify(1, mBuilder.build());
 
-        }
+        }*/
         if (auth.getCurrentUser()!=null) {
             final String userUID = user.getUid();
             mUser = mUserRef.child(userUID);
@@ -222,7 +234,9 @@ public class MainActivity extends AppCompatActivity{
             transaction.replace(R.id.main_container, fragment).commit();
             fragmentManager.executePendingTransactions();
 
+
             questionNav();
+
         }
 
 
@@ -234,6 +248,14 @@ public class MainActivity extends AppCompatActivity{
     }
     public void signOut(View view){
         auth.signOut();
+
+        Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
+
+        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+
+        alarmManager.cancel(pendingIntent);
+
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
             startActivity(new Intent(getApplicationContext(), SignIn.class));
@@ -262,8 +284,19 @@ public class MainActivity extends AppCompatActivity{
                     Log.d(TAG, "Inside class");
                     String text = (String) child.child("Text").getValue();
                     Long count = (Long) child.child("count").getValue();
+                    String key = (String) child.child("Key").getValue();
+                    if (currentQuestion.equals(new Long(-1))) {
+                        currentQuestion+=1L;
+                    }
+
                     if (count.equals(currentQuestion)) {
                         Log.d(TAG, text);
+                        current_question_text = text;
+                        current_question_key = key;
+                        for (DataSnapshot tag : child.child("Tags").getChildren()){
+                            tags.add((String) tag.getValue());
+                        }
+
                         qFrag.setQuestion(text);
                         break;
                     }
@@ -543,6 +576,7 @@ public class MainActivity extends AppCompatActivity{
             Calendar new_time = Calendar.getInstance();
             new_time.set(Calendar.HOUR_OF_DAY, t.getHour());
             new_time.set(Calendar.MINUTE, t.getMinute());
+            new_time.add(Calendar.DATE,1);
             new_time.clear(Calendar.SECOND); //reset seconds to zero
             Long new_time_sec = new_time.getTimeInMillis()/1000;
             mUser.child("Time").setValue(new_time_sec);
@@ -552,18 +586,21 @@ public class MainActivity extends AppCompatActivity{
             old_time.set(Calendar.MINUTE, notification_minute);
             old_time.clear(Calendar.SECOND); //reset seconds to zero
 
-            Calendar calendar;
+            /*Calendar calendar;
             if (user_old_time == null) {
                 calendar = new_time;
             } else {
                 calendar = old_time;
-            }
-            Intent myIntent = new Intent(getActivity(), NotificationReceiver.class);
+            }*/
 
+            Intent myIntent = new Intent(getActivity(), NotificationReceiver.class);
             pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, myIntent,0);
 
             AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+
+            alarmManager.cancel(pendingIntent);
+            //alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,new_time.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
 
             Toast.makeText(getActivity(),R.string.time_updated,Toast.LENGTH_SHORT).show();
 
@@ -600,5 +637,14 @@ public class MainActivity extends AppCompatActivity{
         when notification is fired, set old time = null;
 
          */
+    }
+
+    public static void saveQuestion(Context context){
+        Log.d(TAG,"saved");
+
+        mUser = mUserRef.child(auth.getCurrentUser().getUid());
+        mUser.child("Saved").child(current_question_key).setValue(true);
+
+        Toast.makeText(context, "Question has been saved", Toast.LENGTH_SHORT).show();
     }
 }
