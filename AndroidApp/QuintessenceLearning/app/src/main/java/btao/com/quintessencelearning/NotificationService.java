@@ -66,90 +66,90 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent,int flags, int startId)
     {
         super.onStartCommand(intent,flags, startId);
-        final DatabaseReference mUser = mUserRef.child(auth.getCurrentUser().getUid());
+        if (auth.getCurrentUser()!=null) {
+            final DatabaseReference mUser = mUserRef.child(auth.getCurrentUser().getUid());
 
-        mUser.addListenerForSingleValueEvent(new ValueEventListener() {
-             @Override
-             public void onDataChange(DataSnapshot dataSnapshot) {
-                 user_current_question = (Long) dataSnapshot.child("Current_Question").getValue();
-                 user_email = (String) dataSnapshot.child("Email").getValue();
-                 user_join_date = (Long) dataSnapshot.child("Join_Date").getValue();
-                 user_name = (String) dataSnapshot.child("Name").getValue();
-                 user_trial = (Boolean) dataSnapshot.child("Trial").getValue();
-                 user_type = (String) dataSnapshot.child("Type").getValue();
-                 user_uid = (String) dataSnapshot.child("UID").getValue();
-                 user_time = (Long) dataSnapshot.child("Time").getValue();
-                 if (dataSnapshot.child("Old_Time") == null) {
-                     user_old_time = null;
-                 } else {
-                     user_old_time = (Long) dataSnapshot.child("Old_Time").getValue();
-                 }
-
-                 final ValueEventListener questionListener = new ValueEventListener() {
-                     @Override
-                     public void onDataChange(DataSnapshot dataSnapshot) {
-                         // Get Post object and use the values to update the UI
-                         for (DataSnapshot child : dataSnapshot.getChildren()) {
-                             Log.d(TAG, "Inside class");
-                             String text = (String) child.child("Text").getValue();
-                             Long count = (Long) child.child("count").getValue();
-                             if (count.equals(currentQuestion)) {
-                                 Log.d(TAG, text);
-                                 mManager = (NotificationManager) getApplicationContext().getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
-                                 Intent intent1 = new Intent(getApplicationContext(),MainActivity.class);
+            mUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    user_current_question = (Long) dataSnapshot.child("Current_Question").getValue();
+                    user_email = (String) dataSnapshot.child("Email").getValue();
+                    user_join_date = (Long) dataSnapshot.child("Join_Date").getValue();
+                    user_name = (String) dataSnapshot.child("Name").getValue();
+                    user_trial = (Boolean) dataSnapshot.child("Trial").getValue();
+                    user_type = (String) dataSnapshot.child("Type").getValue();
+                    user_uid = (String) dataSnapshot.child("UID").getValue();
+                    user_time = (Long) dataSnapshot.child("Time").getValue();
+                    user_current_question += 1;
 
 
-                                 intent1.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    if (dataSnapshot.child("Old_Time") == null) {
+                        user_old_time = null;
+                    } else {
+                        user_old_time = (Long) dataSnapshot.child("Old_Time").getValue();
+                    }
 
-                                 PendingIntent pendingNotificationIntent = PendingIntent.getActivity( getApplicationContext(),0, intent1,PendingIntent.FLAG_UPDATE_CURRENT);
-                                 Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                                 Notification notification = new Notification.Builder(getApplicationContext())
-                                         .setContentTitle("New Question")
-                                         .setPriority(Notification.PRIORITY_HIGH)
-                                         .setSound(alarmSound)
-                                         .setVibrate(new long[] {500,500})
-                                         .setLights(Color.RED, 3000, 3000)
-                                         .setContentText(text)
-                                         .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                                         .setWhen(System.currentTimeMillis())
-                                         .setContentIntent(pendingNotificationIntent)
-                                         .setAutoCancel(true)
-                                         .build();
-                                 //notification.flags |= Notification.FLAG_AUTO_CANCEL;
-                                 //notification.setLatestEventInfo(this.getApplicationContext(), "AlarmManagerDemo", "This is a test message!", pendingNotificationIntent);
+                    final ValueEventListener questionListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            // Get Post object and use the values to update the UI
+                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                Log.d(TAG, "Inside class");
+                                String text = (String) child.child("Text").getValue();
+                                Long count = (Long) child.child("count").getValue();
+                                if (count.equals(user_current_question)) {
+                                    Log.d(TAG, text);
+                                    mManager = (NotificationManager) getApplicationContext().getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+                                    Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
 
-                                 mManager.notify(0, notification);
-                             }
-                         }
-                     }
 
-                     @Override
-                     public void onCancelled(DatabaseError databaseError) {
-                         // Getting Post failed, log a message
-                         Toast.makeText(getApplicationContext(),databaseError.toString(),Toast.LENGTH_SHORT).show();
-                         Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                         // ...
-                     }
-                 };
+                                    intent1.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                 mUser.addListenerForSingleValueEvent(new ValueEventListener() {
-                     @Override
-                     public void onDataChange(DataSnapshot dataSnapshot) {
-                         currentQuestion = (Long) dataSnapshot.child("Current_Question").getValue();
-                         mQuestionRef.addListenerForSingleValueEvent(questionListener);
-                     }
+                                    PendingIntent pendingNotificationIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+                                    Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                    Notification notification = new Notification.Builder(getApplicationContext())
+                                            .setContentTitle("Today's Question")
+                                            .setPriority(Notification.PRIORITY_HIGH)
+                                            .setSound(alarmSound)
+                                            .setVibrate(new long[]{500, 500})
+                                            .setLights(Color.RED, 3000, 3000)
+                                            .setContentText(text)
+                                            .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                                            .setWhen(System.currentTimeMillis())
+                                            .setContentIntent(pendingNotificationIntent)
+                                            .setAutoCancel(true)
+                                            .build();
+                                    //notification.flags |= Notification.FLAG_AUTO_CANCEL;
+                                    //notification.setLatestEventInfo(this.getApplicationContext(), "AlarmManagerDemo", "This is a test message!", pendingNotificationIntent);
 
-                     @Override
-                     public void onCancelled(DatabaseError databaseError) {
-                         Log.d(TAG,"Couldn't get user ref");
-                     }
-                 });
-             }
-             @Override
-             public void onCancelled(DatabaseError databaseError) {
-                 Log.d(TAG, "read failed");
-             }
-         });
+                                    mManager.notify(0, notification);
+                                    mUser.child("Current_Question").setValue(user_current_question);
+
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            // Getting Post failed, log a message
+                            Toast.makeText(getApplicationContext(), databaseError.toString(), Toast.LENGTH_SHORT).show();
+                            Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                            // ...
+                        }
+                    };
+
+                    mQuestionRef.addListenerForSingleValueEvent(questionListener);
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d(TAG, "read failed");
+                }
+            });
+        }
 
         return START_NOT_STICKY;
 

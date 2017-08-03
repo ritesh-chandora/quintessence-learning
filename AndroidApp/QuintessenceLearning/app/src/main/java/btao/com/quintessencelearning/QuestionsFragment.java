@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,8 +84,18 @@ public class QuestionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //questionNav();
+        View view = inflater.inflate(R.layout.fragment_questions, container, false);
 
-        return inflater.inflate(R.layout.fragment_questions, container, false);
+        TextView text_question = (TextView) view.findViewById(R.id.text_message);
+        text_question.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                MainActivity.saveQuestion(getActivity().getApplicationContext());
+                return true;
+            }
+        });
+
+        return view;
 
 
     }
