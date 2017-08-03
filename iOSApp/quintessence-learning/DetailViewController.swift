@@ -141,7 +141,7 @@ class ModalViewController: UIViewController, TagListViewDelegate {
     }
     
     func tagRemoveButtonPressed(_ title: String, tagView: TagView, sender: TagListView) {
-        print("Tag Remove pressed: \(title), \(sender)")
+        debugPrint("Tag Remove pressed: \(title), \(sender)")
         sender.removeTagView(tagView)
     }
     

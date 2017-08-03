@@ -10,8 +10,8 @@ import UIKit
 import UserNotifications
 class Common: NSObject {
     
-//    static let dayInSeconds:Double = 30
-    static let dayInSeconds:Double = 86400
+    static let dayInSeconds:Double = 120
+//    static let dayInSeconds:Double = 86400
     static let trialLength = 14
     static let USER_PATH = "Users"
     static let QUESTION_PATH = "Questions"
@@ -36,6 +36,7 @@ class Common: NSObject {
         let components = getHourAndMinutes(date: date)
         dateComponents.hour = components[0]
         dateComponents.minute = components[1]
+        dateComponents.second = components[2]
         
         let notificationContent = UNMutableNotificationContent()
         notificationContent.title = "New Question Today!"
@@ -54,12 +55,12 @@ class Common: NSObject {
                 UNUserNotificationCenter.current().add(request)
             }
         } else {
-            print("set for \(dateComponents)")
+            debugPrint("set for \(dateComponents)")
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
             UNUserNotificationCenter.current().add(request)
         }
-        print("notification timer set!")
+        debugPrint("notification timer set!")
     }
     
     //determines if the time selected to notify is later than current, and if so, 24 hr delay must be implemented
@@ -85,6 +86,7 @@ class Common: NSObject {
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: date)
         let minutes = calendar.component(.minute, from: date)
-        return [hour, minutes]
+        let seconds = calendar.component(.second, from: date)
+        return [hour, minutes, seconds]
     }
 }

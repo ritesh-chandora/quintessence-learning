@@ -19,7 +19,7 @@ class WelcomeViewController: UIViewController {
     
     @IBAction func getStartedPress(_ sender: UIButton) {
         //set it to initially trigger the next day
-        print(timePicker.date)
+        debugPrint(timePicker.date)
         timePicker.date.addTimeInterval(Common.dayInSeconds)
         
         if timePicked {
@@ -44,11 +44,11 @@ class WelcomeViewController: UIViewController {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
             (granted, error) in
             if granted {
-                print("permission granted")
+                debugPrint("permission granted")
                 
                 Common.setNotificationTimer(date: self.timePicker.date, repeating: true)
             } else {
-                print("denied")
+                debugPrint("denied")
             }
         }
     

@@ -47,6 +47,7 @@ class Main extends React.Component {
                 this.state.loggedIn ? (<Console loginStatus={this.getLoginStatus}/>) : (<Redirect to="/login"/>)
              )} 
              />
+           />
       <Route render={
         function() {
           return (<p> Not Found </p>)

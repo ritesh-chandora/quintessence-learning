@@ -32,7 +32,7 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
         Auth.auth().signIn(withEmail: emailText!.text!, password: passField!.text!) { (user, error) in
             if error != nil {
                 let errorMessage = error!.localizedDescription
-                print(errorMessage)
+                debugPrint(errorMessage)
                 self.infoText.text! = errorMessage
                 self.infoText!.isHidden = false;
                 self.toggleButtons(toggle: true)
@@ -97,10 +97,12 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
             let fieldText = ac.textFields?[0].text!
             if (fieldText! == ""){
                 Server.showError(message: "Enter an email!")
+                self.present(ac, animated: true)
             } else {
                 Auth.auth().sendPasswordReset(withEmail: fieldText!, completion: { (Error) in
                     if let error = Error {
                         Server.showError(message: error.localizedDescription)
+                        self.present(ac, animated: true)
                     } else {
                         Common.showSuccess(message: "Email sent!")
                     }
@@ -108,7 +110,7 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
             }
         }))
         
-        present(ac, animated: true)
+        self.present(ac, animated: true)
     }
 
     func toggleButtons(toggle:Bool){

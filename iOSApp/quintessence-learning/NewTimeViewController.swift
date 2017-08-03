@@ -33,7 +33,7 @@ class NewTimeViewController: ModalViewController {
     @IBAction func onSubmit(_ sender: UIButton) {
         if (timePicked) {
             userRef!.child("Old_Time").observeSingleEvent(of: .value, with: { (data) in
-                print("fuck")
+                debugPrint("fuck")
                 let oldTime = data.value as? TimeInterval ?? nil
                 self.userRef!.child("Time").observeSingleEvent(of: .value, with: { (time) in
                     

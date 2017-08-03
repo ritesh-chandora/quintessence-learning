@@ -12,6 +12,7 @@ import FirebaseDatabase
 class ViewController: UIViewController {
 
     var ref : Database?
+    var didViewChange = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +31,8 @@ class ViewController: UIViewController {
                         self.present(welcomeScreen, animated: true)
                     }
                 }) { (error) in
-                    Server.showError(message: error.localizedDescription)
+                    debugPrint("Failed get the snapshot \(error.localizedDescription)")
+                    
                 }
             } else {
                 let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! UINavigationController
