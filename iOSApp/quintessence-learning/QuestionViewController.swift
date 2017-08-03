@@ -95,36 +95,46 @@ class QuestionViewController: UIViewController {
                 }
                 
                 let currTime = Date()
-                let timeElapsed = currTime.timeIntervalSinceReferenceDate - self.notifyTime!.timeIntervalSinceReferenceDate
+                var timeElapsed = currTime.timeIntervalSinceReferenceDate - self.notifyTime!.timeIntervalSinceReferenceDate
                 
                 var daysMissed = 0
+                
+                //multiplier is needed because with old_time daysMissed will be off by one
+                var multiplier = 0
                 debugPrint(timeElapsed)
+                print(self.notifyTime!)
                 //if the time has passed since notification date
                 if (timeElapsed >= 0) {
                     
                     //Handle case if user changed time and then didn't check until after next notification
                     if (oldTime != nil) {
                         let newNotifyTime = Date(timeIntervalSince1970: time.value as! TimeInterval)
-                        
+                        let oldTimeElapsed = newNotifyTime.timeIntervalSinceReferenceDate - self.notifyTime!.timeIntervalSinceReferenceDate
                         //if time has elapsed between old notify time and new notify time, that will count as one day missed
-                        if (timeElapsed > (newNotifyTime.timeIntervalSinceReferenceDate) - self.notifyTime!.timeIntervalSinceReferenceDate){
+                        if (timeElapsed > oldTimeElapsed){
                             daysMissed += 1
                         }
+                        print("old time elapsed: \(timeElapsed)")
+                        timeElapsed -= oldTimeElapsed
+                        print("new time elapsed: \(timeElapsed)")
+                        self.notifyTime! = newNotifyTime
                         self.ref!.child("Old_Time").setValue(nil)
                     }
                     //check for missed days and if so, add those questions to saved questions
                     daysMissed += Int(timeElapsed/Common.dayInSeconds)
-                    if (daysMissed > 1){
+                    multiplier += Int(timeElapsed/Common.dayInSeconds)
+                    if (daysMissed > 0){
                         print("\(daysMissed) days missed")
                         self.saveMissedQuestions(days: daysMissed)
                     }
                     
                     
                     //increment the user count
+                    multiplier+=1
                     daysMissed+=1
                     
                     //set next question update to next day
-                    self.notifyTime!.addTimeInterval(Common.dayInSeconds*Double(daysMissed))
+                    self.notifyTime!.addTimeInterval(Common.dayInSeconds*Double(multiplier))
                     self.ref!.child("Time").setValue(self.notifyTime?.timeIntervalSince1970)
                 }
                 
@@ -137,14 +147,14 @@ class QuestionViewController: UIViewController {
                     self.timeLabel.text! = dateFormatter.string(from: self.notifyTime!)
                 }
                 self.invalidateTimer()
-                print("setting timer at \(Date())")
                 self.setNextQuestionTimer()
                 self.setQuestionCount(days: daysMissed)
             })
         })
     }
     func setTimer(){
-        if (Date().timeIntervalSinceReferenceDate < timer!.fireDate.timeIntervalSinceReferenceDate) {
+        print("current time: \(Date().timeIntervalSinceReferenceDate), fire time: \(timer!.fireDate.timeIntervalSinceReferenceDate)")
+        if (Int(Date().timeIntervalSinceReferenceDate) <= Int(timer!.fireDate.timeIntervalSinceReferenceDate)) {
             print("jej")
             checkIfNeedUpdate()
         }
@@ -153,6 +163,7 @@ class QuestionViewController: UIViewController {
     func setNextQuestionTimer(){
         //invalid previous timer, if any
         if timer == nil {
+            print("timer set for \(notifyTime!)")
             timer = Timer(fireAt: notifyTime!, interval: 0, target: self, selector: #selector(setTimer), userInfo: nil, repeats: false)
             RunLoop.main.add(timer!, forMode: .commonModes)
         }

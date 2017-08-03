@@ -236,7 +236,7 @@
 				TargetAttributes = {
 					2C72CB521F1DC15F009868D6 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = SY2DYW4VFK;
+						DevelopmentTeam = WAC8TS3C8H;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -478,7 +478,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "quintessence-learning/quintessence-learning.entitlements";
-				DEVELOPMENT_TEAM = SY2DYW4VFK;
+				DEVELOPMENT_TEAM = WAC8TS3C8H;
 				INFOPLIST_FILE = "quintessence-learning/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = efeng.qlearning;
@@ -495,7 +495,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "quintessence-learning/quintessence-learning.entitlements";
-				DEVELOPMENT_TEAM = SY2DYW4VFK;
+				DEVELOPMENT_TEAM = WAC8TS3C8H;
 				INFOPLIST_FILE = "quintessence-learning/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = efeng.qlearning;
