@@ -10,12 +10,13 @@ import UIKit
 import UserNotifications
 class Common: NSObject {
     
-    static let dayInSeconds:Double = 120
-//    static let dayInSeconds:Double = 86400
+//    static let dayInSeconds:Double = 120
+    static let dayInSeconds:Double = 86400
     static let trialLength = 14
     static let USER_PATH = "Users"
     static let QUESTION_PATH = "Questions"
     static let USER_COUNT = "Current_Question"
+    static let weekend = [1,6,7]
     
     static func showSuccess(message:String) {
         DispatchQueue.main.async {
@@ -55,12 +56,13 @@ class Common: NSObject {
                 UNUserNotificationCenter.current().add(request)
             }
         } else {
-            debugPrint("set for \(dateComponents)")
+            print("set for \(dateComponents)")
+            
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
             UNUserNotificationCenter.current().add(request)
         }
-        debugPrint("notification timer set!")
+        print("notification timer set!")
     }
     
     //determines if the time selected to notify is later than current, and if so, 24 hr delay must be implemented

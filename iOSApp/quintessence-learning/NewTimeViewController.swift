@@ -33,13 +33,32 @@ class NewTimeViewController: ModalViewController {
     @IBAction func onSubmit(_ sender: UIButton) {
         if (timePicked) {
             userRef!.child("Old_Time").observeSingleEvent(of: .value, with: { (data) in
-                debugPrint("fuck")
+                
                 let oldTime = data.value as? TimeInterval ?? nil
                 self.userRef!.child("Time").observeSingleEvent(of: .value, with: { (time) in
                     
                     //keep old time for one cycle, then update to the new time
                     let currNotifyTime = Date(timeIntervalSince1970: (time.value as! TimeInterval))
                     
+                    //offset new time with weekend, if needed
+                    let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                    let components = calendar.dateComponents([.weekday], from: currNotifyTime)
+                    
+                    //if it is friday thru sunday, don't notify and add appropriate time to next question
+                    if (Common.weekend.contains(components.weekday!)) {
+                        var days = 0
+                        if(components.weekday == 6) {
+                            //friday, add 3 days to it
+                            days+=3
+                        } else if (components.weekday == 7){
+                            //saturday, add 2 days
+                            days+=2
+                        } else if (components.weekday == 1) {
+                            //sunday, add one day
+                            days+=1
+                        }
+                        self.timePicker.date.addTimeInterval(Common.dayInSeconds*Double(days))
+                    }
                     //if the next notification time is too close to the new set notification time (within 12 hours), add another day
                     if oldTime != nil {
                         if (abs(currNotifyTime.timeIntervalSince1970 - oldTime!) < Common.dayInSeconds/2){

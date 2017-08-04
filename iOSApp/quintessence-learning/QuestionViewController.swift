@@ -61,6 +61,7 @@ class QuestionViewController: UIViewController {
         
         //listener for when app enters background to invalidate timer
         NotificationCenter.default.addObserver(self, selector: #selector(invalidateTimer), name:NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(checkIfNeedUpdate), name:NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         
         user = Auth.auth().currentUser!
         ref = Database.database().reference().child(Common.USER_PATH).child(user!.uid)
@@ -94,50 +95,69 @@ class QuestionViewController: UIViewController {
                    self.notifyTime = Date(timeIntervalSince1970: time.value as! TimeInterval)
                 }
                 
-                let currTime = Date()
-                var timeElapsed = currTime.timeIntervalSinceReferenceDate - self.notifyTime!.timeIntervalSinceReferenceDate
-                
-                var daysMissed = 0
+                let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                let components = calendar.dateComponents([.weekday], from: self.notifyTime!)
                 
                 //multiplier is needed because with old_time daysMissed will be off by one
                 var multiplier = 0
-                debugPrint(timeElapsed)
-                print(self.notifyTime!)
-                //if the time has passed since notification date
-                if (timeElapsed >= 0) {
-                    
-                    //Handle case if user changed time and then didn't check until after next notification
-                    if (oldTime != nil) {
-                        let newNotifyTime = Date(timeIntervalSince1970: time.value as! TimeInterval)
-                        let oldTimeElapsed = newNotifyTime.timeIntervalSinceReferenceDate - self.notifyTime!.timeIntervalSinceReferenceDate
-                        //if time has elapsed between old notify time and new notify time, that will count as one day missed
-                        if (timeElapsed > oldTimeElapsed){
-                            daysMissed += 1
-                        }
-                        print("old time elapsed: \(timeElapsed)")
-                        timeElapsed -= oldTimeElapsed
-                        print("new time elapsed: \(timeElapsed)")
-                        self.notifyTime! = newNotifyTime
-                        self.ref!.child("Old_Time").setValue(nil)
-                    }
-                    //check for missed days and if so, add those questions to saved questions
-                    daysMissed += Int(timeElapsed/Common.dayInSeconds)
-                    multiplier += Int(timeElapsed/Common.dayInSeconds)
-                    if (daysMissed > 0){
-                        print("\(daysMissed) days missed")
-                        self.saveMissedQuestions(days: daysMissed)
-                    }
-                    
-                    
-                    //increment the user count
-                    multiplier+=1
-                    daysMissed+=1
-                    
-                    //set next question update to next day
-                    self.notifyTime!.addTimeInterval(Common.dayInSeconds*Double(multiplier))
-                    self.ref!.child("Time").setValue(self.notifyTime?.timeIntervalSince1970)
-                }
+                var daysMissed = 0
                 
+                //if it is friday thru sunday, don't notify and add appropriate time to next question
+                if (Common.weekend.contains(components.weekday!)) {
+                    if(components.weekday == 6) {
+                        //friday, add 3 days to it
+                        multiplier+=3
+                    } else if (components.weekday == 7){
+                        //saturday, add 2 days
+                        multiplier+=2
+                    } else if (components.weekday == 1) {
+                        //sunday, add one day
+                        multiplier+=1
+                    }
+                    self.notifyTime!.addTimeInterval(Common.dayInSeconds*Double(multiplier))
+                } else {
+                
+                    let currTime = Date()
+                    
+                    var timeElapsed = currTime.timeIntervalSinceReferenceDate - self.notifyTime!.timeIntervalSinceReferenceDate
+                    
+                    debugPrint(timeElapsed)
+                    print(self.notifyTime!)
+                    //if the time has passed since notification date
+                        if (timeElapsed >= 0) {
+                        
+                        //Handle case if user changed time and then didn't check until after next notification
+                        if (oldTime != nil) {
+                            let newNotifyTime = Date(timeIntervalSince1970: time.value as! TimeInterval)
+                            let oldTimeElapsed = newNotifyTime.timeIntervalSinceReferenceDate - self.notifyTime!.timeIntervalSinceReferenceDate
+                            //if time has elapsed between old notify time and new notify time, that will count as one day missed
+                            if (timeElapsed > oldTimeElapsed){
+                                daysMissed += 1
+                            }
+                            print("old time elapsed: \(timeElapsed)")
+                            timeElapsed -= oldTimeElapsed
+                            print("new time elapsed: \(timeElapsed)")
+                            self.notifyTime! = newNotifyTime
+                            self.ref!.child("Old_Time").setValue(nil)
+                        }
+                        //check for missed days and if so, add those questions to saved questions
+                        daysMissed += Int(timeElapsed/Common.dayInSeconds)
+                        multiplier += Int(timeElapsed/Common.dayInSeconds)
+                        if (daysMissed > 0){
+                            print("\(daysMissed) days missed")
+                            self.saveMissedQuestions(days: daysMissed)
+                        }
+                        
+                        
+                        //increment the user count
+                        multiplier+=1
+                        daysMissed+=1
+                        
+                        //set next question update to next day
+                        self.notifyTime!.addTimeInterval(Common.dayInSeconds*Double(multiplier))
+                        self.ref!.child("Time").setValue(self.notifyTime?.timeIntervalSince1970)
+                    }
+                }
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateStyle = .short
                 dateFormatter.timeStyle = .short
@@ -146,6 +166,7 @@ class QuestionViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.timeLabel.text! = dateFormatter.string(from: self.notifyTime!)
                 }
+                
                 self.invalidateTimer()
                 self.setNextQuestionTimer()
                 self.setQuestionCount(days: daysMissed)

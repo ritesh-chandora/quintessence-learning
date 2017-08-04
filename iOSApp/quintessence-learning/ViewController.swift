@@ -32,7 +32,6 @@ class ViewController: UIViewController {
                     }
                 }) { (error) in
                     debugPrint("Failed get the snapshot \(error.localizedDescription)")
-                    
                 }
             } else {
                 let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! UINavigationController

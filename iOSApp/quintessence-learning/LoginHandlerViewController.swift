@@ -36,6 +36,10 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
                 self.infoText.text! = errorMessage
                 self.infoText!.isHidden = false;
                 self.toggleButtons(toggle: true)
+            } else if (!Auth.auth().currentUser!.isEmailVerified) {
+                let emailScreen = self.storyboard?.instantiateViewController(withIdentifier: "VerifyEmail") as! EmailVerificationViewController
+                emailScreen.email = Auth.auth().currentUser!.email!
+                self.navigationController?.pushViewController(emailScreen, animated: true)
             } else {
                 let profileView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
                 self.present(profileView, animated:true)
@@ -133,8 +137,12 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
     }
     
     func signUpCallback() {
-        let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Welcome") as! WelcomeViewController
-        present(welcomeScreen, animated: true)
+        Auth.auth().currentUser!.sendEmailVerification { (error) in
+            
+        }
+        let emailScreen = self.storyboard?.instantiateViewController(withIdentifier: "VerifyEmail") as! EmailVerificationViewController
+        emailScreen.email = self.emailText!.text!
+        self.navigationController?.pushViewController(emailScreen, animated: true)
     }
     
     override func viewDidLoad() {
@@ -151,7 +159,7 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        scrollView.setContentOffset(CGPoint(x:0, y:250), animated: true)
+        scrollView.setContentOffset(CGPoint(x:0, y:100), animated: true)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
