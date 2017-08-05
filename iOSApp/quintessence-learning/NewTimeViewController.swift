@@ -88,7 +88,7 @@ class NewTimeViewController: ModalViewController {
                     
                     //update the label on ProfileViewController
                     self.timeLabelDelegate?.updateTimeLabel(newDate: newNotifyTime)
-                    
+                    Common.showSuccess(message: "Warning: Notifications may take up to 24 hours to take effect!")
                     self.timeField.text = self.dateFormatter.string(from: newNotifyTime)
                 })
             })

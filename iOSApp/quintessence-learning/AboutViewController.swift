@@ -38,9 +38,9 @@ class AboutViewController: UIViewController, UIPageViewControllerDataSource, UIP
 
     private func setupPageControl() {
         let appearance = UIPageControl.appearance()
-        appearance.pageIndicatorTintColor = UIColor.gray
-        appearance.currentPageIndicatorTintColor = UIColor.white
-        appearance.backgroundColor = UIColor.darkGray
+        appearance.pageIndicatorTintColor = UIColor.darkGray
+        appearance.currentPageIndicatorTintColor = UIColor.gray
+        appearance.backgroundColor = UIColor.clear
     }
     
     func presentationCount(for pageViewController: UIPageViewController) -> Int {

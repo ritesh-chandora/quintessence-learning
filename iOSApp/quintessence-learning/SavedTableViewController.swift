@@ -21,7 +21,6 @@ class SavedTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Saved Questions"
         ref = Database.database().reference()
         user = Auth.auth().currentUser!
         

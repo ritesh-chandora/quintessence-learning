@@ -33,23 +33,20 @@ class Common: NSObject {
     
     //sets the notification timer
     static func setNotificationTimer(date:Date, repeating:Bool){
-        var dateComponents = DateComponents()
-        let components = getHourAndMinutes(date: date)
-        dateComponents.hour = components[0]
-        dateComponents.minute = components[1]
-        dateComponents.second = components[2]
+        let calendar = Calendar.current
+        
+        var dateComponents = calendar.dateComponents([.weekday, .hour, .minute, .second], from: date)
         
         let notificationContent = UNMutableNotificationContent()
         notificationContent.title = "New Question Today!"
         notificationContent.body = "Swipe to open question..."
         notificationContent.categoryIdentifier = "alarm"
-        notificationContent.userInfo = ["wtf":"???"]
+        notificationContent.userInfo = ["DateCreated":date]
         notificationContent.sound = UNNotificationSound.default()
         
         //if repeating, repeat for every weekday
         if(repeating){
-            for day in 2 ..< 7{
-                
+            for day in 2...6{
                 dateComponents.weekday = day
                 let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
                 let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
@@ -57,7 +54,7 @@ class Common: NSObject {
             }
         } else {
             print("set for \(dateComponents)")
-            
+            dateComponents = calendar.dateComponents([.day, .hour, .minute, .second], from: date)
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
             UNUserNotificationCenter.current().add(request)

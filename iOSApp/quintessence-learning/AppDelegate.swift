@@ -15,6 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
+        let navigationBarAppearace = UINavigationBar.appearance()
+        
+        navigationBarAppearace.tintColor = UIColor.white
+        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
+        navigationBarAppearace.barTintColor = UIColor(red: 52/255, green: 94/255, blue: 242/255, alpha: 1)
         return true
     }
 

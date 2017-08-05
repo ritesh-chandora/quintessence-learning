@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -54,7 +53,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lkZ-jh-I9G">
                                 <rect key="frame" x="16" y="471" width="343" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" name="selectedMenuItemColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" red="0.20392156862745098" green="0.36862745098039218" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Login">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -312,6 +311,11 @@
                                 <state key="normal" title="Continue">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="onContinue:" destination="qUe-2Z-fvo" eventType="touchUpInside" id="zyG-tX-mog"/>
                                 </connections>
@@ -324,6 +328,11 @@
                                 <state key="normal" title="Resend Email Verification">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="onResend:" destination="qUe-2Z-fvo" eventType="touchUpInside" id="NmY-bg-K93"/>
                                 </connections>
@@ -932,7 +941,7 @@
                             <outlet property="delegate" destination="WjV-qu-9su" id="xTm-TM-0pI"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Nzu-kK-C97"/>
+                    <navigationItem key="navigationItem" title="Settings" id="Nzu-kK-C97"/>
                     <connections>
                         <outlet property="changeNotif" destination="5Cz-8I-RAk" id="gDc-1p-TeP"/>
                         <outlet property="changePass" destination="tBJ-Vb-9iL" id="wk8-2U-kbY"/>
@@ -1296,8 +1305,15 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Loading..." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="15m-Yb-5VS">
+                                <rect key="frame" x="67" y="258" width="240" height="150"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kbA-Tq-WIV" customClass="TagListView" customModule="TagListView">
-                                <rect key="frame" x="43" y="492" width="288" height="60"/>
+                                <rect key="frame" x="43" y="462" width="288" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -1327,17 +1343,10 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Loading..." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="15m-Yb-5VS">
-                                <rect key="frame" x="67" y="194" width="240" height="203"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="GLR-aR-u6K"/>
+                    <navigationItem key="navigationItem" title="Questions" id="GLR-aR-u6K"/>
                     <connections>
                         <outlet property="questionLabel" destination="15m-Yb-5VS" id="01P-gT-Wrh"/>
                         <outlet property="savedLabel" destination="eRM-n5-xu7" id="0wI-eh-tdu"/>
@@ -1546,6 +1555,51 @@
             </objects>
             <point key="canvasLocation" x="3598" y="1977"/>
         </scene>
+        <!--Past-->
+        <scene sceneID="TQU-8B-63q">
+            <objects>
+                <tableViewController storyboardIdentifier="Past" title="Past" id="5pH-rd-gej" customClass="PastQuestionsTableViewController" customModule="quintessence_learning" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="ekK-4O-EjL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="SavedCell" textLabel="JAb-UZ-rme" detailTextLabel="OOH-zE-BsT" style="IBUITableViewCellStyleSubtitle" id="7GN-JN-nKm">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7GN-JN-nKm" id="tuJ-Bt-vb9">
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JAb-UZ-rme">
+                                            <rect key="frame" x="15" y="5" width="33.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OOH-zE-BsT">
+                                            <rect key="frame" x="15" y="25.5" width="33" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="5pH-rd-gej" id="FBs-mZ-cdI"/>
+                            <outlet property="delegate" destination="5pH-rd-gej" id="fnB-zO-JPH"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Past Questions" id="ETg-4J-qkR"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Me0-Eq-Ua0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7014" y="244"/>
+        </scene>
         <!--Saved Questions-->
         <scene sceneID="rbL-lP-CYd">
             <objects>
@@ -1585,7 +1639,7 @@
                             <outlet property="delegate" destination="ZJJ-8b-OgS" id="D2r-hk-t9s"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="c2m-eT-atk"/>
+                    <navigationItem key="navigationItem" title="Saved Questions" id="c2m-eT-atk"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Iau-Jv-4E4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1617,7 +1671,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zsq-EG-Og8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7796" y="894"/>
+            <point key="canvasLocation" x="7743" y="548"/>
         </scene>
         <!--Create-->
         <scene sceneID="t8P-fY-J3i">
@@ -1936,10 +1990,10 @@
             </objects>
             <point key="canvasLocation" x="4505" y="894"/>
         </scene>
-        <!--Feedback View Controller-->
+        <!--About-->
         <scene sceneID="MaU-QB-n9w">
             <objects>
-                <tableViewController id="UkX-J5-DjB" customClass="FeedbackViewController" customModule="quintessence_learning" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="About" id="UkX-J5-DjB" customClass="FeedbackViewController" customModule="quintessence_learning" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="a8A-BK-B1h">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2045,6 +2099,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="mSp-xo-cdA" kind="show" id="5Yn-Nh-JdO"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="FpJ-77-Hz6">
                                         <rect key="frame" x="0.0" y="176" width="375" height="44"/>
@@ -2070,7 +2127,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="ciM-se-lwT" kind="show" id="arA-nR-RSg"/>
+                                            <segue destination="Qkb-iI-xMU" kind="show" id="p1b-QL-JdY"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -2081,7 +2138,7 @@
                             <outlet property="delegate" destination="UkX-J5-DjB" id="Lh4-xK-QGL"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="37g-E7-xqP"/>
+                    <navigationItem key="navigationItem" title="Feedback" id="37g-E7-xqP"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fag-Oi-PFT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2096,76 +2153,133 @@
                         <viewControllerLayoutGuide type="bottom" id="KOi-lB-JS6"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="LP7-Sw-Qoz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l1V-e8-TCw">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
-                                <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tFM-At-y6O">
-                                        <rect key="frame" x="16" y="95" width="343" height="428"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <string key="text">Quintessence Learning is a mobile app created for parents who want to engage their children in meaningful dialogue to take advantage of the waining time they have with their children.  The app conveniently pushes out daily questions and activities to get the most out of the time with your children and get them off their devices.  We understand how busy parents are today and easy it is to fall into tell me “two things about your day” trap…or even worse the TV and device rabbit hole.
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Our Mission" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W0r-ue-1EF">
+                                <rect key="frame" x="24" y="39" width="264" height="86"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="40"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tFM-At-y6O">
+                                <rect key="frame" x="16" y="121" width="343" height="428"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <string key="text">Quintessence Learning is a mobile app created for parents who want to engage their children in meaningful dialogue to take advantage of the waining time they have with their children.  The app conveniently pushes out daily questions and activities to get the most out of the time with your children and get them off their devices.  We understand how busy parents are today and easy it is to fall into tell me “two things about your day” trap…or even worse the TV and device rabbit hole.
 
 With standardized testing results as the barometer of a teacher’s success, we also notice that the necessary creative and critical thinking skills are not being developed during school hours.  We are leveraging all the latest research and a 40-year educator who has focused on early childhood and Gifted and Talented Education.  Through decades of lessons plans spanning pre-kindergarten to high school, these are the absolute best questions and activities to foster creative thinking and emotional development.</string>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Our Mission" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W0r-ue-1EF">
-                                        <rect key="frame" x="16" y="0.0" width="264" height="86"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="86" id="Wko-fi-VuK"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="40"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="tFM-At-y6O" firstAttribute="centerX" secondItem="l1V-e8-TCw" secondAttribute="centerX" id="FfF-nG-Cky"/>
-                                    <constraint firstItem="W0r-ue-1EF" firstAttribute="leading" secondItem="tFM-At-y6O" secondAttribute="leading" id="IYX-GU-gdN"/>
-                                    <constraint firstItem="W0r-ue-1EF" firstAttribute="leading" secondItem="l1V-e8-TCw" secondAttribute="leading" constant="16" id="MHb-vd-snu"/>
-                                    <constraint firstItem="W0r-ue-1EF" firstAttribute="top" secondItem="l1V-e8-TCw" secondAttribute="top" id="Zjo-Dh-CIz"/>
-                                    <constraint firstAttribute="trailing" secondItem="tFM-At-y6O" secondAttribute="trailing" constant="16" id="g82-kb-N2N"/>
-                                    <constraint firstAttribute="trailing" secondItem="W0r-ue-1EF" secondAttribute="trailing" constant="95" id="nIQ-4v-Qlp"/>
-                                    <constraint firstItem="tFM-At-y6O" firstAttribute="top" secondItem="W0r-ue-1EF" secondAttribute="bottom" constant="9" id="pJM-ub-6J1"/>
-                                    <constraint firstItem="tFM-At-y6O" firstAttribute="centerY" secondItem="l1V-e8-TCw" secondAttribute="centerY" id="paA-eU-G60"/>
-                                    <constraint firstAttribute="bottom" secondItem="tFM-At-y6O" secondAttribute="bottom" constant="95" id="ySY-cF-d1i"/>
-                                </constraints>
-                            </scrollView>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="l1V-e8-TCw" firstAttribute="leading" secondItem="LP7-Sw-Qoz" secondAttribute="leading" id="5LR-3w-1Uf"/>
-                            <constraint firstItem="l1V-e8-TCw" firstAttribute="top" secondItem="LP7-Sw-Qoz" secondAttribute="top" id="7HF-Fv-0qm"/>
-                            <constraint firstAttribute="trailing" secondItem="l1V-e8-TCw" secondAttribute="trailing" id="gaW-Yh-zuL"/>
-                            <constraint firstItem="l1V-e8-TCw" firstAttribute="bottom" secondItem="KOi-lB-JS6" secondAttribute="top" id="mlg-aY-yeR"/>
-                        </constraints>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ofE-20-IAS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3597.5999999999999" y="3492.5037481259374"/>
+            <point key="canvasLocation" x="3598" y="3493"/>
         </scene>
         <!--About View Controller-->
-        <scene sceneID="M58-Gn-PWr">
+        <scene sceneID="dz8-b3-Qdq">
             <objects>
-                <viewController id="ciM-se-lwT" customClass="AboutViewController" customModule="quintessence_learning" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Qkb-iI-xMU" customClass="AboutViewController" customModule="quintessence_learning" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="wd5-dV-SWa"/>
-                        <viewControllerLayoutGuide type="bottom" id="u2v-dr-2Kh"/>
+                        <viewControllerLayoutGuide type="top" id="jMx-b0-pST"/>
+                        <viewControllerLayoutGuide type="bottom" id="bNG-uY-pZl"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="mHj-q2-VFb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <view key="view" contentMode="scaleToFill" id="eV6-ca-Iq4">
+                        <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="eeV-Xx-ZAK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="anJ-CE-EuO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4505" y="3493"/>
+        </scene>
+        <!--FAQ-->
+        <scene sceneID="SE8-6t-Qlp">
+            <objects>
+                <viewController title="FAQ" id="mSp-xo-cdA" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qr5-lb-d7Z"/>
+                        <viewControllerLayoutGuide type="bottom" id="V9v-4E-AsF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mxD-oW-LEq">
+                        <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xg7-gH-fij">
+                                <rect key="frame" x="23" y="62" width="329" height="102"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <string key="text">If you miss a question, it will automatically be saved under "Saved Questions". You can view your saved questions by going to the Question tab and pressing the folder icon in the top right corner and selecting, "View Saved Questions".</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="How can I view past questions?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fgU-0o-aya">
+                                <rect key="frame" x="23" y="172" width="253" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Can I save questions?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOO-bU-Zek">
+                                <rect key="frame" x="23" y="276" width="175" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Past questions can be viewed by pressing the folder icon in the top right corner under the &quot;Questions&quot; Tab. " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZw-Ti-aLv">
+                                <rect key="frame" x="23" y="202" width="329" height="66"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Yes! Select the folder icon at the top right corner and select &quot;Save Current Question&quot;. " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NE7-sY-gc8">
+                                <rect key="frame" x="23" y="306" width="329" height="51"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="How does changing notification time work?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pqc-9h-pzT">
+                                <rect key="frame" x="23" y="365" width="329" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpM-q7-PlS">
+                                <rect key="frame" x="23" y="394" width="329" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <string key="text">Once the time is changed, the current notification time will be kept for one more question. Then the questions will come at the new specified time. The notifications will take 24 hours to register properly</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="What happens if I miss a question?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vOh-vg-VRd">
+                                <rect key="frame" x="23" y="41" width="281" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9ie-XO-71W" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4504.8000000000002" y="4201.3493253373317"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="VyR-Uh-A0i">
@@ -2179,55 +2293,32 @@ With standardized testing results as the barometer of a teacher’s success, we 
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sUn-S6-t3a">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="595"/>
-                                <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="reV-LT-2NF">
-                                        <rect key="frame" x="16" y="95" width="343" height="428"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="428" id="QhL-mu-rhF"/>
-                                        </constraints>
-                                        <string key="text">After thirty-five years as a public-school teacher of gifted and talented students and owner/founder or a private preschool, I am more sure than ever that we need parents’ help to truly and fully educate our children for the 21st century. Public schools are just not able to change and adapt to teach the kind of skills our children will need for quickly-changing fast-approaching future.
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="About Us" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Me2-ZA-Oc8">
+                                <rect key="frame" x="24" y="39" width="264" height="86"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="40"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="reV-LT-2NF">
+                                <rect key="frame" x="16" y="119" width="343" height="428"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="428" id="QhL-mu-rhF"/>
+                                </constraints>
+                                <string key="text">After thirty-five years as a public-school teacher of gifted and talented students and owner/founder or a private preschool, I am more sure than ever that we need parents’ help to truly and fully educate our children for the 21st century. Public schools are just not able to change and adapt to teach the kind of skills our children will need for quickly-changing fast-approaching future.
 
 In my decades as an educator in the front lines, I’ve seen many education trends come and go. I fully embraced everyone, immersing myself in the research, applying it to my teaching practices, and often giving works shops to colleagues on the newest program or strategy. I was sure that this new program would help teachers teach more effectively and students would learn more deeply. Well, thirty-five years later, I’m not sure that our students in the beginning of this century are any smarter than they were in 1983, when I first started teaching.  Then to complicate educational efficacy even further, standardized tests became more and more important. When I first started teaching, standardized test results were one measure. By the time I left the public school, it became THE measure. Only a high score on the national standardized test would open the door to the high reading and math classes or all the enrichment classes including mine. More than once, I left meetings so frustrated that an incredibly bright child was denied entrance to an enrichment program because he/ she missed the required score by a few points. It seemed so wrong by children. I know that schools around the nation have their unique programs and assessment criteria for these enriched classes, but there are not many schools that don’t rely on standardized tests as an entrance criteria.
 
 Before I left teaching in the public school, I wrote an editorial for a local county paper on standardized testing. I referred to it as “the emperor’s new clothes.”  My affluent suburban school gloated over the high scores the students in the district received on these tests; yet, my colleagues and I scratched our heads. Even though we were happy about the students’ well-earned scores that we had worked hard to prepare them for, we were not seeing this high proficiency in their day-to -day work in the classroom. Our students still struggled with problem solving, formulating thoughts and effectively communicating them, creative expression, and answering any question that was outside of the formulaic way that text books presented them.  Throughout my years even as a g &amp; t teacher, I found myself rewriting the directions for project based assignments for my students that included much more specific directions and parameters.  Of course, I had to include the dreaded school required rubric that delineated the criteria for the final grade on the project. Students followed the rubric and expected the highest grade. Although this provided clarity on how the get the best grade, it began to rob my students of creativity and resourcefulness. Grades became more important than effort or a creative out-of-the-box solution.  I am not saying that my students weren’t very bright, nor am I saying that teachers and administrators weren’t working very hard. Kids were becoming exceptional at one thing: school. They were better at school.</string>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Us" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Me2-ZA-Oc8">
-                                        <rect key="frame" x="16" y="8" width="264" height="86"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="86" id="oal-FG-zru"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="40"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="reV-LT-2NF" secondAttribute="bottom" constant="72" id="BXC-D1-2PK"/>
-                                    <constraint firstItem="reV-LT-2NF" firstAttribute="centerX" secondItem="sUn-S6-t3a" secondAttribute="centerX" id="I0Z-n4-9Lf"/>
-                                    <constraint firstItem="Me2-ZA-Oc8" firstAttribute="top" secondItem="sUn-S6-t3a" secondAttribute="topMargin" id="Lah-7O-Vgg"/>
-                                    <constraint firstItem="Me2-ZA-Oc8" firstAttribute="leading" secondItem="reV-LT-2NF" secondAttribute="leading" id="LyA-3Y-yr4"/>
-                                    <constraint firstAttribute="trailing" secondItem="Me2-ZA-Oc8" secondAttribute="trailing" constant="95" id="OnW-sM-C1R"/>
-                                    <constraint firstItem="reV-LT-2NF" firstAttribute="top" secondItem="Me2-ZA-Oc8" secondAttribute="bottom" constant="1" id="Vin-XL-KeU"/>
-                                    <constraint firstAttribute="trailing" secondItem="reV-LT-2NF" secondAttribute="trailing" constant="16" id="sNe-MQ-fEE"/>
-                                    <constraint firstItem="Me2-ZA-Oc8" firstAttribute="leading" secondItem="sUn-S6-t3a" secondAttribute="leading" constant="16" id="yrA-S1-cKx"/>
-                                </constraints>
-                            </scrollView>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="sUn-S6-t3a" firstAttribute="top" secondItem="sak-w5-Ycy" secondAttribute="top" id="QOL-kn-4uz"/>
-                            <constraint firstItem="RDg-LH-qly" firstAttribute="top" secondItem="sUn-S6-t3a" secondAttribute="bottom" constant="23" id="bFC-1d-lkb"/>
-                            <constraint firstItem="sUn-S6-t3a" firstAttribute="leading" secondItem="sak-w5-Ycy" secondAttribute="leading" id="fvi-jJ-f1f"/>
-                            <constraint firstAttribute="trailing" secondItem="sUn-S6-t3a" secondAttribute="trailing" id="uEc-fw-YFL"/>
-                        </constraints>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q3l-Y4-7vl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2369,7 +2460,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3V1-S9-u3W" customClass="TagListView" customModule="TagListView">
-                                        <rect key="frame" x="11" y="104" width="288" height="60"/>
+                                        <rect key="frame" x="8" y="83" width="288" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="color" keyPath="tagBackgroundColor">
@@ -2410,12 +2501,28 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                                         </connections>
                                     </button>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Loading..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="F12-yJ-ta6">
-                                        <rect key="frame" x="11" y="12" width="285" height="84"/>
+                                        <rect key="frame" x="11" y="12" width="285" height="63"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aQ8-3V-CTq">
+                                        <rect key="frame" x="8" y="150" width="288" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.0" green="0.40000000000000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal" title="Save">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="onClose:" destination="xpn-Vs-2dC" eventType="touchUpInside" id="3Db-a5-wSz"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
@@ -2435,7 +2542,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="clr-as-h9M" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8892" y="184.85757121439281"/>
+            <point key="canvasLocation" x="9831.2000000000007" y="184.85757121439281"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="OPt-Xd-NT8">
@@ -2454,6 +2561,24 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rpH-Tn-Cy8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1324" y="35.532233883058474"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="b0Q-7q-nTN">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="iQS-e8-4Gw" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Pyj-Ww-IXv">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="5pH-rd-gej" kind="relationship" relationship="rootViewController" id="wtf-Ui-ghr"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BeI-JM-JbG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6225" y="244"/>
         </scene>
     </scenes>
 </document>

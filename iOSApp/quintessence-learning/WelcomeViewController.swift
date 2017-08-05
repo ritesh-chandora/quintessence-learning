@@ -45,13 +45,13 @@ class WelcomeViewController: UIViewController {
             (granted, error) in
             if granted {
                 debugPrint("permission granted")
-                
+                Common.showSuccess(message: "Warning: First notification may be off by 24 hours!")
                 Common.setNotificationTimer(date: self.timePicker.date, repeating: true)
             } else {
                 debugPrint("denied")
             }
         }
-    
+        
         let userView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
         
         //initialize the account to be a user and initializes the time

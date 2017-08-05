@@ -34,6 +34,7 @@
 		2C72CB5E1F1DC15F009868D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C72CB5D1F1DC15F009868D6 /* Assets.xcassets */; };
 		2C72CB611F1DC15F009868D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C72CB5F1F1DC15F009868D6 /* LaunchScreen.storyboard */; };
 		2CDAFD1A1F34B77E00816D23 /* EmailVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDAFD191F34B77E00816D23 /* EmailVerificationViewController.swift */; };
+		2CDC3F121F365FCF00A87E3A /* PastQuestionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDC3F111F365FCF00A87E3A /* PastQuestionsTableViewController.swift */; };
 		B6B9ACEA1539585127AFA88D /* Pods_quintessence_learning.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9DC36B159E0625930BC53D5 /* Pods_quintessence_learning.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +69,7 @@
 		2C72CB601F1DC15F009868D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2C72CB621F1DC15F009868D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2CDAFD191F34B77E00816D23 /* EmailVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailVerificationViewController.swift; sourceTree = "<group>"; };
+		2CDC3F111F365FCF00A87E3A /* PastQuestionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastQuestionsTableViewController.swift; sourceTree = "<group>"; };
 		603BB9305DEE39DEE7482495 /* Pods-quintessence-learning.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quintessence-learning.debug.xcconfig"; path = "Pods/Target Support Files/Pods-quintessence-learning/Pods-quintessence-learning.debug.xcconfig"; sourceTree = "<group>"; };
 		F491CD342D5EFDBE2109D5F2 /* Pods-quintessence-learning.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quintessence-learning.release.xcconfig"; path = "Pods/Target Support Files/Pods-quintessence-learning/Pods-quintessence-learning.release.xcconfig"; sourceTree = "<group>"; };
 		F9DC36B159E0625930BC53D5 /* Pods_quintessence_learning.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_quintessence_learning.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,6 +109,7 @@
 				2C11B6DB1F267FC70039CB0A /* SavedTableViewController.swift */,
 				2C11B6DD1F267FF90039CB0A /* SavedQuestionViewController.swift */,
 				2C36AFC01F30237F005B87F3 /* TagTableViewController.swift */,
+				2CDC3F111F365FCF00A87E3A /* PastQuestionsTableViewController.swift */,
 			);
 			name = UserView;
 			sourceTree = "<group>";
@@ -343,6 +346,7 @@
 				2C45FE0F1F1FACD5004C6332 /* LoginHandlerViewController.swift in Sources */,
 				2C11B6DC1F267FC70039CB0A /* SavedTableViewController.swift in Sources */,
 				2C6F2E821F2B780700392BD0 /* Constants.swift in Sources */,
+				2CDC3F121F365FCF00A87E3A /* PastQuestionsTableViewController.swift in Sources */,
 				2C36AFC81F3025D7005B87F3 /* DetailViewController.swift in Sources */,
 				2C5810FB1F2D2F0B00B6C561 /* ContactViewController.swift in Sources */,
 				2C36AFC71F3025D7005B87F3 /* CreateViewController.swift in Sources */,

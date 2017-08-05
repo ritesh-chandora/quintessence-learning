@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
-
+import UserNotifications
 class ProfileViewController: UITableViewController {
     
     private var timePickerVisible = false
@@ -146,6 +146,8 @@ class ProfileViewController: UITableViewController {
         let ac = UIAlertController(title: "Confirm", message: "Are you sure you want to log out?", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Logout", style: .default, handler: { (action) in
             do {
+                let center = UNUserNotificationCenter.current()
+                center.removeAllPendingNotificationRequests()
                 try Auth.auth().signOut()
                 let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! UINavigationController
                 self.navigationController!.present(welcomeScreen, animated: true)

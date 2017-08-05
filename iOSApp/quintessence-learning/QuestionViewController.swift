@@ -53,11 +53,24 @@ class QuestionViewController: UIViewController {
             }
 
         })
+        
+        var displayString = "Current Pending Notifications "
+        UNUserNotificationCenter.current().getPendingNotificationRequests {
+            (requests) in
+            displayString += "count:\(requests.count)\t"
+            for request in requests{
+                print(request.trigger!)
+                displayString += request.identifier + "\t"
+            }
+            print(displayString)
+        }
 
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        
         
         //listener for when app enters background to invalidate timer
         NotificationCenter.default.addObserver(self, selector: #selector(invalidateTimer), name:NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
@@ -115,6 +128,7 @@ class QuestionViewController: UIViewController {
                         multiplier+=1
                     }
                     self.notifyTime!.addTimeInterval(Common.dayInSeconds*Double(multiplier))
+                    self.ref!.child("Time").setValue(self.notifyTime?.timeIntervalSince1970)
                 } else {
                 
                     let currTime = Date()
@@ -155,7 +169,11 @@ class QuestionViewController: UIViewController {
                         
                         //set next question update to next day
                         self.notifyTime!.addTimeInterval(Common.dayInSeconds*Double(multiplier))
-                        self.ref!.child("Time").setValue(self.notifyTime?.timeIntervalSince1970)
+                        if(oldTime != nil){
+                            self.ref!.child("Old_Time").setValue(self.notifyTime?.timeIntervalSince1970)
+                        } else {
+                            self.ref!.child("Time").setValue(self.notifyTime?.timeIntervalSince1970)
+                        }
                     }
                 }
                 let dateFormatter = DateFormatter()
@@ -298,6 +316,11 @@ class QuestionViewController: UIViewController {
         ac.addAction(UIAlertAction(title: "View all saved questions", style: .default, handler: { (action:UIAlertAction ) in
             let savedView = self.storyboard?.instantiateViewController(withIdentifier: "SavedQ") as! SavedTableViewController
             self.navigationController?.pushViewController(savedView, animated: true)
+        }))
+        
+        ac.addAction(UIAlertAction(title: "View all past questions", style: .default, handler: { (action) in
+            let pastView = self.storyboard?.instantiateViewController(withIdentifier: "Past") as! PastQuestionsTableViewController
+            self.navigationController?.pushViewController(pastView, animated: true)
         }))
         
         ac.addAction(UIAlertAction(title: "Cancel", style: .destructive))

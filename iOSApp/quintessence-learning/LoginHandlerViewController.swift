@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import UserNotifications
 class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var scrollView: UIScrollView!
@@ -41,8 +42,21 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
                 emailScreen.email = Auth.auth().currentUser!.email!
                 self.navigationController?.pushViewController(emailScreen, animated: true)
             } else {
-                let profileView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
-                self.present(profileView, animated:true)
+                self.ref!.reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Old_Time").observeSingleEvent(of: .value, with: { (old_time) in
+                    self.ref!.reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Time").observeSingleEvent(of: .value, with: { (time) in
+                        let oldTime = old_time.value as? TimeInterval ?? nil
+                        if (oldTime != nil){
+                            let oldDate = Date(timeIntervalSince1970: oldTime!)
+                            Common.setNotificationTimer(date: oldDate, repeating: false)
+                        }
+                        let notifyTime = Date(timeIntervalSince1970: time.value as! TimeInterval)
+                        Common.setNotificationTimer(date: notifyTime, repeating: true)
+                        let profileView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
+                        self.present(profileView, animated:true)
+                    })
+                })
+                
+                
             }
         }
     }
