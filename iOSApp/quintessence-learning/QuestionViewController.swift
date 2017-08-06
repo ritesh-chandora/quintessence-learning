@@ -59,7 +59,6 @@ class QuestionViewController: UIViewController {
             (requests) in
             displayString += "count:\(requests.count)\t"
             for request in requests{
-                print(request.trigger!)
                 displayString += request.identifier + "\t"
             }
             print(displayString)

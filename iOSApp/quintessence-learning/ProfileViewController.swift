@@ -148,6 +148,7 @@ class ProfileViewController: UITableViewController {
             do {
                 let center = UNUserNotificationCenter.current()
                 center.removeAllPendingNotificationRequests()
+                
                 try Auth.auth().signOut()
                 let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! UINavigationController
                 self.navigationController!.present(welcomeScreen, animated: true)

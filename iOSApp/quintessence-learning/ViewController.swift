@@ -26,21 +26,21 @@ class ViewController: UIViewController {
                     if (userType == "User") {
                         let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
                         self.present(userViewController, animated: true)
+                        return
                     } else {
                         let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! UINavigationController
                         self.present(welcomeScreen, animated: true)
+                        return
                     }
                 }) { (error) in
                     debugPrint("Failed get the snapshot \(error.localizedDescription)")
                 }
-            } else {
+            }
+            else {
                 let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! UINavigationController
                 self.present(welcomeScreen, animated: true)
             }
         }
-    }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
 }
 

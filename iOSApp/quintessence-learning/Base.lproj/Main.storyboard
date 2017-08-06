@@ -2236,7 +2236,7 @@ With standardized testing results as the barometer of a teacher’s success, we 
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Past questions can be viewed by pressing the folder icon in the top right corner under the &quot;Questions&quot; Tab. " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZw-Ti-aLv">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" text="Past questions can be viewed by pressing the folder icon in the top right corner under the &quot;Questions&quot; Tab. " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZw-Ti-aLv">
                                 <rect key="frame" x="23" y="202" width="329" height="66"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2460,7 +2460,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3V1-S9-u3W" customClass="TagListView" customModule="TagListView">
-                                        <rect key="frame" x="8" y="83" width="288" height="60"/>
+                                        <rect key="frame" x="8" y="109" width="288" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="color" keyPath="tagBackgroundColor">
@@ -2485,7 +2485,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Gi-or-5GO">
-                                        <rect key="frame" x="8" y="188" width="288" height="30"/>
+                                        <rect key="frame" x="8" y="188" width="137" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.0" green="0.40000000000000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="Close">
@@ -2500,15 +2500,8 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                                             <action selector="onClose:" destination="xpn-Vs-2dC" eventType="touchUpInside" id="aHW-50-CaM"/>
                                         </connections>
                                     </button>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Loading..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="F12-yJ-ta6">
-                                        <rect key="frame" x="11" y="12" width="285" height="63"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aQ8-3V-CTq">
-                                        <rect key="frame" x="8" y="150" width="288" height="30"/>
+                                        <rect key="frame" x="159" y="188" width="137" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.0" green="0.40000000000000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="Save">
@@ -2520,9 +2513,16 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="onClose:" destination="xpn-Vs-2dC" eventType="touchUpInside" id="3Db-a5-wSz"/>
+                                            <action selector="onSave:" destination="xpn-Vs-2dC" eventType="touchUpInside" id="Ld7-S6-lwd"/>
                                         </connections>
                                     </button>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Loading..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="F12-yJ-ta6">
+                                        <rect key="frame" x="10" y="32" width="285" height="63"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
@@ -2537,12 +2537,13 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                     <tabBarItem key="tabBarItem" title="Create" id="fo6-0Q-Ibf"/>
                     <connections>
                         <outlet property="questionText" destination="F12-yJ-ta6" id="kTQ-Xf-1Gy"/>
+                        <outlet property="saveButton" destination="aQ8-3V-CTq" id="QJe-1d-via"/>
                         <outlet property="tagsView" destination="3V1-S9-u3W" id="Z4q-D1-847"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="clr-as-h9M" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9831.2000000000007" y="184.85757121439281"/>
+            <point key="canvasLocation" x="8503" y="547"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="OPt-Xd-NT8">
