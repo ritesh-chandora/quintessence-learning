@@ -1,9 +1,11 @@
 package btao.com.quintessencelearning;
 
+import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -33,6 +35,7 @@ public class saved_questions extends AppCompatActivity {
     List<String> saved_question_keys = new ArrayList<String>();
     ArrayList<Question> saved_questions = new ArrayList<Question>();
     ListView question_list;
+    final HashMap<String,ArrayList<Question>> tag_map = new HashMap<String,ArrayList<Question>>();
 
 
     @Override
@@ -50,7 +53,7 @@ public class saved_questions extends AppCompatActivity {
 
         listAdapter = new QuestionsAdapter(this, saved_questions);
 
-        final HashMap<String,ArrayList<Question>> tag_map = new HashMap<String,ArrayList<Question>>();
+
 
 
 
@@ -113,5 +116,10 @@ public class saved_questions extends AppCompatActivity {
 
 
 
+    }
+    public void viewTag(View view){
+        Intent intent = new Intent(getApplicationContext(),view_by_tag.class);
+        intent.putExtra("tags",tag_map);
+        startActivity(intent);
     }
 }

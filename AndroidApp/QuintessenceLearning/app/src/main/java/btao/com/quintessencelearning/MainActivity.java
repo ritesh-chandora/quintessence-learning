@@ -586,6 +586,8 @@ public class MainActivity extends AppCompatActivity{
             old_time.set(Calendar.MINUTE, notification_minute);
             old_time.clear(Calendar.SECOND); //reset seconds to zero
 
+            Calendar current_time = Calendar.getInstance();
+
             /*Calendar calendar;
             if (user_old_time == null) {
                 calendar = new_time;
@@ -595,14 +597,22 @@ public class MainActivity extends AppCompatActivity{
 
             Intent myIntent = new Intent(getActivity(), NotificationReceiver.class);
             pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, myIntent,0);
+            PendingIntent old_pending = PendingIntent.getBroadcast(getActivity(),1,myIntent,0);
 
             AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
 
             alarmManager.cancel(pendingIntent);
-            //alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            if (current_time.getTimeInMillis()<old_time.getTimeInMillis()) {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, old_time.getTimeInMillis(), old_pending);
+            }
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,new_time.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
 
+            notification_hour=new_time.get(Calendar.HOUR_OF_DAY);
+            notification_minute=new_time.get(Calendar.MINUTE);
+
             Toast.makeText(getActivity(),R.string.time_updated,Toast.LENGTH_SHORT).show();
+
+
 
 
         }

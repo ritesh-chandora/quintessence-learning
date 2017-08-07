@@ -32,7 +32,8 @@
 
         <receiver android:name=".NotificationReceiver" />
 
-        <activity android:name=".saved_questions"></activity>
+        <activity android:name=".saved_questions" />
+        <activity android:name=".view_by_tag"></activity>
     </application>
 
 </manifest>

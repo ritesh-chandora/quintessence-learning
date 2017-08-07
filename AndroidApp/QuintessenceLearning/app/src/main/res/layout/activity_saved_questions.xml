@@ -13,6 +13,7 @@ android:layout_height="match_parent">
         android:id="@+id/button_view_by_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="viewTag"
         android:text="View By Tag" />
 
 </LinearLayout>
