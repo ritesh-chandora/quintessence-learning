@@ -68,31 +68,42 @@ class NewTimeViewController: ModalViewController {
                     
                     let newNotifyTime = self.timePicker.date.addingTimeInterval(Common.dayInSeconds)
                     
-                    //TODO if the next time is greater than 24 hours, warn the user
                     
-                    self.userRef!.child("Time").setValue(newNotifyTime.timeIntervalSince1970)
+                    //ask user to confirm
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.timeStyle = .short
+                    dateFormatter.dateStyle = .short
                     
-                    //cancel all pending notifications
-                    let center = UNUserNotificationCenter.current()
-                    center.removeAllPendingNotificationRequests()
-                    
-                    //if there already isn't an old notification time set
-                    if oldTime == nil {
-                        self.userRef!.child("Old_Time").setValue(currNotifyTime.timeIntervalSince1970)
+                    let ac = UIAlertController(title: "Warning!", message: "After the next question, your next question will be at \(dateFormatter.string(from: newNotifyTime))", preferredStyle: .alert)
+                    ac.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { (action) in
+                        super.onClose(sender)
+                    }))
+                    ac.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (action) in
+                        self.userRef!.child("Time").setValue(newNotifyTime.timeIntervalSince1970)
                         
-                        //set one notification timer for this last notification at that time
-                        Common.setNotificationTimer(date: currNotifyTime, repeating: false)
-                    }
-                    //set new notification timer
-                    Common.setNotificationTimer(date: newNotifyTime, repeating: true)
-                    
-                    //update the label on ProfileViewController
-                    self.timeLabelDelegate?.updateTimeLabel(newDate: newNotifyTime)
-                    Common.showSuccess(message: "Warning: Notifications may take up to 24 hours to take effect!")
-                    self.timeField.text = self.dateFormatter.string(from: newNotifyTime)
+                        //cancel all pending notifications
+                        let center = UNUserNotificationCenter.current()
+                        center.removeAllPendingNotificationRequests()
+                        
+                        //if there already isn't an old notification time set
+                        if oldTime == nil {
+                            self.userRef!.child("Old_Time").setValue(currNotifyTime.timeIntervalSince1970)
+                            
+                            //set one notification timer for this last notification at that time
+                            Common.setNotificationTimer(date: currNotifyTime, repeating: false)
+                        }
+                        //set new notification timer
+                        Common.setNotificationTimer(date: newNotifyTime, repeating: true)
+                        
+                        //update the label on ProfileViewController
+                        self.timeLabelDelegate?.updateTimeLabel(newDate: newNotifyTime)
+                        Common.showSuccess(message: "Warning: Notifications may take up to 24 hours to take effect!")
+                        self.timeField.text = self.dateFormatter.string(from: newNotifyTime)
+                        super.onClose(sender)
+                    }))
+                    self.present(ac,animated: true)
                 })
             })
-            super.onClose(sender)
         } else {
             //don't change time if no time was picked
             super.onClose(sender)
