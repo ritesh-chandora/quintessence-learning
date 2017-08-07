@@ -1,11 +1,14 @@
 package btao.com.quintessencelearning;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +37,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class QuestionsFragment extends Fragment {
     private final String TAG = "MainActivity";
+
+
+    TextView text_tags;
 
 
 
@@ -84,21 +90,47 @@ public class QuestionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //questionNav();
-        View view = inflater.inflate(R.layout.fragment_questions, container, false);
+        final View view = inflater.inflate(R.layout.fragment_questions, container, false);
 
         TextView text_question = (TextView) view.findViewById(R.id.text_message);
         text_question.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                MainActivity.saveQuestion(getActivity().getApplicationContext());
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.question_properties_dialog,null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.question_properties);
+                builder.setView(dialogView);
+                builder.setPositiveButton(R.string.save_question, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d(TAG,"Positive click");
+                        Log.d(TAG,"saved");
+
+                        MainActivity.mUser = MainActivity.mUserRef.child(MainActivity.auth.getCurrentUser().getUid());
+                        MainActivity.mUser.child("Saved").child(MainActivity.current_question_key).setValue(true);
+
+                        Toast.makeText(getActivity().getApplicationContext(), "Question has been saved", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+                text_tags = (TextView) dialogView.findViewById(R.id.text_tags);
+                Log.d(TAG,MainActivity.tags.toString());
+                text_tags.setText(MainActivity.tags.toString());
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                //saveQuestion(view,getActivity().getApplicationContext());
                 return true;
             }
         });
 
         return view;
 
-
     }
+
 /*
     @Override
     public void onAttach(Context context) {

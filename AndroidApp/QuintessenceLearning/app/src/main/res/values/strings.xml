@@ -35,4 +35,8 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="password_match">Please make sure your passwords match</string>
     <string name="time_updated">Notification time has been updated</string>
+    <string name="question_properties">Question Properties</string>
+    <string name="save_question">Save Question</string>
+    <string name="search_hint">Search</string>
+    <string name="view_saved_questions">View Saved Questions</string>
 </resources>

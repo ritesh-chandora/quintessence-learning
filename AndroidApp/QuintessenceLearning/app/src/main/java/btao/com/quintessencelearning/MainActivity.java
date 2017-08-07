@@ -58,12 +58,12 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity{
 
-    private static FirebaseAuth auth;
-    private static DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-    private static DatabaseReference mQuestionRef = mDatabaseRef.child("Questions");
-    private static DatabaseReference mUserRef = mDatabaseRef.child("Users");
+    public static FirebaseAuth auth;
+    public static DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+    public static DatabaseReference mQuestionRef = mDatabaseRef.child("Questions");
+    public static DatabaseReference mUserRef = mDatabaseRef.child("Users");
 
-    private static DatabaseReference mUser;
+    public static DatabaseReference mUser;
     Long currentQuestion;
 
     private QuestionsFragment qFrag;
@@ -639,12 +639,30 @@ public class MainActivity extends AppCompatActivity{
          */
     }
 
-    public static void saveQuestion(Context context){
-        Log.d(TAG,"saved");
+    /*public void saveQuestion(final Context context){
 
-        mUser = mUserRef.child(auth.getCurrentUser().getUid());
-        mUser.child("Saved").child(current_question_key).setValue(true);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.question_properties);
 
-        Toast.makeText(context, "Question has been saved", Toast.LENGTH_SHORT).show();
+        LayoutInflater inflater = getView.getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.question_properties_dialog,null));
+        builder.setPositiveButton(R.string.save_question, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d(TAG,"saved");
+
+                mUser = mUserRef.child(auth.getCurrentUser().getUid());
+                mUser.child("Saved").child(current_question_key).setValue(true);
+
+                Toast.makeText(context, "Question has been saved", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.show();
+    }*/
+
+    public void viewSavedQuestions(View view){
+        Intent intent = new Intent(getApplicationContext(),saved_questions.class);
+        startActivity(intent);
+
     }
 }

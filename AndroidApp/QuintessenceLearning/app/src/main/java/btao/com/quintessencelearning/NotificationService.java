@@ -10,6 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.CalendarView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Calendar;
 
 /**
  * Created by Brian on 8/1/2017.
@@ -66,7 +69,11 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent,int flags, int startId)
     {
         super.onStartCommand(intent,flags, startId);
-        if (auth.getCurrentUser()!=null) {
+        Calendar today = Calendar.getInstance();
+        int day = today.get(Calendar.DAY_OF_WEEK);
+
+
+        if (auth.getCurrentUser()!=null && day != Calendar.SATURDAY && day != Calendar.SUNDAY) {
             final DatabaseReference mUser = mUserRef.child(auth.getCurrentUser().getUid());
 
             mUser.addListenerForSingleValueEvent(new ValueEventListener() {

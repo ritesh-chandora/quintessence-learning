@@ -14,14 +14,14 @@ public class Question{
     public String created_by;
     public String key;
     public String text;
-    public Integer ctime;
-    public Integer count;
+    public Long ctime;
+    public Long count;
     public List<String> tags;
 
     public Question() {
     }
 
-    public Question(String created_by, String key, String text, Integer ctime,Integer count, List<String> tags) {
+    public Question(String created_by, String key, String text, Long ctime,Long count, List<String> tags) {
         this.created_by = created_by;
         this.key = key;
         this.text = text;
@@ -39,10 +39,10 @@ public class Question{
     public String getText(){
         return text;
     }
-    public Integer getCtime(){
+    public Long getCtime(){
         return ctime;
     }
-    public Integer getCount(){
+    public Long getCount(){
         return count;
     }
     public List<String> getTags(){

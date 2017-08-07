@@ -75,7 +75,7 @@ public class WelcomeScreen extends AppCompatActivity {
             calendar.set(Calendar.HOUR_OF_DAY, t.getHour());
             calendar.set(Calendar.MINUTE, t.getMinute());
             calendar.clear(Calendar.SECOND); //reset seconds to zero
-            notification_time = calendar.getTimeInMillis()/1000;
+            notification_time = calendar.getTimeInMillis()/1000L;
             Log.d(TAG,Long.toString(notification_time));
 
 
@@ -130,7 +130,7 @@ public class WelcomeScreen extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"You must pick a time",Toast.LENGTH_SHORT).show();
         }
         notif_calendar.add(Calendar.DATE,1);
-        Calendar today = Calendar.getInstance();
+
         Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
         pending_now = PendingIntent.getBroadcast(getApplicationContext(),1,myIntent,0);
