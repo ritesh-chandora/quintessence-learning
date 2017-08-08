@@ -6,7 +6,9 @@ import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.icu.util.Calendar;
+import java.util.Calendar;
+
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -72,8 +74,14 @@ public class WelcomeScreen extends AppCompatActivity {
             String s;
             Format formatter;
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, t.getHour());
-            calendar.set(Calendar.MINUTE, t.getMinute());
+            if (Build.VERSION.SDK_INT < 23){
+                calendar.set(Calendar.HOUR_OF_DAY,t.getCurrentHour());
+                calendar.set(Calendar.MINUTE,t.getCurrentMinute());
+            } else {
+                calendar.set(Calendar.HOUR_OF_DAY, t.getHour());
+                calendar.set(Calendar.MINUTE, t.getMinute());
+            }
+
             calendar.clear(Calendar.SECOND); //reset seconds to zero
             notification_time = calendar.getTimeInMillis()/1000L;
             Log.d(TAG,Long.toString(notification_time));
@@ -82,31 +90,18 @@ public class WelcomeScreen extends AppCompatActivity {
 
             formatter = new SimpleDateFormat("hh:mm a");
             s = formatter.format(calendar.getTime()); // 08:00:00
-            setHour = t.getHour();
-            setMinute = t.getMinute();
+            if (Build.VERSION.SDK_INT < 23){
+                setHour=t.getCurrentHour();
+                setMinute=t.getCurrentMinute();
+            } else {
+                setHour=t.getHour();
+                setMinute=t.getMinute();
+            }
 
             String timeString = s;
             WelcomeScreen.time.setText(timeString);
 
             notif_calendar = calendar;
-
-
-
-
-            /*Calendar alarm_time = Calendar.getInstance();
-
-            alarm_time.set(Calendar.MONTH, 6);
-            alarm_time.set(Calendar.YEAR, 2013);
-            alarm_time.set(Calendar.DAY_OF_MONTH, 13);
-
-            alarm_time.set(Calendar.HOUR_OF_DAY, 20);
-            alarm_time.set(Calendar.MINUTE, 48);
-            alarm_time.set(Calendar.SECOND, 0);
-            alarm_time.set(Calendar.AM_PM,Calendar.PM);*/
-
-
-
-
         }
     }
 

@@ -19,13 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Calendar;
 

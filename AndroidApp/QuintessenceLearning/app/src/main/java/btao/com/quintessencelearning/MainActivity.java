@@ -4,18 +4,14 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.icu.text.SimpleDateFormat;
-import android.icu.util.Calendar;
-import android.media.RingtoneManager;
-import android.net.Uri;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -23,8 +19,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -32,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -50,11 +43,9 @@ import com.google.gson.JsonParseException;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -171,6 +162,8 @@ public class MainActivity extends AppCompatActivity{
             mUser = mUserRef.child(userUID);
 
 
+
+
             mUser.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -191,6 +184,31 @@ public class MainActivity extends AppCompatActivity{
                         user_old_time = null;
                     } else {
                         user_old_time = (Long) dataSnapshot.child("Old_Time").getValue();
+                    }
+
+                    Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
+                    pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
+
+                    boolean alarmUp = (PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent, PendingIntent.FLAG_NO_CREATE) != null);
+
+                    if (alarmUp)
+                    {
+                        Log.d(TAG, "Alarm is already active");
+                    } else {
+                        Log.d(TAG,"Alarm is not active, please set it");
+                        Calendar new_time = Calendar.getInstance();
+                        new_time.set(Calendar.HOUR_OF_DAY,notification_hour);
+                        new_time.set(Calendar.MINUTE,notification_minute);
+                        new_time.clear(Calendar.SECOND);
+
+                        Calendar current_time = Calendar.getInstance();
+                        if (current_time.getTimeInMillis()>new_time.getTimeInMillis()) {
+                            new_time.add(Calendar.DATE, 1);
+                        }
+
+                        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,new_time.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+
                     }
                 }
 
@@ -228,6 +246,7 @@ public class MainActivity extends AppCompatActivity{
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
 
         alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
 
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
@@ -547,8 +566,13 @@ public class MainActivity extends AppCompatActivity{
             // Do something with the time chosen by the user
             mUser = mUserRef.child(auth.getCurrentUser().getUid());
             Calendar new_time = Calendar.getInstance();
-            new_time.set(Calendar.HOUR_OF_DAY, t.getHour());
-            new_time.set(Calendar.MINUTE, t.getMinute());
+            if (Build.VERSION.SDK_INT < 23){
+                new_time.set(Calendar.HOUR_OF_DAY,t.getCurrentHour());
+                new_time.set(Calendar.MINUTE,t.getCurrentMinute());
+            } else {
+                new_time.set(Calendar.HOUR_OF_DAY, t.getHour());
+                new_time.set(Calendar.MINUTE, t.getMinute());
+            }
             new_time.add(Calendar.DATE,1);
             new_time.clear(Calendar.SECOND); //reset seconds to zero
             Long new_time_sec = new_time.getTimeInMillis()/1000;
@@ -566,7 +590,7 @@ public class MainActivity extends AppCompatActivity{
             pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, myIntent,0);
             PendingIntent old_pending = PendingIntent.getBroadcast(getActivity(),1,myIntent,0);
 
-            AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
+            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
 
             alarmManager.cancel(pendingIntent);
             if (current_time.getTimeInMillis()<old_time.getTimeInMillis()) {
@@ -603,39 +627,7 @@ public class MainActivity extends AppCompatActivity{
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getFragmentManager(),"TimePicker");
 
-
-
-
-
-        /*
-        set current time = old time
-        set new time = time
-        set notification = to time if old time is null, otherwise = old,
-        when notification is fired, set old time = null;
-
-         */
     }
-
-    /*public void saveQuestion(final Context context){
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.question_properties);
-
-        LayoutInflater inflater = getView.getLayoutInflater();
-        builder.setView(inflater.inflate(R.layout.question_properties_dialog,null));
-        builder.setPositiveButton(R.string.save_question, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d(TAG,"saved");
-
-                mUser = mUserRef.child(auth.getCurrentUser().getUid());
-                mUser.child("Saved").child(current_question_key).setValue(true);
-
-                Toast.makeText(context, "Question has been saved", Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.show();
-    }*/
 
     public void viewSavedQuestions(View view){
         Intent intent = new Intent(getApplicationContext(),saved_questions.class);
