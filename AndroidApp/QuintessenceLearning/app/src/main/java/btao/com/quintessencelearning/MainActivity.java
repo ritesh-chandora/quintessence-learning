@@ -341,7 +341,7 @@ public class MainActivity extends AppCompatActivity{
                                         Toast.makeText(MainActivity.this, "Email Updated", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Log.w(TAG, "Did not update", task.getException());
-                                        Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
@@ -386,7 +386,7 @@ public class MainActivity extends AppCompatActivity{
                                         Toast.makeText(MainActivity.this, "Password Updated", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Log.w(TAG, "Did not update", task.getException());
-                                        Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });

@@ -44,7 +44,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:onClick="submitQuestion"
-            android:text="Submit your own qustion"
+            android:text="Submit Your Own Question"
             android:theme="@style/AppTheme.Button" />
 
         <Button
