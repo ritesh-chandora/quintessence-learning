@@ -17,29 +17,35 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database()
-        //redirects a logged in user to the appropriate view
-        Auth.auth().addStateDidChangeListener() { auth, user in
-            if user != nil {
-                self.ref!.reference().child(Common.USER_PATH).child(user!.uid).observe(.value, with: { (snapshot) in
-                    let value = snapshot.value as? NSDictionary
-                    let userType = value?["Type"] as? String ?? ""
-                    if (userType == "User") {
-                        let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
-                        self.present(userViewController, animated: true)
-                        return
-                    } else {
-                        let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! UINavigationController
-                        self.present(welcomeScreen, animated: true)
-                        return
+        if (Reachability.isConnectedToNetwork()){
+            //redirects a logged in user to the appropriate view
+            Auth.auth().addStateDidChangeListener() { auth, user in
+                if user != nil {
+                    self.ref!.reference().child(Common.USER_PATH).child(user!.uid).observe(.value, with: { (snapshot) in
+                        let value = snapshot.value as? NSDictionary
+                        let userType = value?["Type"] as? String ?? ""
+                        if (userType == "User") {
+                            let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
+                            self.present(userViewController, animated: true)
+                            return
+                        } else {
+                            let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! UINavigationController
+                            self.present(welcomeScreen, animated: true)
+                            return
+                        }
+                    }) { (error) in
+                        debugPrint("Failed get the snapshot \(error.localizedDescription)")
                     }
-                }) { (error) in
-                    debugPrint("Failed get the snapshot \(error.localizedDescription)")
+                }
+                else {
+                    let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! UINavigationController
+                    self.present(welcomeScreen, animated: true)
                 }
             }
-            else {
-                let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! UINavigationController
-                self.present(welcomeScreen, animated: true)
-            }
+        } else {
+            Server.showError(message: "No internet connection detected! Please connect to the internet and try again.")
+            let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! UINavigationController
+            self.present(welcomeScreen, animated: true)
         }
     }
 }

@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -1518,7 +1519,7 @@
                 <navigationController storyboardIdentifier="Admin" toolbarHidden="NO" id="2sS-jV-Mi3" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Questions" id="G1Y-GU-ILd"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="VMu-xs-coN">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="VMu-xs-coN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1977,7 +1978,7 @@
                 <navigationController id="882-4w-uL5" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Questions" id="Aqt-3X-Jlh"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="MVI-wW-YQq">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="MVI-wW-YQq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2214,66 +2215,89 @@ With standardized testing results as the barometer of a teacher’s success, we 
                         <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xg7-gH-fij">
-                                <rect key="frame" x="23" y="62" width="329" height="102"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <string key="text">If you miss a question, it will automatically be saved under "Saved Questions". You can view your saved questions by going to the Question tab and pressing the folder icon in the top right corner and selecting, "View Saved Questions".</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="How can I view past questions?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fgU-0o-aya">
-                                <rect key="frame" x="23" y="172" width="253" height="22"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Can I save questions?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOO-bU-Zek">
-                                <rect key="frame" x="23" y="276" width="175" height="22"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" text="Past questions can be viewed by pressing the folder icon in the top right corner under the &quot;Questions&quot; Tab. " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZw-Ti-aLv">
-                                <rect key="frame" x="23" y="202" width="329" height="66"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Yes! Select the folder icon at the top right corner and select &quot;Save Current Question&quot;. " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NE7-sY-gc8">
-                                <rect key="frame" x="23" y="306" width="329" height="51"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="How does changing notification time work?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pqc-9h-pzT">
-                                <rect key="frame" x="23" y="365" width="329" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpM-q7-PlS">
-                                <rect key="frame" x="23" y="394" width="329" height="100"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <string key="text">Once the time is changed, the current notification time will be kept for one more question. Then the questions will come at the new specified time. The notifications will take 24 hours to register properly</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="What happens if I miss a question?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vOh-vg-VRd">
-                                <rect key="frame" x="23" y="41" width="281" height="22"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tFu-Pd-4Wb">
+                                <rect key="frame" x="16" y="0.0" width="343" height="554"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t4S-uv-uv3">
+                                        <rect key="frame" x="-18" y="0.0" width="378" height="660"/>
+                                        <subviews>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xg7-gH-fij">
+                                                <rect key="frame" x="23" y="65" width="329" height="102"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <string key="text">If you miss a question, it will automatically be saved under "Saved Questions". You can view your saved questions by going to the Question tab and pressing the folder icon in the top right corner and selecting, "View Saved Questions".</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="How can I view past questions?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fgU-0o-aya">
+                                                <rect key="frame" x="23" y="175" width="253" height="22"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" text="Past questions can be viewed by pressing the folder icon in the top right corner under the &quot;Questions&quot; Tab. " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZw-Ti-aLv">
+                                                <rect key="frame" x="23" y="205" width="329" height="67"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="How does changing notification time work?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pqc-9h-pzT">
+                                                <rect key="frame" x="23" y="280" width="329" height="21"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="When do I receive questions?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lss-Qq-KLX">
+                                                <rect key="frame" x="25" y="415" width="225" height="21"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpM-q7-PlS">
+                                                <rect key="frame" x="23" y="307" width="329" height="100"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <string key="text">Once the time is changed, the current notification time will be kept for one more question. Then the questions will come at the new specified time. The notifications will take 24 hours to register properly</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="What happens if I miss a question?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vOh-vg-VRd">
+                                                <rect key="frame" x="23" y="35" width="281" height="22"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="You will receive questions once a day at the time you specified. However, you will not receive questions on the weekends." selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1TF-qf-jrh">
+                                                <rect key="frame" x="23" y="450" width="327" height="67"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="t4S-uv-uv3" firstAttribute="top" secondItem="tFu-Pd-4Wb" secondAttribute="top" id="2Cl-Ac-upR"/>
+                                    <constraint firstItem="t4S-uv-uv3" firstAttribute="trailing" secondItem="tFu-Pd-4Wb" secondAttribute="trailingMargin" id="7A2-aV-hth"/>
+                                    <constraint firstAttribute="bottom" secondItem="t4S-uv-uv3" secondAttribute="bottom" constant="-51" id="7gd-KL-3a5"/>
+                                    <constraint firstItem="t4S-uv-uv3" firstAttribute="leading" secondItem="tFu-Pd-4Wb" secondAttribute="leading" id="HbA-wy-S6B"/>
+                                </constraints>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="tFu-Pd-4Wb" firstAttribute="leading" secondItem="mxD-oW-LEq" secondAttribute="leadingMargin" id="5Z1-nt-7gd"/>
+                            <constraint firstItem="tFu-Pd-4Wb" firstAttribute="top" secondItem="qr5-lb-d7Z" secondAttribute="bottom" id="O1d-ha-uHI"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="tFu-Pd-4Wb" secondAttribute="trailing" id="TNp-cl-HPr"/>
+                            <constraint firstItem="V9v-4E-AsF" firstAttribute="top" secondItem="tFu-Pd-4Wb" secondAttribute="bottom" constant="-50" id="e5b-UI-NrR"/>
+                        </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                 </viewController>
@@ -2300,12 +2324,10 @@ With standardized testing results as the barometer of a teacher’s success, we 
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="reV-LT-2NF">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="reV-LT-2NF">
                                 <rect key="frame" x="16" y="119" width="343" height="428"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="428" id="QhL-mu-rhF"/>
-                                </constraints>
                                 <string key="text">After thirty-five years as a public-school teacher of gifted and talented students and owner/founder or a private preschool, I am more sure than ever that we need parents’ help to truly and fully educate our children for the 21st century. Public schools are just not able to change and adapt to teach the kind of skills our children will need for quickly-changing fast-approaching future.
 
 In my decades as an educator in the front lines, I’ve seen many education trends come and go. I fully embraced everyone, immersing myself in the research, applying it to my teaching practices, and often giving works shops to colleagues on the newest program or strategy. I was sure that this new program would help teachers teach more effectively and students would learn more deeply. Well, thirty-five years later, I’m not sure that our students in the beginning of this century are any smarter than they were in 1983, when I first started teaching.  Then to complicate educational efficacy even further, standardized tests became more and more important. When I first started teaching, standardized test results were one measure. By the time I left the public school, it became THE measure. Only a high score on the national standardized test would open the door to the high reading and math classes or all the enrichment classes including mine. More than once, I left meetings so frustrated that an incredibly bright child was denied entrance to an enrichment program because he/ she missed the required score by a few points. It seemed so wrong by children. I know that schools around the nation have their unique programs and assessment criteria for these enriched classes, but there are not many schools that don’t rely on standardized tests as an entrance criteria.
@@ -2392,7 +2414,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                 <navigationController id="qVH-vi-7Js" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="VzI-53-WKu"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="wda-YD-xuS">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wda-YD-xuS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2411,7 +2433,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                 <navigationController id="DOS-1n-kan" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Account" id="2Mn-fm-5Jc"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Jk1-sx-h6J">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Jk1-sx-h6J">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2430,7 +2452,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Kd8-wG-jjp" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Feedback" id="V1T-s7-61G"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="oVR-xG-i9O">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oVR-xG-i9O">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2550,7 +2572,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
             <objects>
                 <navigationController storyboardIdentifier="Home" automaticallyAdjustsScrollViewInsets="NO" id="v1H-JH-z98" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="hV9-tX-tdN">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="hV9-tX-tdN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2568,7 +2590,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="iQS-e8-4Gw" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Pyj-Ww-IXv">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Pyj-Ww-IXv">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

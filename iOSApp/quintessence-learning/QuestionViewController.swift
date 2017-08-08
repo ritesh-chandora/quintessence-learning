@@ -109,7 +109,7 @@ class QuestionViewController: UIViewController {
                 
                 let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
                 let components = calendar.dateComponents([.weekday], from: self.notifyTime!)
-                
+                print(components.weekday)
                 //multiplier is needed because with old_time daysMissed will be off by one
                 var multiplier = 0
                 var daysMissed = 0
