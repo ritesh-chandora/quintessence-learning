@@ -10,7 +10,7 @@ import java.util.Map;
  * Created by Brian on 7/28/2017.
  */
 
-public class Question{
+public class Question implements java.io.Serializable{
     public String created_by;
     public String key;
     public String text;
