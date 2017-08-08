@@ -1,70 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="btao.com.quintessencelearning.SignUp">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="395dp"
+        android:layout_centerInParent="true"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        >
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create_new"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        <TextView
+            android:id="@+id/text_fillout_fields"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/fillout_fields" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
 
         <EditText
             android:id="@+id/text_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
             android:ems="10"
             android:hint="Name"
             android:inputType="text"
-            android:lines="1"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="194dp" />
+            android:lines="1" />
 
         <EditText
             android:id="@+id/text_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
             android:ems="10"
             android:hint="Email"
             android:inputType="text|textEmailAddress"
-            android:lines="1"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="250dp" />
+            android:lines="1" />
 
         <EditText
             android:id="@+id/text_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
             android:ems="10"
             android:hint="Password"
             android:inputType="text|textPassword"
-            android:lines="1"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="301dp" />
+            android:lines="1" />
 
         <EditText
             android:id="@+id/text_confirm_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
             android:ems="10"
             android:hint="@string/confirm_password"
             android:inputType="text|textPassword"
-            android:lines="1"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="301dp" />
+            android:lines="1" />
 
         <Button
             android:id="@+id/button_sign_up"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
             android:onClick="Register"
+            android:theme="@style/AppTheme.Button"
             android:text="Register" />
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
