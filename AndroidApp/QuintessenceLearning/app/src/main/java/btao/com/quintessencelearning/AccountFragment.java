@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.w3c.dom.Text;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,6 +81,21 @@ public class AccountFragment extends Fragment {
     public void setEmail(String email){
         TextView textEmail = (TextView) getView().findViewById(R.id.text_email);
         textEmail.setText(email);
+    }
+
+    public void setAccountType(String type){
+        TextView textAccountType = (TextView) getView().findViewById(R.id.text_account_type);
+        textAccountType.setText(type);
+    }
+
+    public void setJoinDate(String joinDate){
+        TextView textAccountType = (TextView) getView().findViewById(R.id.text_join_date);
+        textAccountType.setText(joinDate);
+    }
+
+    public void setNotificationTime(String time){
+        TextView textAccountType = (TextView) getView().findViewById(R.id.text_current_notif_time);
+        textAccountType.setText(time);
     }
 
 

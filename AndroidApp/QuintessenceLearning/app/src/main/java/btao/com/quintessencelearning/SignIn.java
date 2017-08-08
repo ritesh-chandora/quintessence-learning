@@ -97,12 +97,16 @@ public class SignIn extends AppCompatActivity {
                                         Integer minute = old_time.get(Calendar.MINUTE);
 
                                         Calendar new_time = Calendar.getInstance();
-                                        new_time.add(Calendar.DATE,1);
+
                                         new_time.set(Calendar.HOUR_OF_DAY,hour);
                                         new_time.set(Calendar.MINUTE,minute);
                                         new_time.clear(Calendar.SECOND);
 
                                         Log.d(TAG,Long.toString(new_time.getTimeInMillis()));
+                                        Calendar current_time = Calendar.getInstance();
+                                        if (current_time.getTimeInMillis()>new_time.getTimeInMillis()) {
+                                            new_time.add(Calendar.DATE, 1);
+                                        }
 
                                         Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
                                         pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);

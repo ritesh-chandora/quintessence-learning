@@ -9,55 +9,91 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/text_feedback_screen"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
             android:text="@string/feedback"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0"
+            android:gravity="center_horizontal"
             android:text="@string/feedback_description" />
 
         <Button
             android:id="@+id/button_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
             android:onClick="submitQuestion"
-            android:text="Submit your own qustion" />
+            android:text="Submit your own qustion"
+            android:theme="@style/AppTheme.Button" />
 
         <Button
             android:id="@+id/button_feedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
             android:onClick="submitFeedback"
-            android:text="Send Feedback" />
+            android:text="Send Feedback"
+            android:theme="@style/AppTheme.Button" />
 
         <Button
             android:id="@+id/button_ebook"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
             android:onClick="eBook"
-            android:text="E-book" />
+            android:text="E-book"
+            android:theme="@style/AppTheme.Button" />
 
         <Button
             android:id="@+id/button_faq"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
             android:onClick="fAQ"
-            android:text="FAQ" />
+            android:text="FAQ"
+            android:theme="@style/AppTheme.Button" />
 
         <Button
             android:id="@+id/button_aboutus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
             android:onClick="aboutUs"
-            android:text="About Us" />
+            android:text="About Us"
+            android:theme="@style/AppTheme.Button" />
     </LinearLayout>
 
 </FrameLayout>

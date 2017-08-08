@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -120,6 +121,20 @@ public class MainActivity extends AppCompatActivity{
 
                     aFrag.setName(user_name);
                     aFrag.setEmail(user_email);
+                    aFrag.setAccountType(user_type);
+                    Calendar joinDate = Calendar.getInstance();
+                    SimpleDateFormat formatter = new SimpleDateFormat("EEE, MMM d yyyy");
+                    joinDate.setTimeInMillis(user_join_date*1000L);
+                    String formatted = formatter.format(joinDate.getTimeInMillis());
+                    aFrag.setJoinDate(formatted);
+
+                    Calendar notificationTime = Calendar.getInstance();
+                    notificationTime.set(Calendar.HOUR_OF_DAY,notification_hour);
+                    notificationTime.set(Calendar.MINUTE,notification_minute);
+
+                    SimpleDateFormat formatterTime = new SimpleDateFormat("hh:mm a");
+                    String formattedTime = formatterTime.format(notificationTime.getTimeInMillis());
+                    aFrag.setNotificationTime(formattedTime);
 
                     fragment = new AccountFragment();
 
@@ -151,53 +166,6 @@ public class MainActivity extends AppCompatActivity{
             startActivity(intent);
             finish();
         }
-
-        /*if( getIntent().getExtras()!=null && getIntent().getExtras().get("sender").equals("WelcomeScreen"))
-        {
-            //do here
-            notification_hour = getIntent().getExtras().getInt("setHour");
-            notification_minute = getIntent().getExtras().getInt("setMinute");
-            Log.d(TAG, notification_hour.toString());
-            Log.d(TAG,notification_minute.toString());
-
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                            .setContentTitle("My notification")
-                            .setContentText("Hello World!")
-                            .setAutoCancel(true);
-            // Creates an explicit intent for an Activity in your app
-            Intent resultIntent = new Intent(this, MainActivity.class);
-
-            // The stack builder object will contain an artificial back stack for the
-            // started Activity.
-            // This ensures that navigating backward from the Activity leads out of
-            // your application to the Home screen.
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-            // Adds the back stack for the Intent (but not the Intent itself)
-            stackBuilder.addParentStack(MainActivity.class);
-            // Adds the Intent that starts the Activity to the top of the stack
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(
-                            0,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
-            mBuilder.setContentIntent(resultPendingIntent);
-            mBuilder.setPriority(Notification.PRIORITY_HIGH);
-            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            mBuilder.setSound(alarmSound);
-            mBuilder.setVibrate(new long[] {500,500});
-            mBuilder.setLights(Color.RED, 3000, 3000);
-            NotificationManager mNotificationManager =
-                    (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
-
-            // mNotificationId is a unique integer your app uses to identify the
-            // notification. For example, to cancel the notification, you can pass its ID
-            // number to NotificationManager.cancel().
-            mNotificationManager.notify(1, mBuilder.build());
-
-        }*/
         if (auth.getCurrentUser()!=null) {
             final String userUID = user.getUid();
             mUser = mUserRef.child(userUID);
@@ -214,6 +182,11 @@ public class MainActivity extends AppCompatActivity{
                     user_type = (String) dataSnapshot.child("Type").getValue();
                     user_uid = (String) dataSnapshot.child("UID").getValue();
                     user_time = (Long) dataSnapshot.child("Time").getValue();
+                    Calendar time = Calendar.getInstance();
+                    time.setTimeInMillis(user_time*1000L);
+                    notification_hour=time.get(Calendar.HOUR_OF_DAY);
+                    notification_minute=time.get(Calendar.MINUTE);
+
                     if(dataSnapshot.child("Old_Time")==null){
                         user_old_time = null;
                     } else {
@@ -588,12 +561,6 @@ public class MainActivity extends AppCompatActivity{
 
             Calendar current_time = Calendar.getInstance();
 
-            /*Calendar calendar;
-            if (user_old_time == null) {
-                calendar = new_time;
-            } else {
-                calendar = old_time;
-            }*/
 
             Intent myIntent = new Intent(getActivity(), NotificationReceiver.class);
             pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, myIntent,0);
