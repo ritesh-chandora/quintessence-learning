@@ -45,14 +45,23 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
                 self.ref!.reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Old_Time").observeSingleEvent(of: .value, with: { (old_time) in
                     self.ref!.reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Time").observeSingleEvent(of: .value, with: { (time) in
                         let oldTime = old_time.value as? TimeInterval ?? nil
+                        
                         if (oldTime != nil){
                             let oldDate = Date(timeIntervalSince1970: oldTime!)
                             Common.setNotificationTimer(date: oldDate, repeating: false)
                         }
-                        let notifyTime = Date(timeIntervalSince1970: time.value as! TimeInterval)
-                        Common.setNotificationTimer(date: notifyTime, repeating: true)
-                        let profileView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
-                        self.present(profileView, animated:true)
+                        
+                        let currTime = time.value as? TimeInterval ?? nil
+                        
+                        //if currTime is nil, then user hasn't initiailzed a time
+                        if (currTime != nil) {
+                            let notifyTime = Date(timeIntervalSince1970: currTime!)
+                            Common.setNotificationTimer(date: notifyTime, repeating: true)
+                            let profileView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
+                            self.present(profileView, animated:true)
+                        } else {
+                            let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Welcome") as! WelcomeViewController
+                            self.present(welcomeScreen, animated: true)                        }
                     })
                 })
                 
@@ -87,6 +96,7 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
                                   "Name": "\(self.nameField!.text!) \(self.lastNameField!.text!)",
                                   "Trial":true,
                                   "Type":"none",
+                                  "Ebook":false,
                                   "UID": user!.uid] as NSDictionary
                     self.ref!.reference().child("Users").child(user!.uid).setValue(params) { (err, ref) in
                         if let err = err {
@@ -156,6 +166,8 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
         }
         let emailScreen = self.storyboard?.instantiateViewController(withIdentifier: "VerifyEmail") as! EmailVerificationViewController
         emailScreen.email = self.emailText!.text!
+        emailScreen.first = self.nameField!.text!
+        emailScreen.last = self.lastNameField!.text!
         self.navigationController?.pushViewController(emailScreen, animated: true)
     }
     

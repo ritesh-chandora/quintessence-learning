@@ -24,7 +24,7 @@ class ViewController: UIViewController {
                     self.ref!.reference().child(Common.USER_PATH).child(user!.uid).observe(.value, with: { (snapshot) in
                         let value = snapshot.value as? NSDictionary
                         let userType = value?["Type"] as? String ?? ""
-                        if (userType == "User") {
+                        if (userType == "user") {
                             let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
                             self.present(userViewController, animated: true)
                             return

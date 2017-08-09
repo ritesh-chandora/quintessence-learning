@@ -8,9 +8,12 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
 class EmailVerificationViewController: UIViewController {
 
     var email:String?
+    var first:String?
+    var last:String?
     
     @IBOutlet weak var emailText: UILabel!
     @IBOutlet weak var continueButton: UIButton!
@@ -18,10 +21,13 @@ class EmailVerificationViewController: UIViewController {
     
     @IBAction func onContinue(_ sender: UIButton) {
         Auth.auth().currentUser!.reload { (error) in
-            if let error = error {
+            if error != nil {
                 Server.showError(message: "Could not verify state of user!")
             } else {
                 if (Auth.auth().currentUser!.isEmailVerified) {
+                    
+                    self.createEmail(email:self.email!, first:self.first!, last:self.last!)
+                    
                     let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Welcome") as! WelcomeViewController
                     self.present(welcomeScreen, animated: true)
                 } else {
@@ -50,6 +56,44 @@ class EmailVerificationViewController: UIViewController {
         } else {
             continueButton.setTitle("Continue", for: .normal)
         }
+    }
+    
+    //handling creation of email in mailchimp to subscribe 
+    func createEmail(email:String, first:String, last:String) {
+        let fields = ["FNAME":first, "LNAME":last, "STATUS":"False"]
+        let params = ["email_address":email, "status":"subscribed", "merge_fields":fields] as [String : Any]
+        let urlRoute = Server.mailChimpURL + "lists/" + PrivateConstants.list_id + "/members"
+    
+        //serialize params into JSON
+        guard let reqBody = try? JSONSerialization.data(withJSONObject: params, options: []) else { return }
+        
+        //set up POST request
+        guard let url = URL(string: urlRoute) else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue(PrivateConstants.mailChimpApiHeader, forHTTPHeaderField: "Authorization")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = reqBody
+        
+        
+        //excute POST request
+        let session = URLSession.shared
+        session.dataTask(with: request) { (data, response, error) in
+            if let data = data {
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    if let dict = json as? [String:Any] {
+                        let id = dict["id"] as! String
+                        var email = dict["email_address"] as! String
+                        email = email.addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
+                        Database.database().reference().child("Email").updateChildValues([email:id])
+                    }
+                } catch {
+                    Server.showError(message: "Unable to subscribe email!")
+                }
+            }
+            }.resume()
+
     }
     
     override func viewDidLoad() {

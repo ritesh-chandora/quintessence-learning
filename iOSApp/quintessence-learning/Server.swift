@@ -11,6 +11,8 @@ import UIKit
 class Server: NSObject {
     
     static let hostURL = "http://localhost:3001"
+    static let mailChimpURL = "https://us16.api.mailchimp.com/3.0/"
+    
     
     typealias callbackFunc = (_ data:Data) throws -> Void
     
@@ -56,6 +58,4 @@ class Server: NSObject {
             alertWindow.rootViewController?.present(ac, animated: true, completion: nil)
         }
     }
-
-    
 }

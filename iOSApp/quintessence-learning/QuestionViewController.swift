@@ -97,7 +97,7 @@ class QuestionViewController: UIViewController {
         //query both old time (if any) and the current notification time
         ref!.child("Old_Time").observeSingleEvent(of: .value, with: { (data) in
             self.ref!.child("Time").observeSingleEvent(of: .value, with: { (time) in
-                let oldTime = data.value as? TimeInterval ?? nil
+                var oldTime = data.value as? TimeInterval ?? nil
                 
                 //if old time exists, that is the next notification time
                 if oldTime != nil {
@@ -109,7 +109,6 @@ class QuestionViewController: UIViewController {
                 
                 let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
                 let components = calendar.dateComponents([.weekday], from: self.notifyTime!)
-                print(components.weekday)
                 //multiplier is needed because with old_time daysMissed will be off by one
                 var multiplier = 0
                 var daysMissed = 0
@@ -152,6 +151,7 @@ class QuestionViewController: UIViewController {
                             print("new time elapsed: \(timeElapsed)")
                             self.notifyTime! = newNotifyTime
                             self.ref!.child("Old_Time").setValue(nil)
+                            oldTime = nil
                         }
                         //check for missed days and if so, add those questions to saved questions
                         daysMissed += Int(timeElapsed/Common.dayInSeconds)

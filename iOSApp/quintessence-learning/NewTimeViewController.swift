@@ -59,13 +59,13 @@ class NewTimeViewController: ModalViewController {
                         }
                         self.timePicker.date.addTimeInterval(Common.dayInSeconds*Double(days))
                     }
+                    
                     //if the next notification time is too close to the new set notification time (within 12 hours), add another day
                     if oldTime != nil {
-                        print(oldTime)
                         if (abs(currNotifyTime.timeIntervalSince1970 - oldTime!) < Common.dayInSeconds/2){
                             self.timePicker.date.addTimeInterval(Common.dayInSeconds)
                         }
-                    } else if (abs(currNotifyTime.timeIntervalSince1970 - self.timePicker.date.timeIntervalSince1970) < Common.dayInSeconds/2){
+                    } else if (abs(currNotifyTime.timeIntervalSince1970 - self.timePicker.date.timeIntervalSince1970 - Common.dayInSeconds) < Common.dayInSeconds/2){
                         self.timePicker.date.addTimeInterval(Common.dayInSeconds)
                     }
                     
@@ -77,7 +77,7 @@ class NewTimeViewController: ModalViewController {
                     dateFormatter.timeStyle = .short
                     dateFormatter.dateStyle = .short
                     
-                    let ac = UIAlertController(title: "Warning!", message: "After the next question, your next question will be at \(dateFormatter.string(from: newNotifyTime))", preferredStyle: .alert)
+                    let ac = UIAlertController(title: "Confirm New Time", message: "After your next question, which is at \(dateFormatter.string(from: currNotifyTime)), your next question will be at \(dateFormatter.string(from: newNotifyTime))", preferredStyle: .alert)
                     ac.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { (action) in
                         super.onClose(sender)
                     }))
