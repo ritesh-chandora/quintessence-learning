@@ -47,8 +47,14 @@ import com.koushikdutta.ion.Ion;
 import java.util.ArrayList;
 import java.util.List;
 
+import btao.com.quintessencelearning.util.IabHelper;
+import btao.com.quintessencelearning.util.IabResult;
+import btao.com.quintessencelearning.util.Inventory;
+import btao.com.quintessencelearning.util.Purchase;
+
 
 public class MainActivity extends AppCompatActivity{
+
 
     public static FirebaseAuth auth;
     public static DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
@@ -85,6 +91,13 @@ public class MainActivity extends AppCompatActivity{
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     private static PendingIntent pendingIntent;
+
+    static final String SKU_1 = "sku_name_goes_here";
+    private String public_key = "public_key_goes_here";
+    private IabHelper mIABHelper;
+    private MainActivity activity;
+    private static final int RC_REQUEST = 07746;
+    private static boolean mSubscribed = false;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -158,6 +171,10 @@ public class MainActivity extends AppCompatActivity{
             finish();
         }
         if (auth.getCurrentUser()!=null) {
+
+            //TODO turn this on when google play is setup
+            //createPurchaseHelper();
+
             final String userUID = user.getUid();
             mUser = mUserRef.child(userUID);
 
@@ -633,5 +650,90 @@ public class MainActivity extends AppCompatActivity{
         Intent intent = new Intent(getApplicationContext(),saved_questions.class);
         startActivity(intent);
 
+    }
+
+    private void createPurchaseHelper(){
+        mIABHelper = new IabHelper(this, public_key);
+        mIABHelper.enableDebugLogging(true);
+        mIABHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+                if (!result.isSuccess()){
+                    Log.d(TAG, "Error problem setting up inapp billing" + result);
+                    return;
+                }
+                if (mIABHelper == null) return;
+                try {
+                    mIABHelper.queryInventoryAsync(mGotInventoryListener);
+                } catch (IabHelper.IabAsyncInProgressException e){
+                    Log.d(TAG,"Inventory Async error: " + e);
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
+
+    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+            if (mIABHelper == null) return;
+
+            if (result.isFailure()) {
+                Log.d(TAG,"Failed to query inventory" + result);
+                return;
+            }
+            Log.d(TAG,"Query inventory was successful");
+
+            Purchase subPurchase = inventory.getPurchase(SKU_1);
+
+            if (subPurchase != null && verifyDeveloperPayload(subPurchase)) {
+                mSubscribed=true;
+                //TODO update UI
+            }
+        }
+    };
+
+    boolean verifyDeveloperPayload(Purchase p) {
+        String payload = p.getDeveloperPayload();
+        //TODO add verification
+        return true;
+    }
+
+    public void purchaseSubscription(View view) {
+        //TODO add developer payload paramter
+        try {
+            mIABHelper.launchSubscriptionPurchaseFlow(this, SKU_1, RC_REQUEST, mPurchaseFinishedListener, "");
+        } catch (IabHelper.IabAsyncInProgressException e) {
+            Log.d(TAG,"Purchase Async error" + e);
+            e.printStackTrace();
+        }
+    }
+
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+            if (mIABHelper == null) return;
+
+            if (result.isFailure()){
+                Log.d(TAG,"Purchase error:" + result);
+                return;
+            }
+            Log.d(TAG,"Purchase successful");
+
+            if(purchase != null && purchase.getSku().equals(SKU_1) && verifyDeveloperPayload(purchase)){
+                Toast.makeText(getApplicationContext(),R.string.thank_you,Toast.LENGTH_SHORT).show();
+                mSubscribed = true;
+                //TODO update UI
+            }
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode,int resultCode,Intent data) {
+        if (mIABHelper == null) return;
+
+        if (mIABHelper.handleActivityResult(requestCode,resultCode,data)){
+            Log.d(TAG,"onActivityResult handled by mhelper");
+        } else {
+            super.onActivityResult(requestCode,resultCode,data);
+        }
     }
 }

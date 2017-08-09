@@ -47,4 +47,5 @@
     <string name="create_new">Create a New Account</string>
     <string name="fillout_fields">Please make sure to fill out all fields</string>
     <string name="current_notif_time">Current Notification Time</string>
+    <string name="thank_you">Thank you for subscribing!</string>
 </resources>
