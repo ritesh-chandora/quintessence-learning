@@ -48,4 +48,7 @@
     <string name="fillout_fields">Please make sure to fill out all fields</string>
     <string name="current_notif_time">Current Notification Time</string>
     <string name="thank_you">Thank you for subscribing!</string>
+    <string name="type_trial">User (Free 14 Day Trial)</string>
+    <string name="type_admin">Admin</string>
+    <string name="type_subscribed">Subscribed (Monthly Subscription)</string>
 </resources>

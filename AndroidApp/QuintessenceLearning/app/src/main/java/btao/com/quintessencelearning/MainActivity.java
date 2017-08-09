@@ -125,7 +125,16 @@ public class MainActivity extends AppCompatActivity{
 
                     aFrag.setName(user_name);
                     aFrag.setEmail(user_email);
-                    aFrag.setAccountType(user_type);
+                    String account_type;
+                    if (user_type == "admin") {
+                        account_type = getString(R.string.type_admin);
+                    } else if (user_type == "user" && !user_trial) {
+                        account_type = getString(R.string.type_subscribed);
+                    } else {
+                        account_type = getString(R.string.type_trial);
+                    }
+
+                    aFrag.setAccountType(account_type);
                     Calendar joinDate = Calendar.getInstance();
                     SimpleDateFormat formatter = new SimpleDateFormat("EEE, MMM d yyyy");
                     joinDate.setTimeInMillis(user_join_date*1000L);
