@@ -135,6 +135,18 @@
         </TableLayout>
 
         <Button
+            android:id="@+id/button_purhcase_subscription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:onClick="purchaseSubscription"
+            android:text="Purchase Premium Subscription"
+            android:theme="@style/AppTheme.Button" />
+        <Button
             android:id="@+id/button_change_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

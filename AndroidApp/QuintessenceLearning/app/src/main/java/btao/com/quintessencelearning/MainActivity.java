@@ -92,8 +92,8 @@ public class MainActivity extends AppCompatActivity{
 
     private static PendingIntent pendingIntent;
 
-    static final String SKU_1 = "sku_name_goes_here";
-    private String public_key = "public_key_goes_here";
+    static final String SKU_1 = "premium_subscription";
+    private String public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmpFm/xgUcK4VRde8y1xCKYFZixqZoY0pQ9M8tXhWtLqoGaHCq+i1q7jf5np/6/iQwbNhnqXeeoL0VnJRKLcuPB4k1V7l4X3zD3BcrWedXTFfvvIpy/cBONBXlNBHje/m4/s16uaahMl/JO7k1IEXBqnDxfWpZ7vHMDMFGtu6qj+fZaZSr5ftFqpLo/iJKgHyPqtWyTbUGEfDEkr1QLMo1DzEAjWE5IjH0b2dBT+wsxBUsV3OZuSpbLigNdV34OrXUKwciuq6oML2X42KCsBisjpHGgBc0YNTTsMZXd4F5ZztbOBCoFuVV+lIJDhQknifsKHUmsn95kUmZDweGSQEnwIDAQAB";
     private IabHelper mIABHelper;
     private MainActivity activity;
     private static final int RC_REQUEST = 07746;
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity{
         if (auth.getCurrentUser()!=null) {
 
             //TODO turn this on when google play is setup
-            //createPurchaseHelper();
+            createPurchaseHelper();
 
             final String userUID = user.getUid();
             mUser = mUserRef.child(userUID);
@@ -298,26 +298,19 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                for (DataSnapshot question:dataSnapshot.getChildren()) {
                     Log.d(TAG, "Inside class");
-                    String text = (String) child.child("Text").getValue();
-                    Long count = (Long) child.child("count").getValue();
-                    String key = (String) child.child("Key").getValue();
-                    if (currentQuestion.equals(new Long(-1))) {
-                        currentQuestion+=1L;
+                    String text = (String) question.child("Text").getValue();
+
+                    String key = (String) question.child("Key").getValue();
+                    current_question_text = text;
+                    current_question_key = key;
+                    for (DataSnapshot tag : question.child("Tags").getChildren()) {
+                        tags.add((String) tag.getValue());
                     }
 
-                    if (count.equals(currentQuestion)) {
-                        Log.d(TAG, text);
-                        current_question_text = text;
-                        current_question_key = key;
-                        for (DataSnapshot tag : child.child("Tags").getChildren()){
-                            tags.add((String) tag.getValue());
-                        }
-
-                        qFrag.setQuestion(text);
-                        break;
-                    }
+                    qFrag.setQuestion(text);
+                    return;
                 }
             }
 
@@ -334,7 +327,10 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentQuestion = (Long) dataSnapshot.child("Current_Question").getValue();
-                mQuestionRef.addListenerForSingleValueEvent(questionListener);
+                if (user_current_question.equals(new Long(-1))) {
+                    user_current_question+=1L;
+                }
+                mQuestionRef.orderByChild("count").startAt(user_current_question).limitToFirst(1).addListenerForSingleValueEvent(questionListener);
             }
 
             @Override
