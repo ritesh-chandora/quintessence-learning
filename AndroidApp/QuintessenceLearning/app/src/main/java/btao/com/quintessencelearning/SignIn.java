@@ -3,11 +3,9 @@ package btao.com.quintessencelearning;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,24 +22,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Calendar;
 
-import javax.net.ssl.HttpsURLConnection;
 
 public class SignIn extends AppCompatActivity {
 
@@ -97,12 +79,16 @@ public class SignIn extends AppCompatActivity {
                                         Integer minute = old_time.get(Calendar.MINUTE);
 
                                         Calendar new_time = Calendar.getInstance();
-                                        new_time.add(Calendar.DATE,1);
+
                                         new_time.set(Calendar.HOUR_OF_DAY,hour);
                                         new_time.set(Calendar.MINUTE,minute);
                                         new_time.clear(Calendar.SECOND);
 
                                         Log.d(TAG,Long.toString(new_time.getTimeInMillis()));
+                                        Calendar current_time = Calendar.getInstance();
+                                        if (current_time.getTimeInMillis()>new_time.getTimeInMillis()) {
+                                            new_time.add(Calendar.DATE, 1);
+                                        }
 
                                         Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
                                         pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
@@ -133,57 +119,8 @@ public class SignIn extends AppCompatActivity {
         }
     }
 
-    /*public void signIn(View view){
-        inputEmail = (EditText) findViewById(R.id.text_email);
-        inputPassword = (EditText) findViewById(R.id.text_password);
-
-        String email = inputEmail.getText().toString();
-        String password = inputPassword.getText().toString();
-        //JSONObject params = new JSONObject();
-        JsonObject params = new JsonObject();
-
-        try {
-            params.addProperty("email", email);
-            params.addProperty("password", password);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        }
-        Ion.with(getApplicationContext())
-                .load("http://192.168.1.252:3001/login")
-                .setHeader("Accept","application/json")
-                .setHeader("Content-Type","application/json")
-                .setJsonObjectBody(params)
-                .asString()
-                .setCallback(new FutureCallback<String>() {
-                    @Override
-                    public void onCompleted(Exception e, String result) {
-                        try {
-                            JSONObject json = new JSONObject(result);    // Converts the string "result" to a JSONObject
-                            String json_result = json.getString("message"); // Get the string "result" inside the Json-object
-                            if (json_result.equalsIgnoreCase("success")){ // Checks if the "result"-string is equals to "ok"
-                                // Result is "OK"
-                                Toast.makeText(SignIn.this,"Successfully Logged In", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(SignIn.this,MainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                // Result is NOT "OK"
-                                Toast.makeText(SignIn.this, json_result, Toast.LENGTH_LONG).show(); // This will show the user what went wrong with a toast
-                                //Intent to_main = new Intent(getApplicationContext(), SignIn.class); // New intent to MainActivity
-                                //startActivity(to_main); // Starts MainActivity
-                                //finish(); // Add this to prevent the user to go back to this activity when pressing the back button after we've opened MainActivity
-                            }
-                        } catch (JSONException err){
-                            // This method will run if something goes wrong with the json, like a typo to the json-key or a broken JSON.
-                            err.printStackTrace();
-                        }
-                    }
-                });
-    }*/
-
     public void signUp(View view){
         Intent intent = new Intent(this,SignUp.class);
         startActivity(intent);
-        finish();
     }
 }

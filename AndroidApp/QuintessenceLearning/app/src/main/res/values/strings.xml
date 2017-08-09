@@ -39,4 +39,13 @@
     <string name="save_question">Save Question</string>
     <string name="search_hint">Search</string>
     <string name="view_saved_questions">View Saved Questions</string>
+    <string name="account_type">Account Type</string>
+    <string name="account_join_date">Join Date</string>
+    <string name="welcome_to_qlearning">Welcome to QLearning</string>
+    <string name="please_login">Please login, or create a new account</string>
+    <string name="register">Make a New Account</string>
+    <string name="create_new">Create a New Account</string>
+    <string name="fillout_fields">Please make sure to fill out all fields</string>
+    <string name="current_notif_time">Current Notification Time</string>
+    <string name="thank_you">Thank you for subscribing!</string>
 </resources>

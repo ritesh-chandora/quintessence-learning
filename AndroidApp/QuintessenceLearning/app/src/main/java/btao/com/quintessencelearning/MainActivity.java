@@ -4,17 +4,14 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.icu.util.Calendar;
-import android.media.RingtoneManager;
-import android.net.Uri;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -22,8 +19,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -31,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -49,14 +43,18 @@ import com.google.gson.JsonParseException;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
+import btao.com.quintessencelearning.util.IabHelper;
+import btao.com.quintessencelearning.util.IabResult;
+import btao.com.quintessencelearning.util.Inventory;
+import btao.com.quintessencelearning.util.Purchase;
 
 
 public class MainActivity extends AppCompatActivity{
+
 
     public static FirebaseAuth auth;
     public static DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference();
@@ -94,6 +92,13 @@ public class MainActivity extends AppCompatActivity{
 
     private static PendingIntent pendingIntent;
 
+    static final String SKU_1 = "sku_name_goes_here";
+    private String public_key = "public_key_goes_here";
+    private IabHelper mIABHelper;
+    private MainActivity activity;
+    private static final int RC_REQUEST = 07746;
+    private static boolean mSubscribed = false;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -120,6 +125,20 @@ public class MainActivity extends AppCompatActivity{
 
                     aFrag.setName(user_name);
                     aFrag.setEmail(user_email);
+                    aFrag.setAccountType(user_type);
+                    Calendar joinDate = Calendar.getInstance();
+                    SimpleDateFormat formatter = new SimpleDateFormat("EEE, MMM d yyyy");
+                    joinDate.setTimeInMillis(user_join_date*1000L);
+                    String formatted = formatter.format(joinDate.getTimeInMillis());
+                    aFrag.setJoinDate(formatted);
+
+                    Calendar notificationTime = Calendar.getInstance();
+                    notificationTime.set(Calendar.HOUR_OF_DAY,notification_hour);
+                    notificationTime.set(Calendar.MINUTE,notification_minute);
+
+                    SimpleDateFormat formatterTime = new SimpleDateFormat("hh:mm a");
+                    String formattedTime = formatterTime.format(notificationTime.getTimeInMillis());
+                    aFrag.setNotificationTime(formattedTime);
 
                     fragment = new AccountFragment();
 
@@ -151,56 +170,15 @@ public class MainActivity extends AppCompatActivity{
             startActivity(intent);
             finish();
         }
-
-        /*if( getIntent().getExtras()!=null && getIntent().getExtras().get("sender").equals("WelcomeScreen"))
-        {
-            //do here
-            notification_hour = getIntent().getExtras().getInt("setHour");
-            notification_minute = getIntent().getExtras().getInt("setMinute");
-            Log.d(TAG, notification_hour.toString());
-            Log.d(TAG,notification_minute.toString());
-
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                            .setContentTitle("My notification")
-                            .setContentText("Hello World!")
-                            .setAutoCancel(true);
-            // Creates an explicit intent for an Activity in your app
-            Intent resultIntent = new Intent(this, MainActivity.class);
-
-            // The stack builder object will contain an artificial back stack for the
-            // started Activity.
-            // This ensures that navigating backward from the Activity leads out of
-            // your application to the Home screen.
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-            // Adds the back stack for the Intent (but not the Intent itself)
-            stackBuilder.addParentStack(MainActivity.class);
-            // Adds the Intent that starts the Activity to the top of the stack
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(
-                            0,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
-            mBuilder.setContentIntent(resultPendingIntent);
-            mBuilder.setPriority(Notification.PRIORITY_HIGH);
-            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            mBuilder.setSound(alarmSound);
-            mBuilder.setVibrate(new long[] {500,500});
-            mBuilder.setLights(Color.RED, 3000, 3000);
-            NotificationManager mNotificationManager =
-                    (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
-
-            // mNotificationId is a unique integer your app uses to identify the
-            // notification. For example, to cancel the notification, you can pass its ID
-            // number to NotificationManager.cancel().
-            mNotificationManager.notify(1, mBuilder.build());
-
-        }*/
         if (auth.getCurrentUser()!=null) {
+
+            //TODO turn this on when google play is setup
+            //createPurchaseHelper();
+
             final String userUID = user.getUid();
             mUser = mUserRef.child(userUID);
+
+
 
 
             mUser.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -214,10 +192,40 @@ public class MainActivity extends AppCompatActivity{
                     user_type = (String) dataSnapshot.child("Type").getValue();
                     user_uid = (String) dataSnapshot.child("UID").getValue();
                     user_time = (Long) dataSnapshot.child("Time").getValue();
+                    Calendar time = Calendar.getInstance();
+                    time.setTimeInMillis(user_time*1000L);
+                    notification_hour=time.get(Calendar.HOUR_OF_DAY);
+                    notification_minute=time.get(Calendar.MINUTE);
+
                     if(dataSnapshot.child("Old_Time")==null){
                         user_old_time = null;
                     } else {
                         user_old_time = (Long) dataSnapshot.child("Old_Time").getValue();
+                    }
+
+                    Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
+                    pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
+
+                    boolean alarmUp = (PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent, PendingIntent.FLAG_NO_CREATE) != null);
+
+                    if (alarmUp)
+                    {
+                        Log.d(TAG, "Alarm is already active");
+                    } else {
+                        Log.d(TAG,"Alarm is not active, please set it");
+                        Calendar new_time = Calendar.getInstance();
+                        new_time.set(Calendar.HOUR_OF_DAY,notification_hour);
+                        new_time.set(Calendar.MINUTE,notification_minute);
+                        new_time.clear(Calendar.SECOND);
+
+                        Calendar current_time = Calendar.getInstance();
+                        if (current_time.getTimeInMillis()>new_time.getTimeInMillis()) {
+                            new_time.add(Calendar.DATE, 1);
+                        }
+
+                        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,new_time.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+
                     }
                 }
 
@@ -255,6 +263,7 @@ public class MainActivity extends AppCompatActivity{
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
 
         alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
 
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
@@ -349,7 +358,7 @@ public class MainActivity extends AppCompatActivity{
                                         Toast.makeText(MainActivity.this, "Email Updated", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Log.w(TAG, "Did not update", task.getException());
-                                        Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
@@ -394,7 +403,7 @@ public class MainActivity extends AppCompatActivity{
                                         Toast.makeText(MainActivity.this, "Password Updated", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Log.w(TAG, "Did not update", task.getException());
-                                        Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
@@ -574,8 +583,13 @@ public class MainActivity extends AppCompatActivity{
             // Do something with the time chosen by the user
             mUser = mUserRef.child(auth.getCurrentUser().getUid());
             Calendar new_time = Calendar.getInstance();
-            new_time.set(Calendar.HOUR_OF_DAY, t.getHour());
-            new_time.set(Calendar.MINUTE, t.getMinute());
+            if (Build.VERSION.SDK_INT < 23){
+                new_time.set(Calendar.HOUR_OF_DAY,t.getCurrentHour());
+                new_time.set(Calendar.MINUTE,t.getCurrentMinute());
+            } else {
+                new_time.set(Calendar.HOUR_OF_DAY, t.getHour());
+                new_time.set(Calendar.MINUTE, t.getMinute());
+            }
             new_time.add(Calendar.DATE,1);
             new_time.clear(Calendar.SECOND); //reset seconds to zero
             Long new_time_sec = new_time.getTimeInMillis()/1000;
@@ -588,18 +602,12 @@ public class MainActivity extends AppCompatActivity{
 
             Calendar current_time = Calendar.getInstance();
 
-            /*Calendar calendar;
-            if (user_old_time == null) {
-                calendar = new_time;
-            } else {
-                calendar = old_time;
-            }*/
 
             Intent myIntent = new Intent(getActivity(), NotificationReceiver.class);
             pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, myIntent,0);
             PendingIntent old_pending = PendingIntent.getBroadcast(getActivity(),1,myIntent,0);
 
-            AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
+            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
 
             alarmManager.cancel(pendingIntent);
             if (current_time.getTimeInMillis()<old_time.getTimeInMillis()) {
@@ -636,43 +644,96 @@ public class MainActivity extends AppCompatActivity{
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getFragmentManager(),"TimePicker");
 
-
-
-
-
-        /*
-        set current time = old time
-        set new time = time
-        set notification = to time if old time is null, otherwise = old,
-        when notification is fired, set old time = null;
-
-         */
     }
-
-    /*public void saveQuestion(final Context context){
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.question_properties);
-
-        LayoutInflater inflater = getView.getLayoutInflater();
-        builder.setView(inflater.inflate(R.layout.question_properties_dialog,null));
-        builder.setPositiveButton(R.string.save_question, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d(TAG,"saved");
-
-                mUser = mUserRef.child(auth.getCurrentUser().getUid());
-                mUser.child("Saved").child(current_question_key).setValue(true);
-
-                Toast.makeText(context, "Question has been saved", Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.show();
-    }*/
 
     public void viewSavedQuestions(View view){
         Intent intent = new Intent(getApplicationContext(),saved_questions.class);
         startActivity(intent);
 
+    }
+
+    private void createPurchaseHelper(){
+        mIABHelper = new IabHelper(this, public_key);
+        mIABHelper.enableDebugLogging(true);
+        mIABHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+                if (!result.isSuccess()){
+                    Log.d(TAG, "Error problem setting up inapp billing" + result);
+                    return;
+                }
+                if (mIABHelper == null) return;
+                try {
+                    mIABHelper.queryInventoryAsync(mGotInventoryListener);
+                } catch (IabHelper.IabAsyncInProgressException e){
+                    Log.d(TAG,"Inventory Async error: " + e);
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
+
+    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+            if (mIABHelper == null) return;
+
+            if (result.isFailure()) {
+                Log.d(TAG,"Failed to query inventory" + result);
+                return;
+            }
+            Log.d(TAG,"Query inventory was successful");
+
+            Purchase subPurchase = inventory.getPurchase(SKU_1);
+
+            if (subPurchase != null && verifyDeveloperPayload(subPurchase)) {
+                mSubscribed=true;
+                //TODO update UI
+            }
+        }
+    };
+
+    boolean verifyDeveloperPayload(Purchase p) {
+        String payload = p.getDeveloperPayload();
+        //TODO add verification
+        return true;
+    }
+
+    public void purchaseSubscription(View view) {
+        //TODO add developer payload paramter
+        try {
+            mIABHelper.launchSubscriptionPurchaseFlow(this, SKU_1, RC_REQUEST, mPurchaseFinishedListener, "");
+        } catch (IabHelper.IabAsyncInProgressException e) {
+            Log.d(TAG,"Purchase Async error" + e);
+            e.printStackTrace();
+        }
+    }
+
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+            if (mIABHelper == null) return;
+
+            if (result.isFailure()){
+                Log.d(TAG,"Purchase error:" + result);
+                return;
+            }
+            Log.d(TAG,"Purchase successful");
+
+            if(purchase != null && purchase.getSku().equals(SKU_1) && verifyDeveloperPayload(purchase)){
+                Toast.makeText(getApplicationContext(),R.string.thank_you,Toast.LENGTH_SHORT).show();
+                mSubscribed = true;
+                //TODO update UI
+            }
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode,int resultCode,Intent data) {
+        if (mIABHelper == null) return;
+
+        if (mIABHelper.handleActivityResult(requestCode,resultCode,data)){
+            Log.d(TAG,"onActivityResult handled by mhelper");
+        } else {
+            super.onActivityResult(requestCode,resultCode,data);
+        }
     }
 }
