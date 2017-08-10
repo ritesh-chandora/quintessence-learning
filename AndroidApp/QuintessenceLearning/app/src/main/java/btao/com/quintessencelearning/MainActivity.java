@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity{
                     aFrag.setAccountType(account_type);
                     Calendar joinDate = Calendar.getInstance();
                     SimpleDateFormat formatter = new SimpleDateFormat("EEE, MMM d yyyy");
-                    joinDate.setTimeInMillis(user_join_date*1000L);
+                    joinDate.setTimeInMillis(user_join_date);
                     String formatted = formatter.format(joinDate.getTimeInMillis());
                     aFrag.setJoinDate(formatted);
 
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity{
                     }
 
                     Calendar join_time_calendar = Calendar.getInstance();
-                    join_time_calendar.setTimeInMillis(user_join_date*1000L);
+                    join_time_calendar.setTimeInMillis(user_join_date);
                     Calendar current_time = Calendar.getInstance();
 
                     Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
@@ -701,7 +701,7 @@ public class MainActivity extends AppCompatActivity{
             Purchase subPurchase = inventory.getPurchase(SKU_1);
 
             Calendar current_time = Calendar.getInstance();
-            Boolean user_trial = !((current_time.getTimeInMillis()-user_join_date*1000L) > twoweeks);
+            Boolean user_trial = !((current_time.getTimeInMillis()-user_join_date) > twoweeks);
             mUser = mUserRef.child(auth.getCurrentUser().getUid());
 
             if (subPurchase != null && verifyDeveloperPayload(subPurchase)) {

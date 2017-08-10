@@ -120,7 +120,7 @@ public class SignUp extends AppCompatActivity {
         String user_email = inputEmail.getText().toString();
 
         Calendar c = Calendar.getInstance();
-        Long user_join_date = new Long(c.getTimeInMillis())/1000L;
+        Long user_join_date = new Long(c.getTimeInMillis());
         Log.d(TAG,user_join_date.toString());
 
         Long user_current_question = new Long(-1);
