@@ -10,8 +10,11 @@ import UIKit
 import UserNotifications
 class Common: NSObject {
     
-//    static let dayInSeconds:Double = 120
+    static let PREMIUM_ID = "smac.familyhuddles.premium"
+    
+    static let weekInSeconds:Double = 604800
     static let dayInSeconds:Double = 86400
+    static var timeInterval:Double = 86400
     static let trialLength = 14
     static let USER_PATH = "Users"
     static let QUESTION_PATH = "Questions"
@@ -44,14 +47,19 @@ class Common: NSObject {
         notificationContent.userInfo = ["DateCreated":date]
         notificationContent.sound = UNNotificationSound.default()
         
+        
         //if repeating, repeat for every weekday
         if(repeating){
-            for day in 2...6{
-                dateComponents.weekday = day
-                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
-                let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
-                UNUserNotificationCenter.current().add(request)
-            }
+//            if (daily) {
+                for day in 2...6{
+                    dateComponents.weekday = day
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
+                    let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
+                    UNUserNotificationCenter.current().add(request)
+                }
+//            } else {
+//                //TODO set it for the current day every week
+//            }
         } else {
             print("set for \(dateComponents)")
             dateComponents = calendar.dateComponents([.day, .hour, .minute, .second], from: date)

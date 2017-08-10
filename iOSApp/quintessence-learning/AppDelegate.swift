@@ -17,9 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         let navigationBarAppearace = UINavigationBar.appearance()
         
+        SubscriptionService.shared.loadSubscriptionOptions()
+        print(SubscriptionService.shared.products)
         navigationBarAppearace.tintColor = UIColor.white
         navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
-        navigationBarAppearace.barTintColor = UIColor(red: 52/255, green: 94/255, blue: 242/255, alpha: 1)
+        navigationBarAppearace.barTintColor = UIColor(red: 192/255, green: 15/255, blue: 0/255, alpha: 1)
         return true
     }
 

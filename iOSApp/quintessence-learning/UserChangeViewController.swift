@@ -41,10 +41,13 @@ class UserChangeViewController: ProfileViewController {
                 let isTrial = userInfo["Trial"] as! Bool
                 if (isTrial) {
                     //calculate number of days left in trial
-                    let numDays = Common.trialLength - Int((Date().timeIntervalSince1970 - joinDateSinceEpoch/1000)/Common.dayInSeconds)
+                    let numDays = Common.trialLength - Int((Date().timeIntervalSince1970 - joinDateSinceEpoch/1000)/Common.timeInterval)
                     self.typeLabel.text! = "Free Trial (\(numDays) days left)" 
+                } else if userInfo["Type"] as! String == "premium"{
+                    //TODO add days remaining in subscription
+                    self.typeLabel.text! = "Premium"
                 } else {
-                    self.typeLabel.text! = "Subscribed!"
+                    self.typeLabel.text! = "Basic"
                 }
                 
             } else {

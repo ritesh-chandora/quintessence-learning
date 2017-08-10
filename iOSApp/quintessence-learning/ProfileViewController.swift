@@ -96,8 +96,10 @@ class ProfileViewController: UITableViewController {
                 break
             case 2:
                 //payment settings
-                if (indexPath.row == 1){
-                    //view payment history
+                if (indexPath.row == 0){
+                    let premiumVC = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
+                    premiumVC.basicIsHidden = true
+                    self.navigationController?.pushViewController(premiumVC, animated: true)
                 }
                 break
             case 3:

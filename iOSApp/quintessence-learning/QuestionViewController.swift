@@ -125,7 +125,7 @@ class QuestionViewController: UIViewController {
                         //sunday, add one day
                         multiplier+=1
                     }
-                    self.notifyTime!.addTimeInterval(Common.dayInSeconds*Double(multiplier))
+                    self.notifyTime!.addTimeInterval(Common.timeInterval*Double(multiplier))
                     self.ref!.child("Time").setValue(self.notifyTime?.timeIntervalSince1970)
                 } else {
                 
@@ -154,8 +154,8 @@ class QuestionViewController: UIViewController {
                             oldTime = nil
                         }
                         //check for missed days and if so, add those questions to saved questions
-                        daysMissed += Int(timeElapsed/Common.dayInSeconds)
-                        multiplier += Int(timeElapsed/Common.dayInSeconds)
+                        daysMissed += Int(timeElapsed/Common.timeInterval)
+                        multiplier += Int(timeElapsed/Common.timeInterval)
                         if (daysMissed > 0){
                             print("\(daysMissed) days missed")
                             self.saveMissedQuestions(days: daysMissed)
@@ -167,7 +167,7 @@ class QuestionViewController: UIViewController {
                         daysMissed+=1
                         
                         //set next question update to next day
-                        self.notifyTime!.addTimeInterval(Common.dayInSeconds*Double(multiplier))
+                        self.notifyTime!.addTimeInterval(Common.timeInterval*Double(multiplier))
                         if(oldTime != nil){
                             self.ref!.child("Old_Time").setValue(self.notifyTime?.timeIntervalSince1970)
                         } else {

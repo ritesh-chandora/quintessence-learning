@@ -57,19 +57,19 @@ class NewTimeViewController: ModalViewController {
                             //sunday, add one day
                             days+=1
                         }
-                        self.timePicker.date.addTimeInterval(Common.dayInSeconds*Double(days))
+                        self.timePicker.date.addTimeInterval(Common.timeInterval*Double(days))
                     }
                     
                     //if the next notification time is too close to the new set notification time (within 12 hours), add another day
                     if oldTime != nil {
-                        if (abs(currNotifyTime.timeIntervalSince1970 - oldTime!) < Common.dayInSeconds/2){
-                            self.timePicker.date.addTimeInterval(Common.dayInSeconds)
+                        if (abs(currNotifyTime.timeIntervalSince1970 - oldTime!) < Common.timeInterval/2){
+                            self.timePicker.date.addTimeInterval(Common.timeInterval)
                         }
-                    } else if (abs(currNotifyTime.timeIntervalSince1970 - self.timePicker.date.timeIntervalSince1970 - Common.dayInSeconds) < Common.dayInSeconds/2){
-                        self.timePicker.date.addTimeInterval(Common.dayInSeconds)
+                    } else if (abs(currNotifyTime.timeIntervalSince1970 - self.timePicker.date.timeIntervalSince1970 - Common.timeInterval) < Common.timeInterval/2){
+                        self.timePicker.date.addTimeInterval(Common.timeInterval)
                     }
                     
-                    let newNotifyTime = self.timePicker.date.addingTimeInterval(Common.dayInSeconds)
+                    let newNotifyTime = self.timePicker.date.addingTimeInterval(Common.timeInterval)
                     
                     
                     //ask user to confirm

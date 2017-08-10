@@ -55,10 +55,20 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
                         
                         //if currTime is nil, then user hasn't initiailzed a time
                         if (currTime != nil) {
-                            let notifyTime = Date(timeIntervalSince1970: currTime!)
-                            Common.setNotificationTimer(date: notifyTime, repeating: true)
-                            let profileView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
-                            self.present(profileView, animated:true)
+                            self.ref!.reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Type").observeSingleEvent(of: .value, with: { (typeval) in
+                                let type = typeval.value as! String
+                                if (type == "basic"){
+                                    Common.timeInterval = Common.weekInSeconds
+                                } else {
+                                    Common.timeInterval = Common.dayInSeconds
+                                }
+                                
+                                //TODO set notification time properly
+                                let notifyTime = Date(timeIntervalSince1970: currTime!)
+                                Common.setNotificationTimer(date: notifyTime, repeating: true)
+                                let profileView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
+                                self.present(profileView, animated:true)
+                            })
                         } else {
                             let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Welcome") as! WelcomeViewController
                             self.present(welcomeScreen, animated: true)                        }

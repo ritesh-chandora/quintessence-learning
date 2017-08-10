@@ -37,6 +37,14 @@
 		2CDC3F121F365FCF00A87E3A /* PastQuestionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDC3F111F365FCF00A87E3A /* PastQuestionsTableViewController.swift */; };
 		2CF363B51F393873003BCF9C /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363B41F393873003BCF9C /* Reachability.swift */; };
 		2CF363B71F3AABB4003BCF9C /* PrivateConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363B61F3AABB4003BCF9C /* PrivateConstants.swift */; };
+		2CF363C31F3B92AB003BCF9C /* IAPHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363C21F3B92AB003BCF9C /* IAPHelper.swift */; };
+		2CF363C81F3BA375003BCF9C /* SubscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363C51F3BA375003BCF9C /* SubscriptionService.swift */; };
+		2CF363C91F3BA375003BCF9C /* PaidSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363C61F3BA375003BCF9C /* PaidSubscription.swift */; };
+		2CF363CD1F3BA4B6003BCF9C /* SelfieService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363CC1F3BA4B6003BCF9C /* SelfieService.swift */; };
+		2CF363CF1F3BA516003BCF9C /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363CE1F3BA516003BCF9C /* Session.swift */; };
+		2CF363D11F3BA7F1003BCF9C /* PremiumPurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363D01F3BA7F1003BCF9C /* PremiumPurchaseViewController.swift */; };
+		2CF363D31F3BA984003BCF9C /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363D21F3BA984003BCF9C /* Subscription.swift */; };
+		2CF363D51F3BE3A5003BCF9C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CF363D41F3BE3A5003BCF9C /* StoreKit.framework */; };
 		B6B9ACEA1539585127AFA88D /* Pods_quintessence_learning.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9DC36B159E0625930BC53D5 /* Pods_quintessence_learning.framework */; };
 /* End PBXBuildFile section */
 
@@ -74,6 +82,14 @@
 		2CDC3F111F365FCF00A87E3A /* PastQuestionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastQuestionsTableViewController.swift; sourceTree = "<group>"; };
 		2CF363B41F393873003BCF9C /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		2CF363B61F3AABB4003BCF9C /* PrivateConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivateConstants.swift; sourceTree = "<group>"; };
+		2CF363C21F3B92AB003BCF9C /* IAPHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPHelper.swift; sourceTree = "<group>"; };
+		2CF363C51F3BA375003BCF9C /* SubscriptionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionService.swift; sourceTree = "<group>"; };
+		2CF363C61F3BA375003BCF9C /* PaidSubscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaidSubscription.swift; sourceTree = "<group>"; };
+		2CF363CC1F3BA4B6003BCF9C /* SelfieService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieService.swift; sourceTree = "<group>"; };
+		2CF363CE1F3BA516003BCF9C /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		2CF363D01F3BA7F1003BCF9C /* PremiumPurchaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PremiumPurchaseViewController.swift; sourceTree = "<group>"; };
+		2CF363D21F3BA984003BCF9C /* Subscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
+		2CF363D41F3BE3A5003BCF9C /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		603BB9305DEE39DEE7482495 /* Pods-quintessence-learning.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quintessence-learning.debug.xcconfig"; path = "Pods/Target Support Files/Pods-quintessence-learning/Pods-quintessence-learning.debug.xcconfig"; sourceTree = "<group>"; };
 		F491CD342D5EFDBE2109D5F2 /* Pods-quintessence-learning.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quintessence-learning.release.xcconfig"; path = "Pods/Target Support Files/Pods-quintessence-learning/Pods-quintessence-learning.release.xcconfig"; sourceTree = "<group>"; };
 		F9DC36B159E0625930BC53D5 /* Pods_quintessence_learning.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_quintessence_learning.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,6 +101,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6B9ACEA1539585127AFA88D /* Pods_quintessence_learning.framework in Frameworks */,
+				2CF363D51F3BE3A5003BCF9C /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,10 +111,11 @@
 		2C11B6D41F2646C10039CB0A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				2C72CB581F1DC15F009868D6 /* ViewController.swift */,
-				2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */,
 				2CDAFD191F34B77E00816D23 /* EmailVerificationViewController.swift */,
+				2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */,
+				2CF363D01F3BA7F1003BCF9C /* PremiumPurchaseViewController.swift */,
 				2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */,
+				2C72CB581F1DC15F009868D6 /* ViewController.swift */,
 				2C36AFCA1F3025DC005B87F3 /* Admin */,
 				2C11B6D61F267E5B0039CB0A /* UserView */,
 			);
@@ -131,16 +149,13 @@
 		2C45FE0D1F1FA1AE004C6332 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				2C72CB561F1DC15F009868D6 /* AppDelegate.swift */,
-				2C72CB5D1F1DC15F009868D6 /* Assets.xcassets */,
-				2C72CB5F1F1DC15F009868D6 /* LaunchScreen.storyboard */,
-				2C72CB621F1DC15F009868D6 /* Info.plist */,
-				2C6F2E831F2B820E00392BD0 /* fontawesome-webfont.ttf */,
-				2C11B6DF1F2795080039CB0A /* GoogleService-Info.plist */,
+				2CF363CA1F3BA37A003BCF9C /* Misc */,
 				2C6F2E811F2B780700392BD0 /* Constants.swift */,
 				2CF363B41F393873003BCF9C /* Reachability.swift */,
 				2CF363B61F3AABB4003BCF9C /* PrivateConstants.swift */,
+				2CF363CB1F3BA392003BCF9C /* IAPHelper */,
 				2C11B6D21F2646B90039CB0A /* Server.swift */,
+				2CF363C21F3B92AB003BCF9C /* IAPHelper.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -196,9 +211,35 @@
 			path = "quintessence-learning";
 			sourceTree = "<group>";
 		};
+		2CF363CA1F3BA37A003BCF9C /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				2C72CB561F1DC15F009868D6 /* AppDelegate.swift */,
+				2C72CB5D1F1DC15F009868D6 /* Assets.xcassets */,
+				2C72CB5F1F1DC15F009868D6 /* LaunchScreen.storyboard */,
+				2C72CB621F1DC15F009868D6 /* Info.plist */,
+				2C6F2E831F2B820E00392BD0 /* fontawesome-webfont.ttf */,
+				2C11B6DF1F2795080039CB0A /* GoogleService-Info.plist */,
+			);
+			name = Misc;
+			sourceTree = "<group>";
+		};
+		2CF363CB1F3BA392003BCF9C /* IAPHelper */ = {
+			isa = PBXGroup;
+			children = (
+				2CF363C51F3BA375003BCF9C /* SubscriptionService.swift */,
+				2CF363C61F3BA375003BCF9C /* PaidSubscription.swift */,
+				2CF363D21F3BA984003BCF9C /* Subscription.swift */,
+				2CF363CC1F3BA4B6003BCF9C /* SelfieService.swift */,
+				2CF363CE1F3BA516003BCF9C /* Session.swift */,
+			);
+			name = IAPHelper;
+			sourceTree = "<group>";
+		};
 		364073937BABE905286EF115 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2CF363D41F3BE3A5003BCF9C /* StoreKit.framework */,
 				F9DC36B159E0625930BC53D5 /* Pods_quintessence_learning.framework */,
 			);
 			name = Frameworks;
@@ -248,9 +289,12 @@
 				TargetAttributes = {
 					2C72CB521F1DC15F009868D6 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = WAC8TS3C8H;
+						DevelopmentTeam = EZ3GW8R938;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
 							com.apple.Keychain = {
 								enabled = 1;
 							};
@@ -350,14 +394,21 @@
 				2C36AFC11F30237F005B87F3 /* TagTableViewController.swift in Sources */,
 				2C72CB591F1DC15F009868D6 /* ViewController.swift in Sources */,
 				2C45FE0F1F1FACD5004C6332 /* LoginHandlerViewController.swift in Sources */,
+				2CF363C81F3BA375003BCF9C /* SubscriptionService.swift in Sources */,
 				2C11B6DC1F267FC70039CB0A /* SavedTableViewController.swift in Sources */,
 				2C6F2E821F2B780700392BD0 /* Constants.swift in Sources */,
+				2CF363CD1F3BA4B6003BCF9C /* SelfieService.swift in Sources */,
 				2CDC3F121F365FCF00A87E3A /* PastQuestionsTableViewController.swift in Sources */,
 				2CF363B71F3AABB4003BCF9C /* PrivateConstants.swift in Sources */,
 				2C36AFC81F3025D7005B87F3 /* DetailViewController.swift in Sources */,
 				2C5810FB1F2D2F0B00B6C561 /* ContactViewController.swift in Sources */,
 				2C36AFC71F3025D7005B87F3 /* CreateViewController.swift in Sources */,
+				2CF363D11F3BA7F1003BCF9C /* PremiumPurchaseViewController.swift in Sources */,
 				2C11B6E51F27E88B0039CB0A /* WelcomeViewController.swift in Sources */,
+				2CF363C91F3BA375003BCF9C /* PaidSubscription.swift in Sources */,
+				2CF363D31F3BA984003BCF9C /* Subscription.swift in Sources */,
+				2CF363C31F3B92AB003BCF9C /* IAPHelper.swift in Sources */,
+				2CF363CF1F3BA516003BCF9C /* Session.swift in Sources */,
 				2C11B6E31F27B6500039CB0A /* ProfileViewController.swift in Sources */,
 				2CF363B51F393873003BCF9C /* Reachability.swift in Sources */,
 				2C5810F91F2D2CEF00B6C561 /* SubmitViewController.swift in Sources */,
@@ -494,12 +545,13 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "quintessence-learning/quintessence-learning.entitlements";
-				DEVELOPMENT_TEAM = WAC8TS3C8H;
+				DEVELOPMENT_TEAM = EZ3GW8R938;
 				INFOPLIST_FILE = "quintessence-learning/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = efeng.qlearning;
+				PRODUCT_BUNDLE_IDENTIFIER = smac.familyhuddles;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Debug;
@@ -511,12 +563,13 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "quintessence-learning/quintessence-learning.entitlements";
-				DEVELOPMENT_TEAM = WAC8TS3C8H;
+				DEVELOPMENT_TEAM = EZ3GW8R938;
 				INFOPLIST_FILE = "quintessence-learning/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = efeng.qlearning;
+				PRODUCT_BUNDLE_IDENTIFIER = smac.familyhuddles;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Release;
