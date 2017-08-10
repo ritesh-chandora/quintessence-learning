@@ -19,6 +19,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 
 import java.util.Calendar;
@@ -29,7 +33,8 @@ public class SignUp extends AppCompatActivity {
     private final String TAG = "SignUp";
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-    private EditText inputName;
+    private EditText inputFirstName;
+    private EditText inputLastName;
     private EditText inputEmail;
     private EditText inputPassword;
     private EditText inputConfirm;
@@ -37,6 +42,10 @@ public class SignUp extends AppCompatActivity {
     String email;
     String password;
     String confirm_passsword;
+
+    private static final String mailChimp_api_key = "apikey 981c0f13e8e75b42a350b7ca551afa85-us16";
+    private static final String mailChimpList = "https://us16.api.mailchimp.com/3.0/lists/5051cf18f7/members";
+
 
 
 
@@ -48,12 +57,13 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
     }
     public void Register(final View view){
-        inputName = (EditText) findViewById(R.id.text_name);
+        inputFirstName = (EditText) findViewById(R.id.text_first_name);
+        inputLastName = (EditText) findViewById(R.id.text_last_name);
         inputEmail = (EditText) findViewById(R.id.text_email);
         inputPassword = (EditText) findViewById(R.id.text_password);
         inputConfirm = (EditText) findViewById(R.id.text_confirm_password);
 
-        name = inputName.getText().toString();
+        name = inputFirstName.getText().toString() + " " + inputLastName.getText().toString();
         email = inputEmail.getText().toString();
         password = inputPassword.getText().toString();
         confirm_passsword = inputConfirm.getText().toString();
@@ -79,6 +89,8 @@ public class SignUp extends AppCompatActivity {
                                     Log.d(TAG, "created user successfully");
                                     Toast.makeText(SignUp.this, "Account Created", Toast.LENGTH_SHORT).show();
 
+
+
                                     Intent intent = new Intent(getApplicationContext(), WelcomeScreen.class);
                                     startActivity(intent);
                                     finish();
@@ -100,18 +112,19 @@ public class SignUp extends AppCompatActivity {
     public void signUp(View view,String uid){
         DatabaseReference mUserRef = mDatabase.child("Users");
 
-        inputName = (EditText) findViewById(R.id.text_name);
+        inputFirstName = (EditText) findViewById(R.id.text_first_name);
+        inputLastName = (EditText) findViewById(R.id.text_last_name);
         inputEmail = (EditText) findViewById(R.id.text_email);
 
-        String user_name = inputName.getText().toString();
+        String user_name = inputFirstName.getText().toString() + " " + inputLastName.getText().toString();
         String user_email = inputEmail.getText().toString();
 
         Calendar c = Calendar.getInstance();
-        Long user_join_date = new Long(c.get(Calendar.MILLISECOND));
+        Long user_join_date = new Long(c.getTimeInMillis())/1000L;
         Log.d(TAG,user_join_date.toString());
 
         Long user_current_question = new Long(-1);
-        String user_type = "user";
+        String user_type = "Premium_Trial";
         String user_uid = uid;
         Boolean user_trial = true;
         Boolean ebook = true;
@@ -124,5 +137,41 @@ public class SignUp extends AppCompatActivity {
         mUserRef.child(uid).child("Type").setValue(user_type);
         mUserRef.child(uid).child("UID").setValue(user_uid);
         mUserRef.child(uid).child("Ebook").setValue(ebook);
+        mUserRef.child(uid).child("Time").setValue(0);
+
+        mailChimpAdd(inputFirstName.getText().toString(),inputLastName.getText().toString(),email,"Premium",uid);
+    }
+
+    public void mailChimpAdd(String fName, String lName, String email, String status, String uid){
+        final String user_uid = uid;
+        JsonObject params = new JsonObject();
+        JsonObject merge_fields = new JsonObject();
+        try {
+            merge_fields.addProperty("FNAME",fName);
+            merge_fields.addProperty("LNAME",lName);
+            merge_fields.addProperty("STATUS",status);
+            params.addProperty("email_address", email);
+            params.addProperty("status","subscribed");
+            params.add("merge_fields",merge_fields);
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        }
+        Ion.with(getApplicationContext())
+                .load(mailChimpList)
+                .setHeader("Accept","application/json")
+                .setHeader("Content-Type","application/json")
+                .setHeader("Authorization",mailChimp_api_key)
+                .setJsonObjectBody(params)
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        Log.d(TAG,result.get("id").toString());
+
+                        DatabaseReference mUserRef = mDatabase.child("Users");
+                        mUserRef.child(user_uid).child("Email_ID").setValue(result.get("id").getAsString());
+                        Log.d(TAG,"Mailchimp user added");
+                    }
+                });
     }
 }

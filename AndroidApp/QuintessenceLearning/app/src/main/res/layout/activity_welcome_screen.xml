@@ -1,39 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="btao.com.quintessencelearning.WelcomeScreen"
-    tools:layout_editor_absoluteY="0dp"
-    tools:layout_editor_absoluteX="0dp">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="587dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/text_welcome"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:text="Welcome"
+            android:layout_margin="20dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textSize="48sp"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="127dp"
-            tools:text="Welcome" />
+            android:textSize="48sp" />
 
         <TextView
             android:id="@+id/text_get_started"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_margin="20dp"
             android:text="@string/get_started"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="210dp" />
+            />
 
         <EditText
             android:id="@+id/time_edit"
@@ -42,19 +32,21 @@
             android:ems="10"
             android:focusable="false"
             android:hint="Pick a Time"
+            android:layout_margin="20dp"
             android:inputType="time"
             android:onClick="pickTime"
-            tools:layout_editor_absoluteX="99dp"
-            tools:layout_editor_absoluteY="293dp" />
+             />
 
         <Button
             android:id="@+id/button_finish"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
             android:onClick="finish"
             android:text="Finish"
-            tools:layout_editor_absoluteX="161dp"
-            tools:layout_editor_absoluteY="397dp" />
+            android:theme="@style/AppTheme.Button"
+            />
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>

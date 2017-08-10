@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity{
     String user_email;
     Long user_join_date;
     String user_name;
-    Boolean user_trial;
+    //Boolean user_trial;
     String user_type;
     String user_uid;
     static Long user_time;
@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity{
     private MainActivity activity;
     private static final int RC_REQUEST = 07746;
     private static boolean mSubscribed = false;
+    private static Long twoweeks = new Long(1209600000);
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -128,10 +129,12 @@ public class MainActivity extends AppCompatActivity{
                     String account_type;
                     if (user_type == "admin") {
                         account_type = getString(R.string.type_admin);
-                    } else if (user_type == "user" && !user_trial) {
+                    } else if (user_type == "Premium") {
                         account_type = getString(R.string.type_subscribed);
-                    } else {
+                    } else if (user_type.equals("Premium_Trial")){
                         account_type = getString(R.string.type_trial);
+                    } else {
+                        account_type = getString(R.string.type_basic);
                     }
 
                     aFrag.setAccountType(account_type);
@@ -182,7 +185,6 @@ public class MainActivity extends AppCompatActivity{
         if (auth.getCurrentUser()!=null) {
 
             //TODO turn this on when google play is setup
-            createPurchaseHelper();
 
             final String userUID = user.getUid();
             mUser = mUserRef.child(userUID);
@@ -197,7 +199,7 @@ public class MainActivity extends AppCompatActivity{
                     user_email = (String) dataSnapshot.child("Email").getValue();
                     user_join_date = (Long) dataSnapshot.child("Join_Date").getValue();
                     user_name = (String) dataSnapshot.child("Name").getValue();
-                    user_trial = (Boolean) dataSnapshot.child("Trial").getValue();
+                    //user_trial = (Boolean) dataSnapshot.child("Trial").getValue();
                     user_type = (String) dataSnapshot.child("Type").getValue();
                     user_uid = (String) dataSnapshot.child("UID").getValue();
                     user_time = (Long) dataSnapshot.child("Time").getValue();
@@ -212,8 +214,24 @@ public class MainActivity extends AppCompatActivity{
                         user_old_time = (Long) dataSnapshot.child("Old_Time").getValue();
                     }
 
+                    Calendar join_time_calendar = Calendar.getInstance();
+                    join_time_calendar.setTimeInMillis(user_join_date*1000L);
+                    Calendar current_time = Calendar.getInstance();
+
                     Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
                     pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
+                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+
+                    Calendar new_time = Calendar.getInstance();
+                    new_time.set(Calendar.HOUR_OF_DAY,notification_hour);
+                    new_time.set(Calendar.MINUTE,notification_minute);
+                    new_time.clear(Calendar.SECOND);
+
+                    if (current_time.getTimeInMillis()>new_time.getTimeInMillis()) {
+                        new_time.add(Calendar.DATE, 1);
+                    }
+
+                    createPurchaseHelper();
 
                     boolean alarmUp = (PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent, PendingIntent.FLAG_NO_CREATE) != null);
 
@@ -222,17 +240,9 @@ public class MainActivity extends AppCompatActivity{
                         Log.d(TAG, "Alarm is already active");
                     } else {
                         Log.d(TAG,"Alarm is not active, please set it");
-                        Calendar new_time = Calendar.getInstance();
-                        new_time.set(Calendar.HOUR_OF_DAY,notification_hour);
-                        new_time.set(Calendar.MINUTE,notification_minute);
-                        new_time.clear(Calendar.SECOND);
 
-                        Calendar current_time = Calendar.getInstance();
-                        if (current_time.getTimeInMillis()>new_time.getTimeInMillis()) {
-                            new_time.add(Calendar.DATE, 1);
-                        }
 
-                        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+
                         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,new_time.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
 
                     }
@@ -690,10 +700,44 @@ public class MainActivity extends AppCompatActivity{
 
             Purchase subPurchase = inventory.getPurchase(SKU_1);
 
+            Calendar current_time = Calendar.getInstance();
+            Boolean user_trial = !((current_time.getTimeInMillis()-user_join_date*1000L) > twoweeks);
+            mUser = mUserRef.child(auth.getCurrentUser().getUid());
+
             if (subPurchase != null && verifyDeveloperPayload(subPurchase)) {
                 mSubscribed=true;
-                //TODO update UI
+                user_type = "Premium";
+                //TODO premium user
+
+            } else if(subPurchase == null && user_trial) {
+                mSubscribed = false;
+                user_type = "Premium_Trial";
+                //TODO premium user with trial
+
+            } else {
+                mSubscribed = false;
+                user_type = "Basic";
+
+                Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
+                pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
+                AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+
+                Calendar new_time = Calendar.getInstance();
+                new_time.set(Calendar.HOUR_OF_DAY,notification_hour);
+                new_time.set(Calendar.MINUTE,notification_minute);
+                new_time.clear(Calendar.SECOND);
+
+                if (current_time.getTimeInMillis()>new_time.getTimeInMillis()) {
+                    new_time.add(Calendar.DATE, 1);
+                }
+
+                alarmManager.cancel(pendingIntent);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,new_time.getTimeInMillis(),new Long(604800000),pendingIntent);
+
+                //TODO Basic User
+                //TODO change alarms and let them pick a date
             }
+            mUser.child("Type").setValue(user_type);
         }
     };
 
@@ -725,6 +769,9 @@ public class MainActivity extends AppCompatActivity{
 
             if(purchase != null && purchase.getSku().equals(SKU_1) && verifyDeveloperPayload(purchase)){
                 Toast.makeText(getApplicationContext(),R.string.thank_you,Toast.LENGTH_SHORT).show();
+                DatabaseReference mUser = mUserRef.child(auth.getCurrentUser().getUid());
+                mUser.child("Trial").setValue(false);
+
                 mSubscribed = true;
                 //TODO update UI
             }

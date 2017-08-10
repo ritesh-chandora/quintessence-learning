@@ -1,10 +1,8 @@
-read todays questoin
-Sign up with information	
-set pick time
-push notification for todays question
-account features
-	change name/password/email
-	change question time (make sure to set it for the next day)
-	
-feedback page
+payment
+user trial /expired/promo codes
+
+mailchimp
+
+
+
 
