@@ -124,7 +124,7 @@ public class SignUp extends AppCompatActivity {
         Log.d(TAG,user_join_date.toString());
 
         Long user_current_question = new Long(-1);
-        String user_type = "Premium_Trial";
+        String user_type = "premium_trial";
         String user_uid = uid;
         Boolean user_trial = true;
         Boolean ebook = true;

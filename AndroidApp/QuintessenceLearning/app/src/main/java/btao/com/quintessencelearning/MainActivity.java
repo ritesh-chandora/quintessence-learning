@@ -129,9 +129,9 @@ public class MainActivity extends AppCompatActivity{
                     String account_type;
                     if (user_type == "admin") {
                         account_type = getString(R.string.type_admin);
-                    } else if (user_type == "Premium") {
+                    } else if (user_type == "premium") {
                         account_type = getString(R.string.type_subscribed);
-                    } else if (user_type.equals("Premium_Trial")){
+                    } else if (user_type.equals("premium_trial")){
                         account_type = getString(R.string.type_trial);
                     } else {
                         account_type = getString(R.string.type_basic);
@@ -706,17 +706,17 @@ public class MainActivity extends AppCompatActivity{
 
             if (subPurchase != null && verifyDeveloperPayload(subPurchase)) {
                 mSubscribed=true;
-                user_type = "Premium";
+                user_type = "premium";
                 //TODO premium user
 
             } else if(subPurchase == null && user_trial) {
                 mSubscribed = false;
-                user_type = "Premium_Trial";
+                user_type = "premium_trial";
                 //TODO premium user with trial
 
             } else {
                 mSubscribed = false;
-                user_type = "Basic";
+                user_type = "basic";
 
                 Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
                 pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
