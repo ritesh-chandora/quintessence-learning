@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../css/console.css'
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-import axios from 'axios'
+import firebase from 'firebase'
 
 class Menu extends Component {
     constructor(props){
@@ -22,28 +22,25 @@ class Menu extends Component {
     }
 
     logout(){
-        axios.post('/login/logout', {}).then((response)=>{
-            if(response.status === 200){
-                this.props.toggleLogin();
-            } else {
-                window.alert(response.data.error);
-            }
+        firebase.auth().signOut().then(()=>{
+            this.props.toggleLogin();
+        }).catch((error)=>{
+            window.alert(error);
         });
     }
 
     passReset(){
         let email = window.prompt("Please input your email!");
-        if (email !== null){}
-           axios.post('/profile/pass', {
-            email: email
-           }).then((response)=>{
-                if(response.status === 200){
-                    window.alert("Password email sent!")
-                } else {
-                    window.alert(response.data.error);
-                }
-            }); 
+        if (email !== null){
+            console.log(email)
+            var auth = firebase.auth();
+               auth.sendPasswordResetEmail(email).then(() => {
+                window.alert("Password email sent!")
+              }).catch(function(error) {
+                window.alert(error);
+              }); 
         }
+    }
 
     render() {
     let menu;

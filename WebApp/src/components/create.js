@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {withRouter} from "react-router-dom";
-import axios from 'axios';
 import '../css/console.css'
 import Tags from './tags'
+import firebase from 'firebase'
 
 //need this or else filter tags will spawn 
 const emptyList = []
@@ -36,14 +36,28 @@ class CreateQuestionBox extends Component {
             //see if there are any new tags
             var newTags = this.state.tags.filter((tagObj) => {return this.props.tags.indexOf(tagObj) === -1})
             var needRefreshTags = newTags.length !== 0;
+            //creates two refs for the database, and then the questions collection
+              var root = firebase.database().ref(); 
+              var qref = root.child('Questions');
+              var tagRef = root.child('Tags');
+              var count = null;
+              root.child('Count').once("value").then((snapshot) => {
+                count = snapshot.val() 
+                var question = this.state.question
+                var qtag = tags
+                //pushes object into the questions collection
+                var key = root.child('Questions').push().key;
+                var user = firebase.auth().currentUser.uid
+                var ctime = firebase.database.ServerValue.TIMESTAMP;
+                qref.child(key).set({Text:question,Key:key,Created_By:user,cTime:ctime,count:count});
+                var len = qtag.length;
+                for (var i=0;i<len;i++){
+                qref.child(key).child('Tags').push(qtag[i]);
+                tagRef.child(qtag[i]).push(key);
+              }
+              root.child('Count').set(count+1)
 
-            axios.post('/profile/create', {
-                question: this.state.question,
-                tags: tags
-            }).then((response) => {
-                console.log(response.data.message)
-                if (response.data.message === 'success'){
-                     this.setState({
+              this.setState({
                         message: "Created successfully!",
                         question: "", 
                         tags: "", 
@@ -53,16 +67,7 @@ class CreateQuestionBox extends Component {
                         this.props.tagRefresh();
                     }
                     this.props.getQuestions();
-                } else {
-                    this.setState({
-                        message: response.data.message,
-                        success: false
-                    });
-                }
-            }).catch((error) => {
-                console.log(error);
-                this.setState({message: "Unable to connect to signup server!"});
-            })
+              })
         }
         event.preventDefault();
     }

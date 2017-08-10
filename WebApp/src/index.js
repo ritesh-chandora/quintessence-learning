@@ -6,6 +6,7 @@ import Home from './components/home'
 import Login from './components/login'
 import Signup from './components/signup'
 import Console from './components/console'
+import firebase from 'firebase'
 
 class Main extends React.Component {
   constructor(props){
@@ -13,6 +14,18 @@ class Main extends React.Component {
     this.state = {
       loggedIn: false
     }
+
+    var config = {
+    apiKey: "AIzaSyAyMljTvlnQh3VpGPOkGVxErzCBFWzRwoE",
+    authDomain: "test-project-692ad.firebaseapp.com",
+    databaseURL: "https://test-project-692ad.firebaseio.com",
+    projectId: "test-project-692ad",
+    storageBucket: "test-project-692ad.appspot.com",
+    messagingSenderId: "53496239189"
+  };
+
+  firebase.initializeApp(config); 
+
     this.toggleLoginState = this.toggleLoginState.bind(this);
   }
 

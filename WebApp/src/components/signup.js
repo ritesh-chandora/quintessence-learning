@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {withRouter} from "react-router-dom";
 import axios from 'axios';
+import firebase from 'firebase'
 
 class Signup extends Component { 
 	constructor(props){
@@ -23,20 +24,30 @@ class Signup extends Component {
 		else if (this.state.password.length === 0){
 			this.setState({message: "Please enter a password!"});
 		} else {
-			axios.post('/signup', {
-				email: this.state.email,
-				password: this.state.password
-			}).then((response) => {
-				console.log(response.data.message)
-				if (response.data.message === 'success'){
-					this.props.history.push('/profile');
-					window.location.reload();
-				} else {
-					this.setState({message: response.data.message});
-				}
-			}).catch((error) => {
-				this.setState({message: "Unable to connect to signup server!"});
-			})
+			var email = this.state.email
+			var password = this.state.password
+			firebase.auth().createUserWithEmailAndPassword(email, password).then(() =>{
+			    var root = firebase.database().ref();
+  				var userRef = root.child('Users');
+			    var uid = firebase.auth().currentUser.uid;
+			    var joinDate=firebase.database.ServerValue.TIMESTAMP;
+			    userRef.child(uid).set(
+			    {
+			    	Current_Question:0,
+				    Email:email,
+				    Join_Date:joinDate,
+				    Name:"name",
+				    Trial:false,
+				    Type:"none",
+				    UID:uid
+			    })
+			  }).catch((error) => {
+			    console.log(error)
+			    this.setState({
+			    	message:error
+			    })
+			  });
+			
 		}
 		event.preventDefault();
 	}

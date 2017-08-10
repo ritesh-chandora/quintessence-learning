@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {withRouter} from "react-router-dom";
-import axios from 'axios';
 import '../css/console.css'
 import CreateQuestionBox from './create'
 import QuestionTable from './questiontable'
 import Menu from './dropdown'
+import firebase from 'firebase'
 
 class Console extends Component {
     constructor(props){
@@ -31,29 +31,58 @@ class Console extends Component {
     }
 
     getTags(){
-        axios.get('/profile/tags')
-        .then((response) => {
-            var tags = response.data.tags.map((tag) => {
-                return {label: tag};
-            })
+        var root = firebase.database().ref();
+          var tagRef = root.child('Tags');
+          var tags = [];
+          tagRef.once('value', (snap) =>{
+             snap.forEach((child) => {
+               tags.push(child.key);
+             })
             this.setState({
-                tags: tags,
-            });
-        }).catch((error) => {
-            window.alert(error)
-        });
+                tags: tags
+            })
+          });
     }
 
     getQuestions() {
-        axios.post('/profile/read', {
-            ascending: this.state.ascending
-        }).then((response) => {
-                console.log(response.data)
-                this.setState({
-                    questions: response.data.questions,
+        var ascending = this.state.ascending;
+          var root = firebase.database().ref();
+          var qref = root.child('Questions');
+          //instantiates question list to be returned
+          var qlist = [];
+            //orders the questions in time order descending and then then listens for values
+            qref.orderByKey().once('value',(snap) => {
+              //iterates through each value in the snap
+              snap.forEach((snap) =>
+              {
+                //grabs the text, tags, created by, key
+                var taglist=[];
+                var key= snap.key;
+                var text =snap.child('Text').val();
+                var tags = snap.child('Tags');
+                var created = snap.child('Created_By').val();
+                tags.forEach(function(tag)
+                {
+                  taglist.push(tag.val());
                 });
-            }).catch((error) => {
-                window.alert(error)
+                //makes a list out of those elements
+                var sublist = {
+                  text: text,
+                  taglist: taglist,
+                  key:key,
+                  created: created
+                };
+
+                //pushes into the question list
+                if (ascending === true) {
+                  qlist.push(sublist);
+                } else {
+                  qlist.unshift(sublist);
+                }
+              });
+        this.setState({
+            questions: qlist
+        })
         });
     }
 
@@ -71,6 +100,7 @@ class Console extends Component {
                                        ascending={this.state.ascending}
                                        getQuestions={this.getQuestions}
                                        toggleAscending={this.toggleAscending}
+                                       tagRefresh={this.getTags} 
                                        tags={this.state.tags} />
                     </div>
                     <div className="col-md-4">

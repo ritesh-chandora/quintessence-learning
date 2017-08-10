@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import {withRouter} from "react-router-dom";
+import firebase from 'firebase';
 
 class Login extends Component { 
 	constructor(props){
@@ -23,19 +23,24 @@ class Login extends Component {
 		else if (this.state.password.length === 0){
 			this.setState({message: "Please enter a password!"});
 		} else {
-			axios.post('/login', {
-				email: this.state.email,
-				password: this.state.password
-			}).then((response) => {
-				if (response.data.message === 'success'){
-					this.props.toggleLogin();
-				} else {
-					this.setState({message: response.data.message});
-				}
-			}).catch((error) => {
-				console.log(error)
-				this.setState({message: "Unable to connect to signup server!"});
-			})
+			firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+			.then((authData) =>{
+		        var root = firebase.database().ref(); 
+		        var userref = root.child("Users").child(authData.uid)
+		        userref.child("Type").once("value").then( (snapshot) =>{
+				  var type = snapshot.val()
+				  console.log(type)
+		          if (type === "admin") {
+		                 this.props.toggleLogin()
+		            } else {
+		            	this.setState({
+		            		password:"",
+		            		message:"Not an admin!"
+		            	});
+		                firebase.auth().signOut();
+		            }
+		        })
+}			)
 		}
 		event.preventDefault();
 	}

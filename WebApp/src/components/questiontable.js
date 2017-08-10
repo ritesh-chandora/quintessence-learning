@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import {withRouter} from "react-router-dom";
-import axios from 'axios';
 import '../css/console.css'
 import Tags from './tags'
 import { EditButton, DeleteButton } from './buttons'
+import firebase from 'firebase'
 
 class QuestionTable extends Component {
     constructor(props){
@@ -43,17 +43,38 @@ class QuestionTable extends Component {
             }
             if (newTags !== null) {
                 newTags = newTags.split(',');
-                axios.post('/profile/update', {
-                    key: qkey,
-                    newText: newText,
-                    newTags: newTags
-                })
-                .then((response)=>{
-                   this.props.getQuestions();
-                })
-                .catch((error)=> {
-                    window.alert(error.response.data.message)
-                });
+                var root = firebase.database().ref();
+                  var qref = root.child('Questions');
+                  //question key is the unique question key you are updating
+                  var questionKey = qkey;
+                  //userkey is the curret logged in users unique ID
+                  var userKey = firebase.auth().currentUser.uid;
+                  //newText is the text you are updating the question with
+                  var newText = newText;
+                  //newTags is the list of tags you are updating the question with
+                  var newTags = newTags;
+                  //checks if the question you're trying to update was created by the current user
+                  qref.child(questionKey).child('Created_By').once('value',(snap) => {
+                    //updates the question text
+                    qref.child(questionKey).update({Text:newText});
+                    //removes old tags
+                    qref.child(questionKey).child('Tags').remove((err) => {
+                      if (err){
+                        console.log(err);
+                        window.alert('Unable to update tags.');
+                      } else {
+                        console.log('Tags deleted');
+                      }
+                    })
+                    //pushes new tags
+                    var len = newTags.length;
+                    for (var i=0;i<len;i++){
+                      console.log(newTags[i])
+                      qref.child(questionKey).child('Tags').push(newTags[i]);
+                    }
+                    this.props.tagRefresh();
+                    this.props.getQuestions();
+                  });
             }
         }
     }
@@ -61,15 +82,27 @@ class QuestionTable extends Component {
     deleteQuestion(qkey){ 
         var isOK = window.confirm('Are you sure you want to delete this question?');
         if (isOK){
-            axios.post('/profile/delete', {
-                key: qkey
-            })
-            .then((response)=>{
-                this.props.getQuestions();    
-            })
-            .catch((error)=> {
-                window.alert(error.response.data.message)
-            });
+            //establishes refs
+              var root = firebase.database().ref();
+              var qref = root.child('Questions');
+              //questionKey is the variable that holds the key for the question you are trying to delete
+              var questionKey = qkey;
+              //userKey is the current users unique ID
+              var userKey = firebase.auth().currentUser.uid;
+              console.log(questionKey);
+              //checks if the question you are trying to delete is created by the current user
+              qref.child(questionKey).child('Created_By').once('value',(snap) => {
+                //removes the question
+                qref.child(questionKey).remove((err) => {
+                  if (err) {
+                    console.log(err);
+                    window.alert('Question Deletion Error');
+                  } else {
+                    console.log('Question Deleted');
+                    this.props.getQuestions();
+                  }
+                });
+              });
         }
     }
 
