@@ -13,7 +13,6 @@ router.post('/create', function(req, res, next){
   var tagRef = root.child('Tags');
   var count = null;
   root.child('Count').once("value").then(function (snapshot) {
-    console.log(snapshot.val())
     count = snapshot.val() 
     var question = req.body.question
     var qtag = req.body.tags
@@ -68,7 +67,6 @@ router.post('/read', function(req, res, next){
           qlist.unshift(sublist);
         }
       });
-      console.log(qlist);
        res.send({questions: qlist});
     });
 });
@@ -84,9 +82,6 @@ router.post('/delete', function(req, res, next){
   console.log(questionKey);
   //checks if the question you are trying to delete is created by the current user
   qref.child(questionKey).child('Created_By').once('value',function(snap){
-    var question_create = snap.val();
-
-    if(userKey === question_create) {
     //removes the question
     qref.child(questionKey).remove(function(err){
       if (err) {
@@ -97,11 +92,6 @@ router.post('/delete', function(req, res, next){
         res.status(200).end();
       }
     });
-  } else {
-    console.log('Question was not created by current user');
-    res.status(400).send({message: 'You did not create this question!'});
-  }
-  
   });
   
 });
@@ -120,8 +110,6 @@ router.post('/update', function(req, res, next){
   var newTags = req.body.newTags;
   //checks if the question you're trying to update was created by the current user
   qref.child(questionKey).child('Created_By').once('value',function(snap){
-    var question_create = snap.val();
-    if (userKey === question_create) {
     //updates the question text
     qref.child(questionKey).update({Text:newText});
     //removes old tags
@@ -140,10 +128,6 @@ router.post('/update', function(req, res, next){
       qref.child(questionKey).child('Tags').push(newTags[i]);
     }
     res.status(200).end();
-  } else {
-    console.log('Question was not created by current user');
-    res.status(400).send({message: 'You did not create this question!'});
-  }
   });
 });
 

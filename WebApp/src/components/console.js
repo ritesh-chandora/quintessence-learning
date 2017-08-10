@@ -62,7 +62,7 @@ class Console extends Component {
             <div className="container container-padding">
                 <div className="row">
                     <div className="col-md-offset-10 col-md-2 text-right">
-                        <Menu loginStatus={this.props.loginStatus}/>
+                        <Menu toggleLogin={this.props.toggleLogin}/>
                     </div>
                 </div>
                 <div className="row">

@@ -28,7 +28,7 @@ class Login extends Component {
 				password: this.state.password
 			}).then((response) => {
 				if (response.data.message === 'success'){
-					this.props.loginStatus();
+					this.props.toggleLogin();
 				} else {
 					this.setState({message: response.data.message});
 				}

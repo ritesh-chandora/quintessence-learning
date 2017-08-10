@@ -10,8 +10,17 @@ router.get('/status', function(req, res){
 router.post('/', function(req, res, next){
 	firebase.auth().signInWithEmailAndPassword(req.body.email, req.body.password)
 	.then(function(authData){
-		res.send({message: "success"});	
-	}).catch(function(err){
+        var root = firebase.database().ref(); 
+        var userref = root.child("Users").child(authData.uid)
+        userref.child("Type").once("value").then(function (snapshot) {
+		  var type = snapshot.val()
+          if (type === "admin") {
+                 res.send({message: "success"});	
+            } else {
+                res.send({message:"Not an admin!"});
+            }
+        })
+}).catch(function(err){
  		console.log(err);
 		res.send({message: err.message});
  	});

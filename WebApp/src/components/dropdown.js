@@ -24,7 +24,7 @@ class Menu extends Component {
     logout(){
         axios.post('/login/logout', {}).then((response)=>{
             if(response.status === 200){
-                this.props.loginStatus();
+                this.props.toggleLogin();
             } else {
                 window.alert(response.data.error);
             }
