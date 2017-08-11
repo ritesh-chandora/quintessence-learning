@@ -100,6 +100,8 @@ public class MainActivity extends AppCompatActivity{
     private static boolean mSubscribed = false;
     private static Long twoweeks = new Long(1209600000);
 
+    private static Long time_interval; 
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
