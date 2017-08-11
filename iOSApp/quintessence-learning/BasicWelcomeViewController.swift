@@ -44,7 +44,7 @@ class BasicWelcomeViewController: UIViewController, UIPickerViewDelegate, UIPick
             components.hour = comp.hour
             components.minute = comp.minute
             components.weekday = dayPickerIndex + 2
-            components.weekOfYear = comp.weekOfYear! + 1
+            components.weekOfYear = comp.weekOfYear!
             components.year = comp.year
             components.timeZone = comp.timeZone!
             

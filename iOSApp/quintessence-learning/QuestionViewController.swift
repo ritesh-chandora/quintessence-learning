@@ -162,7 +162,12 @@ class QuestionViewController: UIViewController {
                     
                     var timeElapsed = currTime.timeIntervalSinceReferenceDate - self.notifyTime!.timeIntervalSinceReferenceDate
                     
-                    debugPrint(timeElapsed)
+                    //if today is friday, set the next notification to 3 days from now to skip the weekend
+                    if (components.weekday == 6 && Common.timeInterval == Common.dayInSeconds && timeElapsed >= 0) {
+                        multiplier+=3
+                    }
+                    
+                    debugPrint("time elapsed \(timeElapsed)")
                     print(self.notifyTime!)
                     //if the time has passed since notification date
                         if (timeElapsed >= 0) {

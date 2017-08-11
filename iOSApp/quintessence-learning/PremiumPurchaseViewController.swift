@@ -23,15 +23,19 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
     override func viewDidLoad() {
         super.viewDidLoad()
         user = Auth.auth().currentUser
+        SKPaymentQueue.default().add(self)
         if (user != nil) {
             ref = Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid)
-            SKPaymentQueue.default().add(self)
             if (basicIsHidden) {
                 basicButton.isHidden = true
             }
         }
     }
     
+    override func willMove(toParentViewController parent: UIViewController?) {
+        SKPaymentQueue.default().remove(self)
+    }
+
     func toggleButtons(toggle:Bool){
         premiumButton.isEnabled = toggle
         basicButton.isEnabled = toggle
@@ -77,9 +81,6 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
         Common.timeInterval = Common.dayInSeconds
         updateTime()
         SubscriptionService.shared.uploadReceipt { (success) in
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: SubscriptionService.purchaseSuccessfulNotification, object: nil)
-            }
         }
     }
     
@@ -88,6 +89,9 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
         Common.timeInterval = Common.dayInSeconds
         print("purchased!")
         queue.finishTransaction(transaction)
+        queue.remove(self)
+        
+        SubscriptionService.shared.hasReceiptData = true
         
         //set local notification timer
         let center = UNUserNotificationCenter.current()
@@ -96,21 +100,17 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
             let time = value.value as! TimeInterval
             let currTime = Date(timeIntervalSince1970: time)
             Common.setNotificationTimer(date: currTime, repeating: true, daily: true)
+            
         })
         SubscriptionService.shared.uploadReceipt { (success) in
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: SubscriptionService.purchaseSuccessfulNotification, object: nil)
-            }
         }
     }
     
     func handleRestoredState(for transaction: SKPaymentTransaction, in queue: SKPaymentQueue) {
         print("Purchase restored for product id: \(transaction.payment.productIdentifier)")
         queue.finishTransaction(transaction)
+        queue.remove(self)
         SubscriptionService.shared.uploadReceipt { (success) in
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: SubscriptionService.restoreSuccessfulNotification, object: nil)
-            }
         }
     }
     
@@ -157,7 +157,7 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
             //set up POST request
             guard let url = URL(string: urlRoute) else { return }
             var request = URLRequest(url: url)
-            request.httpMethod = "POST"
+            request.httpMethod = "PUT"
             request.addValue(PrivateConstants.mailChimpApiHeader, forHTTPHeaderField: "Authorization")
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = reqBody
@@ -171,6 +171,7 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
         })
     }
     
+    //updates the time from basic -> premium, plus gives an immediate question to satisfy App Store Guidelines
     func updateTime(){
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests()
@@ -186,10 +187,8 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
             let comp = calendar.dateComponents([.hour, .minute], from: Date(timeIntervalSince1970: time))
             let hour = comp.hour
             let minute = comp.minute
-            var newTime = Calendar.current.date(byAdding: .day, value: 0, to: Date())
+            var newTime = Calendar.current.date(byAdding: .day, value: -1, to: Date())
             newTime = Calendar.current.date(bySettingHour: hour!, minute: minute!, second: 0, of: newTime!)
-            
-            //schedule notifs
             Common.setNotificationTimer(date: newTime!, repeating: true, daily: true)
             self.ref!.child("Time").setValue(newTime?.timeIntervalSince1970)
         })

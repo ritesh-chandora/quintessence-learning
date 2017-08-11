@@ -45,9 +45,9 @@ class NewTimeViewController: ModalViewController {
                     let components = calendar.dateComponents([.weekday], from: currNotifyTime)
                     
                     //if it is friday thru sunday, don't notify and add appropriate time to next question
-                    if (Common.weekend.contains(components.weekday!)) {
+                    if (Common.weekend.contains(components.weekday!) || components.weekday == 6) {
                         var days = 0
-                        if(components.weekday == 6 && Common.timeInterval == Common.dayInSeconds) {
+                        if(components.weekday == 6) {
                             //friday, add 3 days to it only if it is daily
                             days+=3
                         } else if (components.weekday == 7){

@@ -21,7 +21,7 @@ class Common: NSObject {
     static let USER_PATH = "Users"
     static let QUESTION_PATH = "Questions"
     static let USER_COUNT = "Current_Question"
-    static let weekend = [1,6,7]
+    static let weekend = [1,7]
     static var dayOfWeek = 1
     
     static func showSuccess(message:String) {
@@ -61,7 +61,7 @@ class Common: NSObject {
                     UNUserNotificationCenter.current().add(request)
                 }
             } else {
-                dateComponents.weekday = Common.dayOfWeek
+                dateComponents.weekday = calendar.dateComponents([.weekday], from: date).weekday
                 let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
                 let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
                 UNUserNotificationCenter.current().add(request)

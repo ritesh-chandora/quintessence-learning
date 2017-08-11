@@ -38,16 +38,14 @@ class ProfileViewController: UITableViewController {
         
         ref!.child(Common.USER_PATH).child(user!.uid).child("Type").observeSingleEvent(of: .value, with: { (snapshot) in
             let type = snapshot.value as? String ?? ""
-            print(type)
-            if (!(type == "basic")) {
+            if ((type == "premium")) {
                 if (!SubscriptionService.shared.hasReceiptData!) {
-                    //show premium screen if not
-                    let premiumScreen = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
-                    self.present(premiumScreen, animated: true)
-                    return
+                    self.premium = false
                 } else {
                     self.premium = true
                 }
+            } else {
+                self.premium = false
             }
             if (self.premium && self.changePayment.text != nil) {
                 self.changePayment.text = "Manage subscription (Opens iTunes)"

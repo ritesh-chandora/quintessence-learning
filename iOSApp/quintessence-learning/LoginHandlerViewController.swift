@@ -230,7 +230,7 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
         emailScreen.email = self.emailText!.text!
         emailScreen.first = self.nameField!.text!
         emailScreen.last = self.lastNameField!.text!
-        self.navigationController?.pushViewController(emailScreen, animated: true)
+        self.present(emailScreen, animated: true)
     }
     
     override func viewDidLoad() {

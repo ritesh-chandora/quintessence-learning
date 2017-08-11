@@ -1,4 +1,5 @@
 PODS:
+  - FAQView (0.4.2)
   - Firebase/Auth (4.0.4):
     - Firebase/Core
     - FirebaseAuth (= 4.0.0)
@@ -42,12 +43,14 @@ PODS:
   - TagListView (1.2.0)
 
 DEPENDENCIES:
+  - FAQView
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
   - TagListView
 
 SPEC CHECKSUMS:
+  FAQView: 6339a7dde94c7fe766cdcb352cd75e7a1ff57d31
   Firebase: 1492bf04e1b73a7353b4fb2cf5a20bac9692f341
   FirebaseAnalytics: ad41720e3e67fc63fbe3d2948d3e26932a8de311
   FirebaseAuth: ebb6abcbabae00fc47446d690c19ce68d8484fde
@@ -59,6 +62,6 @@ SPEC CHECKSUMS:
   nanopb: 22bc080fa3955e2116b6ff3ee6c2cb3c15ab97cb
   TagListView: 999e1df50c0f6b9ca927fae705c86a7e3b6ee9ba
 
-PODFILE CHECKSUM: 058a25d820d23911169bdf5736a734b0da005a82
+PODFILE CHECKSUM: 1ca94f08b6f213aebd22c13e9dc1c11a2ad0de97
 
 COCOAPODS: 1.2.1

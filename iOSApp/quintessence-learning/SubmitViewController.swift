@@ -93,7 +93,7 @@ class SubmitViewController: ModalViewController {
                 
                 let params = ["subject":subject, "content":content] as [String:Any]
                 
-                Server.post(urlRoute: Server.hostURL + "/email", params: params, callback: self.submitQuestionCallback(data:), errorMessage: "Could not submit question!")
+                Server.post(urlRoute: Server.hostURL + "email/", params: params, callback: self.submitQuestionCallback(data:), errorMessage: "Could not submit question!")
                 
             } else {
                 Server.showError(message: "Unable to retrieve user info!")

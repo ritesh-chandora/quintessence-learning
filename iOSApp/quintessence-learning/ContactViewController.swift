@@ -83,7 +83,7 @@ class ContactViewController: UIViewController, UITextViewDelegate {
         
         let params = ["subject":subject, "content":body] as [String:Any]
         
-        Server.post(urlRoute: Server.hostURL + "/email", params: params, callback: self.submitQuestionCallback(data:), errorMessage: "Could not submit question!")
+        Server.post(urlRoute: Server.hostURL + "email/", params: params, callback: self.submitQuestionCallback(data:), errorMessage: "Could not submit question!")
     }
     
     func submitQuestionCallback(data:Data){

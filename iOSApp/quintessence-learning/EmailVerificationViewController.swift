@@ -60,8 +60,8 @@ class EmailVerificationViewController: UIViewController {
     
     //handling creation of email in mailchimp to subscribe 
     func createEmail(email:String, first:String, last:String) {
-        let fields = ["FNAME":first, "LNAME":last, "STATUS":"Trial"]
-        let params = ["email_address":email, "status":"subscribed", "merge_fields":fields] as [String : Any]
+        let fields = ["FNAME":first, "LNAME":last, "STATUS":"trial"]
+        let params = ["email_address":email, "status":"pending", "merge_fields":fields] as [String : Any]
         let urlRoute = Server.mailChimpURL + "lists/" + PrivateConstants.list_id + "/members"
         print(urlRoute)
         //serialize params into JSON
@@ -83,8 +83,10 @@ class EmailVerificationViewController: UIViewController {
                 do {
                     let json = try JSONSerialization.jsonObject(with: data, options: [])
                     if let dict = json as? [String:Any] {
-                        let id = dict["id"] as! String
-                        Database.database().reference().child(Auth.auth().currentUser!.uid).updateChildValues(["Email_ID":id])
+                        let id = dict["id"] as? String ?? nil
+                        if (id != nil) {
+                            Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Email_UD").setValue(id)
+                        }
                     }
                 } catch {
                     Server.showError(message: "Unable to subscribe email!")

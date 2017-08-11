@@ -23,7 +23,7 @@
 import Foundation
 import StoreKit
 
-class SubscriptionService: NSObject {
+class SubscriptionService: UIViewController {
   
   static let sessionIdSetNotification = Notification.Name("SubscriptionServiceSessionIdSetNotification")
   static let optionsLoadedNotification = Notification.Name("SubscriptionServiceOptionsLoadedNotification")
@@ -54,6 +54,7 @@ class SubscriptionService: NSObject {
   }
   
   func purchase(product: String) {
+    
     let payment = SKPayment(product: products[product]!)
     SKPaymentQueue.default().add(payment)
   }

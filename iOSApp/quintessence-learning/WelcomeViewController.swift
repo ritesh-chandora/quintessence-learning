@@ -47,7 +47,9 @@ class WelcomeViewController: UIViewController {
             if granted {
                 UserDefaults.standard.set(true, forKey: "AskedForNotifications")
                 debugPrint("permission granted")
-                Common.showSuccess(message: "Warning: First notification may be off by 24 hours!")
+                Common.showSuccess(message: "First notification may be off by 24 hours!")
+                Common.showSuccess(message: "You're all set! Your 14 day trial begins now. You will be given the option to convert to basic or continue premium once the trial period is over. You will NOT be automatically charged")
+                Common.showSuccess(message: "Your premium trial has started! You will begin receiving questions once a day, not including weekends.")
                 Common.setNotificationTimer(date: self.timePicker.date, repeating: true, daily: true)
             } else {
                 debugPrint("denied")

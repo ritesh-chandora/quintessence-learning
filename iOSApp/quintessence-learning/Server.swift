@@ -10,7 +10,7 @@ import UIKit
 
 class Server: NSObject {
     
-    static let hostURL = "http://localhost:3001"
+    static let hostURL = "https://us-central1-test-project-692ad.cloudfunctions.net/"
     static let mailChimpURL = "https://us16.api.mailchimp.com/3.0/"
     
     
