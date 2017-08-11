@@ -27,7 +27,7 @@ class EmailVerificationViewController: UIViewController {
                 if (Auth.auth().currentUser!.isEmailVerified) {
                     
                     self.createEmail(email:self.email!, first:self.first!, last:self.last!)
-                    
+                    Common.showSuccess(message: "We sent another email to you. Please subscribe to our mailing list to get the latest updates!")
                     let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Welcome") as! WelcomeViewController
                     self.present(welcomeScreen, animated: true)
                 } else {
@@ -85,7 +85,7 @@ class EmailVerificationViewController: UIViewController {
                     if let dict = json as? [String:Any] {
                         let id = dict["id"] as? String ?? nil
                         if (id != nil) {
-                            Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Email_UD").setValue(id)
+                            Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Email_ID").setValue(id)
                         }
                     }
                 } catch {

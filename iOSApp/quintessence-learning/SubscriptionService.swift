@@ -51,8 +51,8 @@ class SubscriptionService: UIViewController {
     let request = SKProductsRequest(productIdentifiers: productIDs)
     request.delegate = self
     request.start()
-  }
-  
+    }
+    
   func purchase(product: String) {
     
     let payment = SKPayment(product: products[product]!)

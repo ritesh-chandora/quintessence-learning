@@ -32,6 +32,10 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        SKPaymentQueue.default().remove(self)
+    }
+    
     override func willMove(toParentViewController parent: UIViewController?) {
         SKPaymentQueue.default().remove(self)
     }
@@ -90,6 +94,7 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
         print("purchased!")
         queue.finishTransaction(transaction)
         queue.remove(self)
+        updateEmail(premium: true)
         
         SubscriptionService.shared.hasReceiptData = true
         
@@ -140,7 +145,7 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
     
     //sets status to "Premium" in mailchimp
     func updateEmail(premium:Bool){
-        
+        print("hi")
         let status = premium ? "premium" : "basic"
         
         let fields = ["STATUS": status]
