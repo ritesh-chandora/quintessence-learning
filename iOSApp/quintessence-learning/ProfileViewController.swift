@@ -15,13 +15,13 @@ class ProfileViewController: UITableViewController {
     private var timePickerVisible = false
     static var notifyTime:Date?
     var user:User?
+    var premium = false
     var ref:DatabaseReference?
     let dateFormatter = DateFormatter()
     
     @IBOutlet weak var changeUserEmail: UILabel!
     @IBOutlet weak var changePass: UILabel!
     @IBOutlet weak var changeNotif: UILabel!
-    @IBOutlet weak var viewPayment: UILabel!
     @IBOutlet weak var changePayment: UILabel!
     @IBOutlet weak var logoutLabel: UILabel!
     @IBOutlet weak var time: UILabel!
@@ -35,7 +35,29 @@ class ProfileViewController: UITableViewController {
                 self.time.text = self.dateFormatter.string(from: timeToShow)
             })
         }
+        
+        ref!.child(Common.USER_PATH).child(user!.uid).child("Type").observeSingleEvent(of: .value, with: { (snapshot) in
+            let type = snapshot.value as? String ?? ""
+            print(type)
+            if (type == "premium") {
+                if (!SubscriptionService.shared.hasReceiptData!) {
+                    //show premium screen if not
+                    print("why")
+                    let premiumScreen = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
+                    self.present(premiumScreen, animated: true)
+                    return
+                } else {
+                    self.premium = true
+                }
+            }
+            if (self.premium && self.changePayment.text != nil) {
+                self.changePayment.text = "Manage subscription (Opens iTunes)"
+            } else {
+                self.changePayment.text = "Upgrade to Premium"
+            }
+        })
     }
+    
     
     override func viewDidLoad() {
         user = Auth.auth().currentUser!
@@ -86,20 +108,30 @@ class ProfileViewController: UITableViewController {
                 }
             break
             case 1:
-                //change notif
-                let timeChangeView = self.storyboard?.instantiateViewController(withIdentifier: "TimeChange") as? NewTimeViewController
-                timeChangeView!.row = indexPath
-                timeChangeView!.modalDelegate = self
-                timeChangeView!.timeLabelDelegate = self
-                timeChangeView!.modalPresentationStyle = .overFullScreen
-                self.navigationController?.present(timeChangeView!, animated: true)
+                if (self.premium) {
+                    //change notif
+                    let timeChangeView = self.storyboard?.instantiateViewController(withIdentifier: "TimeChange") as? NewTimeViewController
+                    timeChangeView!.row = indexPath
+                    timeChangeView!.modalDelegate = self
+                    timeChangeView!.timeLabelDelegate = self
+                    timeChangeView!.modalPresentationStyle = .overFullScreen
+                    self.navigationController?.present(timeChangeView!, animated: true)
+                } else {
+                    let premiumVC = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
+                    premiumVC.basicIsHidden = true
+                    self.navigationController?.pushViewController(premiumVC, animated: true)
+                }
                 break
             case 2:
                 //payment settings
                 if (indexPath.row == 0){
-                    let premiumVC = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
-                    premiumVC.basicIsHidden = true
-                    self.navigationController?.pushViewController(premiumVC, animated: true)
+                    if (!premium) {
+                        let premiumVC = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
+                        premiumVC.basicIsHidden = true
+                        self.navigationController?.pushViewController(premiumVC, animated: true)
+                    } else {
+                        UIApplication.shared.open(URL(string: "itms-apps://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions")!, options: [:], completionHandler: nil)
+                    }
                 }
                 break
             case 3:

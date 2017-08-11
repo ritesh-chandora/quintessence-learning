@@ -55,7 +55,7 @@ class WelcomeViewController: UIViewController {
         let userView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
         
         //initialize the account to be a user and initializes the time
-        Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Type").setValue("trial")
+        Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Type").setValue("premium_trial")
         Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Time").setValue(timePicker.date.timeIntervalSince1970)
         self.present(userView, animated: true)
     }

@@ -12,6 +12,8 @@ class Common: NSObject {
     
     static let PREMIUM_ID = "smac.familyhuddles.premium"
     
+    static var expireDate:Double = 0
+    static var userEmail:String = ""
     static let weekInSeconds:Double = 604800
     static let dayInSeconds:Double = 86400
     static var timeInterval:Double = 86400
@@ -20,6 +22,7 @@ class Common: NSObject {
     static let QUESTION_PATH = "Questions"
     static let USER_COUNT = "Current_Question"
     static let weekend = [1,6,7]
+    static var dayOfWeek = 1
     
     static func showSuccess(message:String) {
         DispatchQueue.main.async {

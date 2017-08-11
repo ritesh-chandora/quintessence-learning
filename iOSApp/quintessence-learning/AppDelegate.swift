@@ -18,7 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navigationBarAppearace = UINavigationBar.appearance()
         
         SubscriptionService.shared.loadSubscriptionOptions()
-        print(SubscriptionService.shared.products)
+        
+        SubscriptionService.shared.loadReceipt()
+        while(SubscriptionService.shared.hasReceiptData == nil){
+            //TODO there needs to be a more elegant solution to this
+        }
+        
         navigationBarAppearace.tintColor = UIColor.white
         navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
         navigationBarAppearace.barTintColor = UIColor(red: 192/255, green: 15/255, blue: 0/255, alpha: 1)

@@ -78,7 +78,10 @@ public class SelfieService {
                 completion(.failure(.other(error)))
             } else if let responseData = responseData {
                 let json = try! JSONSerialization.jsonObject(with: responseData, options: []) as! Dictionary<String, Any>
-                print(json)
+                let receipts = json["latest_receipt_info"] as! NSArray
+                let receipt = receipts.lastObject! as! NSDictionary
+                Common.expireDate = (Double(receipt["expires_date_ms"]! as! String))!/1000.0
+                print(Common.expireDate)
                 let session = Session(receiptData: data, parsedReceipt: json)
                 self.sessions[session.id] = session
                 let result = (sessionId: session.id, currentSubscription: session.currentSubscription)

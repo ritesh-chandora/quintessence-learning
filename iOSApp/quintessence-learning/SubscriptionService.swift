@@ -35,9 +35,7 @@ class SubscriptionService: NSObject {
   
     var products = [String:SKProduct]()
     
-  var hasReceiptData: Bool {
-    return loadReceipt() != nil
-  }
+  var hasReceiptData: Bool?
   
   var currentSessionId: String? {
     didSet {
@@ -56,7 +54,6 @@ class SubscriptionService: NSObject {
   }
   
   func purchase(product: String) {
-    print(products[product])
     let payment = SKPayment(product: products[product]!)
     SKPaymentQueue.default().add(payment)
   }
@@ -82,17 +79,26 @@ class SubscriptionService: NSObject {
     }
   }
   
-  private func loadReceipt() -> Data? {
+  func loadReceipt() -> Data?{
     guard let url = Bundle.main.appStoreReceiptURL else {
-      return nil
+      SubscriptionService.shared.hasReceiptData = false
+        return nil
     }
     
     do {
       let data = try Data(contentsOf: url)
-      return data
+        SelfieService.shared.upload(receipt: data, completion: { (result) in
+            if (Common.expireDate <= Date().timeIntervalSince1970){
+                SubscriptionService.shared.hasReceiptData = false
+            } else {
+                SubscriptionService.shared.hasReceiptData = true
+            }
+        })
+        return data
     } catch {
       print("Error loading receipt data: \(error.localizedDescription)")
-      return nil
+      SubscriptionService.shared.hasReceiptData = false
+        return nil
     }
   }
 }
