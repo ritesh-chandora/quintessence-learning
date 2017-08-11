@@ -54,4 +54,7 @@
     <string name="type_basic">Basic</string>
     <string name="premium_feature">You\'ve discovered a premium feature! Please purchase the premium subscription to access this feature.</string>
     <string name="premium_title">Premium Feature</string>
+
+    <string name="how_to_save_title">How do I save a question?</string>
+    <string name="how_to_save_text">You can save a question by long pressing on the question in the questions tab.</string>
 </resources>

@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity{
     String user_uid;
     static Long user_time;
     static Long user_old_time;
+    static String user_email_id;
 
     static String current_question_text;
     static String current_question_key;
@@ -92,6 +93,8 @@ public class MainActivity extends AppCompatActivity{
 
     private static PendingIntent pendingIntent;
     private static PendingIntent pendingIntent_week;
+
+    static String email_post = "https://us-central1-test-project-692ad.cloudfunctions.net/email";
 
     static final String SKU_1 = "premium_subscription";
     private String public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmpFm/xgUcK4VRde8y1xCKYFZixqZoY0pQ9M8tXhWtLqoGaHCq+i1q7jf5np/6/iQwbNhnqXeeoL0VnJRKLcuPB4k1V7l4X3zD3BcrWedXTFfvvIpy/cBONBXlNBHje/m4/s16uaahMl/JO7k1IEXBqnDxfWpZ7vHMDMFGtu6qj+fZaZSr5ftFqpLo/iJKgHyPqtWyTbUGEfDEkr1QLMo1DzEAjWE5IjH0b2dBT+wsxBUsV3OZuSpbLigNdV34OrXUKwciuq6oML2X42KCsBisjpHGgBc0YNTTsMZXd4F5ZztbOBCoFuVV+lIJDhQknifsKHUmsn95kUmZDweGSQEnwIDAQAB";
@@ -103,6 +106,10 @@ public class MainActivity extends AppCompatActivity{
     private static Long twoweeks = new Long(1209600000);
 
     private static Long time_interval;
+
+    private static final String mailChimp_api_key = "apikey 981c0f13e8e75b42a350b7ca551afa85-us16";
+    private static final String mailChimpList = "https://us16.api.mailchimp.com/3.0/lists/5051cf18f7/members/";
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -135,6 +142,8 @@ public class MainActivity extends AppCompatActivity{
                         account_type = getString(R.string.type_admin);
                     } else if (user_type == "premium") {
                         account_type = getString(R.string.type_subscribed);
+                        aFrag.setPurchaseButton("Thank You!");
+                        aFrag.getView().findViewById(R.id.button_purchase_subscription).setClickable(false);
                     } else if (user_type.equals("premium_trial")){
                         account_type = getString(R.string.type_trial);
                     } else {
@@ -207,6 +216,7 @@ public class MainActivity extends AppCompatActivity{
                     user_type = (String) dataSnapshot.child("Type").getValue();
                     user_uid = (String) dataSnapshot.child("UID").getValue();
                     user_time = (Long) dataSnapshot.child("Time").getValue();
+                    user_email_id = (String) dataSnapshot.child("Email_ID").getValue();
                     Calendar time = Calendar.getInstance();
                     time.setTimeInMillis(user_time*1000L);
                     notification_hour=time.get(Calendar.HOUR_OF_DAY);
@@ -229,8 +239,10 @@ public class MainActivity extends AppCompatActivity{
 
 
                     if (user_type.equals("basic")) {
+                        Log.d(TAG,"one week");
                         time_interval = oneweek;
                     } else {
+                        Log.d(TAG,"one day");
                         time_interval = AlarmManager.INTERVAL_DAY;
                     }
 
@@ -498,7 +510,7 @@ public class MainActivity extends AppCompatActivity{
                     e.printStackTrace();
                 }
                 Ion.with(getApplicationContext())
-                        .load(R.string.ip+"/email")
+                        .load(email_post)
                         .setHeader("Accept","application/json")
                         .setHeader("Content-Type","application/json")
                         .setJsonObjectBody(params)
@@ -555,7 +567,7 @@ public class MainActivity extends AppCompatActivity{
                     e.printStackTrace();
                 }
                 Ion.with(getApplicationContext())
-                        .load("http://192.168.1.252:3000/email")
+                        .load(email_post)
                         .setHeader("Accept","application/json")
                         .setHeader("Content-Type","application/json")
                         .setJsonObjectBody(params)
@@ -632,7 +644,7 @@ public class MainActivity extends AppCompatActivity{
             old_time.clear(Calendar.SECOND); //reset seconds to zero
 
             Calendar current_time = Calendar.getInstance();
-            
+
             Intent myIntent = new Intent(getActivity(), NotificationReceiver.class);
             pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, myIntent,0);
             PendingIntent old_pending = PendingIntent.getBroadcast(getActivity(),1,myIntent,0);
@@ -668,7 +680,7 @@ public class MainActivity extends AppCompatActivity{
 
         if (user_type.equals("basic")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle(R.string.premium_feature);
+            builder.setTitle(R.string.premium_title);
             LayoutInflater inflater = getLayoutInflater();
             builder.setView(inflater.inflate(R.layout.premium_dialog,null));
             builder.show();
@@ -722,13 +734,57 @@ public class MainActivity extends AppCompatActivity{
             mUser = mUserRef.child(auth.getCurrentUser().getUid());
 
             if (subPurchase != null && verifyDeveloperPayload(subPurchase)) {
+                Log.d(TAG,"premium user");
                 mSubscribed=true;
                 user_type = "premium";
+
+                JsonObject params = new JsonObject();
+                JsonObject merge_fields = new JsonObject();
+                try {
+                    merge_fields.addProperty("STATUS","premium");
+                    params.add("merge_fields",merge_fields);
+                } catch (JsonParseException e) {
+                    e.printStackTrace();
+                }
+                Ion.with(getApplicationContext())
+                        .load("PUT",mailChimpList+user_email_id)
+                        .setHeader("Accept","application/json")
+                        .setHeader("Content-Type","application/json")
+                        .setHeader("Authorization",mailChimp_api_key)
+                        .setJsonObjectBody(params)
+                        .asJsonObject()
+                        .setCallback(new FutureCallback<JsonObject>() {
+                            @Override
+                            public void onCompleted(Exception e, JsonObject result) {
+                                Log.d(TAG,result.get("id").getAsString());
+                            }
+                        });
                 //TODO premium user
 
             } else if(subPurchase == null && user_trial) {
                 mSubscribed = false;
                 user_type = "premium_trial";
+                JsonObject params = new JsonObject();
+                JsonObject merge_fields = new JsonObject();
+                try {
+                    merge_fields.addProperty("STATUS","basic");
+                    params.add("merge_fields",merge_fields);
+                } catch (JsonParseException e) {
+                    e.printStackTrace();
+                }
+                Ion.with(getApplicationContext())
+                        .load("PUT",mailChimpList+user_email_id)
+                        .setHeader("Accept","application/json")
+                        .setHeader("Content-Type","application/json")
+                        .setHeader("Authorization",mailChimp_api_key)
+                        .setJsonObjectBody(params)
+                        .asJsonObject()
+                        .setCallback(new FutureCallback<JsonObject>() {
+                            @Override
+                            public void onCompleted(Exception e, JsonObject result) {
+                                Log.d(TAG,result.get("id").getAsString());
+                            }
+                        });
                 //TODO premium user with trial
 
             } else {

@@ -107,7 +107,7 @@ public class QuestionsFragment extends Fragment {
 
                 text_tags = (TextView) dialogView.findViewById(R.id.text_tags);
                 Log.d(TAG,MainActivity.tags.toString());
-                text_tags.setText(MainActivity.tags.toString());
+                text_tags.setText(MainActivity.tags.toString().replace("[","").replace("]",""));
 
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();

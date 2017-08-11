@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -91,6 +92,11 @@ public class AccountFragment extends Fragment {
     public void setJoinDate(String joinDate){
         TextView textAccountType = (TextView) getView().findViewById(R.id.text_join_date);
         textAccountType.setText(joinDate);
+    }
+    public void setPurchaseButton(String purchaseButton){
+        Button button = (Button) getView().findViewById(R.id.button_purchase_subscription);
+        button.setText(purchaseButton);
+
     }
 
     public void setNotificationTime(String time){
