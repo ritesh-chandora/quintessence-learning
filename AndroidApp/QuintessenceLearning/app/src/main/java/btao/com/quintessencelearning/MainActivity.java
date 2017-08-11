@@ -135,6 +135,8 @@ public class MainActivity extends AppCompatActivity{
                         account_type = getString(R.string.type_admin);
                     } else if (user_type == "premium") {
                         account_type = getString(R.string.type_subscribed);
+                        aFrag.setPurchaseButton("Thank You!");
+                        aFrag.getView().findViewById(R.id.button_purchase_subscription).setClickable(false);
                     } else if (user_type.equals("premium_trial")){
                         account_type = getString(R.string.type_trial);
                     } else {
