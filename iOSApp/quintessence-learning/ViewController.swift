@@ -24,12 +24,15 @@ class ViewController: UIViewController {
                 if user != nil {
                     self.ref!.reference().child(Common.USER_PATH).child(user!.uid).observe(.value, with: { (snapshot) in
                         let value = snapshot.value as? NSDictionary
+
                         let userType = value?["Type"] as? String ?? ""
                         if (userType != "none") {
                             if (userType == "basic") {
                                 Common.timeInterval = Common.weekInSeconds
+                                let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
+                                self.present(userViewController, animated: true)
                             }
-                            else if (userType == "trial") {
+                            else if (userType == "premium_trial") {
                                 //check if trial is expired
                                 let joinDateSinceEpoch = value?["Join_Date"] as! TimeInterval
                                 
@@ -45,17 +48,19 @@ class ViewController: UIViewController {
 
                             } else {
                                 //check if premium subscription is active
-                                guard SubscriptionService.shared.currentSessionId != nil,
-                                    SubscriptionService.shared.hasReceiptData else {
+                                if (!SubscriptionService.shared.hasReceiptData!) {
                                         //show premium screen if not
+                                        print("why")
                                         self.showPremiumScreen()
                                         return
+                                } else {
+                                    Common.timeInterval = Common.dayInSeconds
+                                    let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
+                                    self.present(userViewController, animated: true)
+                                    return
                                 }
-                                Common.timeInterval = Common.dayInSeconds
+                                
                             }
-                            let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
-                            self.present(userViewController, animated: true)
-                            return
                         } else {
                             self.showLoginScreen()
                             return
@@ -72,6 +77,7 @@ class ViewController: UIViewController {
             Server.showError(message: "No internet connection detected! Please connect to the internet and try again.")
             showLoginScreen()
         }
+        
     }
     
     func showLoginScreen(){

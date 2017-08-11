@@ -29,6 +29,35 @@ class QuestionViewController: UIViewController {
     @IBOutlet weak var savedLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     
+    
+    //check for expiry of either premium or of trial
+    func showPremiumScreen() {
+        ref!.observeSingleEvent(of: .value, with: { (snapshot) in
+            let value = snapshot.value as? NSDictionary
+            let type = value?["Type"] as? String ?? ""
+            if (type == "premium") {
+                if (!SubscriptionService.shared.hasReceiptData!) {
+                    //show premium screen if not
+                    print("why")
+                    let premiumScreen = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
+                    self.present(premiumScreen, animated: true)
+                    return
+                }
+            } else if (type == "premium_trial") {
+                //check if trial is expired
+                let joinDateSinceEpoch = value?["Join_Date"] as! TimeInterval
+                
+                //Firebase uses milliseconds while Swift uses seconds, need to do conversion
+                //calculate number of days left in trial
+                let timeElapsed = Double(Common.trialLength) * Common.dayInSeconds - (Date().timeIntervalSince1970 - joinDateSinceEpoch/1000)
+                if (timeElapsed <= 0){
+                    let premiumScreen = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
+                    self.present(premiumScreen, animated: true)
+                }
+            }
+        })
+    }
+    
     //destroy timer if view is left
     override func viewWillDisappear(_ animated: Bool) {
         invalidateTimer()
@@ -37,6 +66,10 @@ class QuestionViewController: UIViewController {
     //checks to see if new question has to be loaded and then loads a timer in case user stays on that screen
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
+        
+        //check if expired
+        self.showPremiumScreen()
+        
         print ("view will appear!")
         //if there was a temporary time, load that first and set that to the notifyTime
         ref!.child("Old_Time").observeSingleEvent(of: .value, with: { (data) in
@@ -59,18 +92,18 @@ class QuestionViewController: UIViewController {
             (requests) in
             displayString += "count:\(requests.count)\t"
             for request in requests{
+                print(request)
                 displayString += request.identifier + "\t"
             }
             print(displayString)
         }
+        print(Common.timeInterval)
 
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
-        
         //listener for when app enters background to invalidate timer
         NotificationCenter.default.addObserver(self, selector: #selector(invalidateTimer), name:NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(checkIfNeedUpdate), name:NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
@@ -92,7 +125,6 @@ class QuestionViewController: UIViewController {
     
     //checks to see if update is needed
     func checkIfNeedUpdate(){
-        debugPrint("Checkin to see if update needed")
         
         //query both old time (if any) and the current notification time
         ref!.child("Old_Time").observeSingleEvent(of: .value, with: { (data) in
@@ -108,13 +140,13 @@ class QuestionViewController: UIViewController {
                 }
                 
                 let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                let components = calendar.dateComponents([.weekday], from: self.notifyTime!)
+                let components = calendar.dateComponents([.weekday], from: Date())
                 //multiplier is needed because with old_time daysMissed will be off by one
                 var multiplier = 0
                 var daysMissed = 0
                 
                 //if it is friday thru sunday, don't notify and add appropriate time to next question
-                if (Common.weekend.contains(components.weekday!)) {
+                if (Common.weekend.contains(components.weekday!) && Common.timeInterval == Common.dayInSeconds) {
                     if(components.weekday == 6) {
                         //friday, add 3 days to it
                         multiplier+=3
@@ -125,7 +157,7 @@ class QuestionViewController: UIViewController {
                         //sunday, add one day
                         multiplier+=1
                     }
-                    self.notifyTime!.addTimeInterval(Common.timeInterval*Double(multiplier))
+                    self.notifyTime!.addTimeInterval(Common.dayInSeconds*Double(multiplier))
                     self.ref!.child("Time").setValue(self.notifyTime?.timeIntervalSince1970)
                 } else {
                 
@@ -150,6 +182,7 @@ class QuestionViewController: UIViewController {
                             timeElapsed -= oldTimeElapsed
                             print("new time elapsed: \(timeElapsed)")
                             self.notifyTime! = newNotifyTime
+                            print("why\(newNotifyTime)")
                             self.ref!.child("Old_Time").setValue(nil)
                             oldTime = nil
                         }
@@ -168,6 +201,7 @@ class QuestionViewController: UIViewController {
                         
                         //set next question update to next day
                         self.notifyTime!.addTimeInterval(Common.timeInterval*Double(multiplier))
+                        print("new tiem \(self.notifyTime!) in seconds: \(self.notifyTime!.timeIntervalSince1970)")
                         if(oldTime != nil){
                             self.ref!.child("Old_Time").setValue(self.notifyTime?.timeIntervalSince1970)
                         } else {

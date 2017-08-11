@@ -15,9 +15,15 @@ class UserChangeViewController: ProfileViewController {
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var joinLabel: UILabel!
+    @IBOutlet weak var uidLabel: UILabel!
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        SubscriptionService.shared.loadReceipt()
         getUserData()
     }
     
@@ -45,10 +51,12 @@ class UserChangeViewController: ProfileViewController {
                     self.typeLabel.text! = "Free Trial (\(numDays) days left)" 
                 } else if userInfo["Type"] as! String == "premium"{
                     //TODO add days remaining in subscription
-                    self.typeLabel.text! = "Premium"
+                    self.typeLabel.text! = "Premium, Expires \(dateFormatter.string(from: Date(timeIntervalSince1970: Common.expireDate)))"
                 } else {
                     self.typeLabel.text! = "Basic"
                 }
+                let uidString = userInfo["UID"] as! String
+                self.uidLabel.text = uidString
                 
             } else {
                 Server.showError(message: "Unable to retrieve user info!")

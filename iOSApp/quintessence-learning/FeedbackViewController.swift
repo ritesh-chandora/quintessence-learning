@@ -25,14 +25,14 @@ class FeedbackViewController: UITableViewController {
             self.navigationController?.present(submitView, animated: true, completion: nil)
         } else if indexPath.row == 2 {
             //ebook
-            Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Ebook").observeSingleEvent(of: .value, with: { (snapshot) in
-                let bought = snapshot.value as! Bool
-                if (bought){
+            Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Type").observeSingleEvent(of: .value, with: { (snapshot) in
+                let type = snapshot.value as! String
+                if (type == "premium"){
                     let ebook = self.storyboard?.instantiateViewController(withIdentifier: "ebook")
                     self.navigationController?.pushViewController(ebook!, animated: true)
                 } else {
-                    let paywall = self.storyboard?.instantiateViewController(withIdentifier: "ebookpaywall") as! EbookPaywallViewController
-                    self.navigationController?.pushViewController(paywall, animated: true)
+                    let premiumScreen = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
+                    self.present(premiumScreen, animated: true)
                 }
             })
         }

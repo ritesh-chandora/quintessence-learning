@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C08781B1F3D39B0008061CB /* BasicWelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C08781A1F3D39B0008061CB /* BasicWelcomeViewController.swift */; };
+		2C08781D1F3D70A8008061CB /* FAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C08781C1F3D70A8008061CB /* FAQViewController.swift */; };
 		2C11B6D31F2646B90039CB0A /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6D21F2646B90039CB0A /* Server.swift */; };
 		2C11B6D81F267F300039CB0A /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6D71F267F300039CB0A /* QuestionViewController.swift */; };
 		2C11B6DA1F267F400039CB0A /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6D91F267F400039CB0A /* FeedbackViewController.swift */; };
@@ -15,7 +17,6 @@
 		2C11B6E01F2795080039CB0A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C11B6DF1F2795080039CB0A /* GoogleService-Info.plist */; };
 		2C11B6E31F27B6500039CB0A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */; };
 		2C11B6E51F27E88B0039CB0A /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */; };
-		2C36AFBD1F2E732F005B87F3 /* EbookPaywallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C36AFBC1F2E732F005B87F3 /* EbookPaywallViewController.swift */; };
 		2C36AFBF1F2EAE52005B87F3 /* NewTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C36AFBE1F2EAE52005B87F3 /* NewTimeViewController.swift */; };
 		2C36AFC11F30237F005B87F3 /* TagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C36AFC01F30237F005B87F3 /* TagTableViewController.swift */; };
 		2C36AFC71F3025D7005B87F3 /* CreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C36AFC41F3025D7005B87F3 /* CreateViewController.swift */; };
@@ -37,7 +38,6 @@
 		2CDC3F121F365FCF00A87E3A /* PastQuestionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDC3F111F365FCF00A87E3A /* PastQuestionsTableViewController.swift */; };
 		2CF363B51F393873003BCF9C /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363B41F393873003BCF9C /* Reachability.swift */; };
 		2CF363B71F3AABB4003BCF9C /* PrivateConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363B61F3AABB4003BCF9C /* PrivateConstants.swift */; };
-		2CF363C31F3B92AB003BCF9C /* IAPHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363C21F3B92AB003BCF9C /* IAPHelper.swift */; };
 		2CF363C81F3BA375003BCF9C /* SubscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363C51F3BA375003BCF9C /* SubscriptionService.swift */; };
 		2CF363C91F3BA375003BCF9C /* PaidSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363C61F3BA375003BCF9C /* PaidSubscription.swift */; };
 		2CF363CD1F3BA4B6003BCF9C /* SelfieService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363CC1F3BA4B6003BCF9C /* SelfieService.swift */; };
@@ -49,6 +49,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C08781A1F3D39B0008061CB /* BasicWelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicWelcomeViewController.swift; sourceTree = "<group>"; };
+		2C08781C1F3D70A8008061CB /* FAQViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
 		2C11B6D21F2646B90039CB0A /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		2C11B6D71F267F300039CB0A /* QuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
 		2C11B6D91F267F400039CB0A /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
@@ -58,7 +60,6 @@
 		2C11B6E11F27B5690039CB0A /* quintessence-learning.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "quintessence-learning.entitlements"; sourceTree = "<group>"; };
 		2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
-		2C36AFBC1F2E732F005B87F3 /* EbookPaywallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EbookPaywallViewController.swift; sourceTree = "<group>"; };
 		2C36AFBE1F2EAE52005B87F3 /* NewTimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTimeViewController.swift; sourceTree = "<group>"; };
 		2C36AFC01F30237F005B87F3 /* TagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagTableViewController.swift; sourceTree = "<group>"; };
 		2C36AFC41F3025D7005B87F3 /* CreateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateViewController.swift; sourceTree = "<group>"; };
@@ -82,7 +83,6 @@
 		2CDC3F111F365FCF00A87E3A /* PastQuestionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastQuestionsTableViewController.swift; sourceTree = "<group>"; };
 		2CF363B41F393873003BCF9C /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		2CF363B61F3AABB4003BCF9C /* PrivateConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivateConstants.swift; sourceTree = "<group>"; };
-		2CF363C21F3B92AB003BCF9C /* IAPHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPHelper.swift; sourceTree = "<group>"; };
 		2CF363C51F3BA375003BCF9C /* SubscriptionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionService.swift; sourceTree = "<group>"; };
 		2CF363C61F3BA375003BCF9C /* PaidSubscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaidSubscription.swift; sourceTree = "<group>"; };
 		2CF363CC1F3BA4B6003BCF9C /* SelfieService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieService.swift; sourceTree = "<group>"; };
@@ -111,6 +111,7 @@
 		2C11B6D41F2646C10039CB0A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				2C08781A1F3D39B0008061CB /* BasicWelcomeViewController.swift */,
 				2CDAFD191F34B77E00816D23 /* EmailVerificationViewController.swift */,
 				2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */,
 				2CF363D01F3BA7F1003BCF9C /* PremiumPurchaseViewController.swift */,
@@ -155,7 +156,6 @@
 				2CF363B61F3AABB4003BCF9C /* PrivateConstants.swift */,
 				2CF363CB1F3BA392003BCF9C /* IAPHelper */,
 				2C11B6D21F2646B90039CB0A /* Server.swift */,
-				2CF363C21F3B92AB003BCF9C /* IAPHelper.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -166,6 +166,7 @@
 				2C11B6E21F27B6500039CB0A /* ProfileViewController.swift */,
 				2C6F2E851F2BAC1E00392BD0 /* UserChangeViewController.swift */,
 				2C36AFBE1F2EAE52005B87F3 /* NewTimeViewController.swift */,
+				2C08781C1F3D70A8008061CB /* FAQViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -177,7 +178,6 @@
 				2C5810F61F2D278900B6C561 /* AboutViewController.swift */,
 				2C5810F81F2D2CEF00B6C561 /* SubmitViewController.swift */,
 				2C5810FA1F2D2F0B00B6C561 /* ContactViewController.swift */,
-				2C36AFBC1F2E732F005B87F3 /* EbookPaywallViewController.swift */,
 			);
 			name = FeedbackViews;
 			sourceTree = "<group>";
@@ -388,7 +388,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C36AFBD1F2E732F005B87F3 /* EbookPaywallViewController.swift in Sources */,
 				2C36AFC91F3025D7005B87F3 /* QuestionTableViewController.swift in Sources */,
 				2C11B6D31F2646B90039CB0A /* Server.swift in Sources */,
 				2C36AFC11F30237F005B87F3 /* TagTableViewController.swift in Sources */,
@@ -398,16 +397,17 @@
 				2C11B6DC1F267FC70039CB0A /* SavedTableViewController.swift in Sources */,
 				2C6F2E821F2B780700392BD0 /* Constants.swift in Sources */,
 				2CF363CD1F3BA4B6003BCF9C /* SelfieService.swift in Sources */,
+				2C08781D1F3D70A8008061CB /* FAQViewController.swift in Sources */,
 				2CDC3F121F365FCF00A87E3A /* PastQuestionsTableViewController.swift in Sources */,
 				2CF363B71F3AABB4003BCF9C /* PrivateConstants.swift in Sources */,
 				2C36AFC81F3025D7005B87F3 /* DetailViewController.swift in Sources */,
 				2C5810FB1F2D2F0B00B6C561 /* ContactViewController.swift in Sources */,
 				2C36AFC71F3025D7005B87F3 /* CreateViewController.swift in Sources */,
 				2CF363D11F3BA7F1003BCF9C /* PremiumPurchaseViewController.swift in Sources */,
+				2C08781B1F3D39B0008061CB /* BasicWelcomeViewController.swift in Sources */,
 				2C11B6E51F27E88B0039CB0A /* WelcomeViewController.swift in Sources */,
 				2CF363C91F3BA375003BCF9C /* PaidSubscription.swift in Sources */,
 				2CF363D31F3BA984003BCF9C /* Subscription.swift in Sources */,
-				2CF363C31F3B92AB003BCF9C /* IAPHelper.swift in Sources */,
 				2CF363CF1F3BA516003BCF9C /* Session.swift in Sources */,
 				2C11B6E31F27B6500039CB0A /* ProfileViewController.swift in Sources */,
 				2CF363B51F393873003BCF9C /* Reachability.swift in Sources */,
@@ -543,7 +543,7 @@
 			baseConfigurationReference = 603BB9305DEE39DEE7482495 /* Pods-quintessence-learning.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CODE_SIGN_ENTITLEMENTS = "quintessence-learning/quintessence-learning.entitlements";
 				DEVELOPMENT_TEAM = EZ3GW8R938;
 				INFOPLIST_FILE = "quintessence-learning/Info.plist";
@@ -561,7 +561,7 @@
 			baseConfigurationReference = F491CD342D5EFDBE2109D5F2 /* Pods-quintessence-learning.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CODE_SIGN_ENTITLEMENTS = "quintessence-learning/quintessence-learning.entitlements";
 				DEVELOPMENT_TEAM = EZ3GW8R938;
 				INFOPLIST_FILE = "quintessence-learning/Info.plist";

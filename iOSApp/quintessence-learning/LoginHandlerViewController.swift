@@ -38,12 +38,20 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
                 self.infoText!.isHidden = false;
                 self.toggleButtons(toggle: true)
             } else if (!Auth.auth().currentUser!.isEmailVerified) {
+                
+                //FIRST CHECK - is the email verified? if not, redirect to email verification screen
+                
                 let emailScreen = self.storyboard?.instantiateViewController(withIdentifier: "VerifyEmail") as! EmailVerificationViewController
                 emailScreen.email = Auth.auth().currentUser!.email!
                 self.navigationController?.pushViewController(emailScreen, animated: true)
             } else {
+                
+                //SECOND CHECK - ACCOUNT TYPES
+                
                 self.ref!.reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Old_Time").observeSingleEvent(of: .value, with: { (old_time) in
                     self.ref!.reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Time").observeSingleEvent(of: .value, with: { (time) in
+                        
+                        //initially set the notification timers
                         let oldTime = old_time.value as? TimeInterval ?? nil
                         
                         if (oldTime != nil){
@@ -53,25 +61,55 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
                         
                         let currTime = time.value as? TimeInterval ?? nil
                         
-                        //if currTime is nil, then user hasn't initiailzed a time
+                        //if currTime is nil, then user hasn't initiailzed a time and bring them to the welcome screen
                         if (currTime != nil) {
-                            self.ref!.reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Type").observeSingleEvent(of: .value, with: { (typeval) in
-                                let type = typeval.value as! String
+                            self.ref!.reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (value) in
+                                let value = value.value as? NSDictionary
+                                let type = value?["Type"] as? String ?? ""
+
+                                //if basic, then redirect normally with week as the interval
                                 if (type == "basic"){
                                     Common.timeInterval = Common.weekInSeconds
-                                } else {
-                                    Common.timeInterval = Common.dayInSeconds
+                                    let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
+                                    self.present(userViewController, animated: true)
+                                } else if (type == "premium"){
+                                    //check if still subscribed
+                                    if (!SubscriptionService.shared.hasReceiptData!) {
+                                            //show premium screen if not
+                                            let premiumScreen = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
+                                            self.present(premiumScreen, animated: true)
+                                            return
+                                    } else {
+                                        Common.timeInterval = Common.dayInSeconds
+                                        
+                                        //TODO set notification time properly
+                                        let notifyTime = Date(timeIntervalSince1970: currTime!)
+                                        Common.setNotificationTimer(date: notifyTime, repeating: true)
+                                        let profileView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
+                                        self.present(profileView, animated:true)
+                                        return
+                                    }
+                                } else if (type == "premium_trial") {
+                                    //check if trial is expired
+                                    let joinDateSinceEpoch = value?["Join_Date"] as! TimeInterval
+                                    
+                                    //Firebase uses milliseconds while Swift uses seconds, need to do conversion
+                                    //calculate number of days left in trial
+                                    let timeElapsed = Double(Common.trialLength) * Common.dayInSeconds - (Date().timeIntervalSince1970 - joinDateSinceEpoch/1000)
+                                    if (timeElapsed <= 0){
+                                        let premiumScreen = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
+                                        self.present(premiumScreen, animated: true)
+                                    } else {
+                                        let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
+                                        self.present(userViewController, animated: true)
+                                    }
+                                    
                                 }
-                                
-                                //TODO set notification time properly
-                                let notifyTime = Date(timeIntervalSince1970: currTime!)
-                                Common.setNotificationTimer(date: notifyTime, repeating: true)
-                                let profileView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
-                                self.present(profileView, animated:true)
                             })
                         } else {
                             let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Welcome") as! WelcomeViewController
-                            self.present(welcomeScreen, animated: true)                        }
+                            self.present(welcomeScreen, animated: true)
+                        }
                     })
                 })
                 
@@ -104,7 +142,6 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
                                   "Email" : self.emailText!.text!,
                                   "Join_Date": ServerValue.timestamp(),
                                   "Name": "\(self.nameField!.text!) \(self.lastNameField!.text!)",
-                                  "Trial":true,
                                   "Type":"none",
                                   "Ebook":false,
                                   "UID": user!.uid] as NSDictionary
