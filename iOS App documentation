@@ -1,0 +1,103 @@
+iOS App documentation
+
+General notes
+-toggleButton func is to disable the buttons while waiting on an sync request
+
+ViewController.swift
+
+- purpose is to redirect user to proper page (login screen, premium screen, user screen)
+    - login screen if user is not logged in
+    - premium screen is user is a premium user whose subscription has expired or a trial user whose trial has expired
+    - user screen otherwise
+
+EmailVerificationVC.swift
+    - shows the email verification screen 
+    - also will subscribe the user to MailChimp emails by sending a POST request to MailChimp API to add user to subscribe list
+
+LoginHandlerVC.swift
+    - handles logic for both sign up & login
+    - login has three cases similar to ViewController - premium_trial, premium, and basic users
+    - will set the timeInterval and notification timers appropriately
+        - basic -> one week intervals
+        - premium/premium_trial -> daily intervals 
+    - also check if premium has expired for the user and redirect to premium page
+    - sign up will add user to the database with fields 
+
+PremiumPurchaseVC.swift
+    - Get Premium paywall screen
+        - continue with basic (sets the basic time)
+        - pay for premium (SKPaymentQueue handles)
+        - User will get a question instantly from signing up to both to adhere to App store guidelines
+
+WelcomeVC.swift
+    - screen that user sees upon verifying email - allows them to set their time, and sets notifications when asked
+
+BasicWelcomeVC.swift
+    - VC to handle basic user initialization
+    - choose day of week and time, since it is weekly
+
+-----UserView-------
+
+QuestionVC.swift
+    - Displays the question, its tags, and next question time.
+    - On view appear, check to see if a question needs to be updated. Update if needed, and save missed questions, if any. 
+    - set a timer to change the question if the user happens to leave it on the screen so then the question will update at the appropriate time.
+
+SavedTableVC.swift
+    - retrieves the Saved Questions of the user via Firebase and displays them in a VC
+    - search by text
+    - rightNavButton to filter by tags
+
+SavedQuestionVC.swift 
+    - modal-like display of the question with its tags, along with option to save it
+
+TagTableVC.swift
+    - tableview for all the tags of all the questions. Tapping on one will use a SavedTableVC to display only questions of that tag
+
+PastQuestionTableVC.swift
+    - tableview for all past questions, so it will query all questions up until the user's count from Firebase. 
+    - inherits from SavedTableVC so it has similar functionality
+
+ProfileVC.swift
+    - handles the profile tab view, a static TableView 
+    - handles the logic when cells are tapped
+    - loads the current notification timer on load
+
+UserChangeVC.swift
+    - displays the user change options, in a static table view
+    - shows user info from querying firebase - name, email, join date, account type, account UID
+    - gives options to change name and email
+        - email requires firebase reauth
+
+NewTimeVC.swift
+    - modal-like display of choosing a new time for the user
+    - general rule is: keep the old time for one more cycle, then start using the new time
+    - account for weekends
+    - warn the user about the time change so they know when to expect it
+
+FeedbackVC.swift
+    - Handles the static tableview for feedback tab
+
+AboutVC.swift
+    - PageViewController for display the two VCs in the storyboard, Our Mission and About Us
+
+SubmitVC.swift
+    - modal-like display for a user to send a question, adding tags through a TagListView
+
+ContactVC.swift
+    - sends a POST request to /email, which mails the admin from a fake email
+
+FAQVC.swift
+    - used a FAQView, see the github link below for more documentation behind this module
+
+-----IAPHelper-----
+https://www.raywenderlich.com/154737/app-purchases-auto-renewable-subscriptions-tutorial
+
+--Podfiles Used--
+TagListView
+https://github.com/ElaWorkshop/TagListView
+
+FAQView
+https://github.com/mukeshthawani/FAQView
+
+
