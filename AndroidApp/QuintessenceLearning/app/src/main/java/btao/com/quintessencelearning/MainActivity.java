@@ -734,6 +734,7 @@ public class MainActivity extends AppCompatActivity{
             mUser = mUserRef.child(auth.getCurrentUser().getUid());
 
             if (subPurchase != null && verifyDeveloperPayload(subPurchase)) {
+                Log.d(TAG,"premium user");
                 mSubscribed=true;
                 user_type = "premium";
 
