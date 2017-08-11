@@ -632,8 +632,7 @@ public class MainActivity extends AppCompatActivity{
             old_time.clear(Calendar.SECOND); //reset seconds to zero
 
             Calendar current_time = Calendar.getInstance();
-
-
+            
             Intent myIntent = new Intent(getActivity(), NotificationReceiver.class);
             pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, myIntent,0);
             PendingIntent old_pending = PendingIntent.getBroadcast(getActivity(),1,myIntent,0);
@@ -650,10 +649,6 @@ public class MainActivity extends AppCompatActivity{
             notification_minute=new_time.get(Calendar.MINUTE);
 
             Toast.makeText(getActivity(),R.string.time_updated,Toast.LENGTH_SHORT).show();
-
-
-
-
         }
     }
 
@@ -741,8 +736,8 @@ public class MainActivity extends AppCompatActivity{
                 user_type = "basic";
 
                 Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
-                pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
-                pendingIntent_week = PendingIntent.getBroadcast(getApplicationContext(),2,myIntent,0);
+
+
                 AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
 
                 Calendar new_time = Calendar.getInstance();
@@ -753,14 +748,18 @@ public class MainActivity extends AppCompatActivity{
                 if (current_time.getTimeInMillis()>new_time.getTimeInMillis()) {
                     new_time.add(Calendar.DATE, 1);
                 }
+
                 boolean alarmUp = (PendingIntent.getBroadcast(getApplicationContext(), 2, myIntent, PendingIntent.FLAG_NO_CREATE) != null);
                 boolean alarmUp_week = (PendingIntent.getBroadcast(getApplicationContext(),2,myIntent,PendingIntent.FLAG_NO_CREATE) != null);
+
                 if (alarmUp) {
                     Log.d(TAG, "alarm up is up");
+                    pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
                     alarmManager.cancel(pendingIntent);
                 }
                 if (!alarmUp_week) {
                     Log.d(TAG, "alarm up week is not active");
+                    pendingIntent_week = PendingIntent.getBroadcast(getApplicationContext(),2,myIntent,0);
                     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, new_time.getTimeInMillis(), time_interval, pendingIntent_week);
                 }
 
