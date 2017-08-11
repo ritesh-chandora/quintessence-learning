@@ -52,4 +52,6 @@
     <string name="type_admin">Admin</string>
     <string name="type_subscribed">Premium (Monthly Subscription)</string>
     <string name="type_basic">Basic</string>
+    <string name="premium_feature">You\'ve discovered a premium feature! Please purchase the premium subscription to access this feature.</string>
+    <string name="premium_title">Premium Feature</string>
 </resources>

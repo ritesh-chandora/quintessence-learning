@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity{
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     private static PendingIntent pendingIntent;
+    private static PendingIntent pendingIntent_week;
 
     static final String SKU_1 = "premium_subscription";
     private String public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmpFm/xgUcK4VRde8y1xCKYFZixqZoY0pQ9M8tXhWtLqoGaHCq+i1q7jf5np/6/iQwbNhnqXeeoL0VnJRKLcuPB4k1V7l4X3zD3BcrWedXTFfvvIpy/cBONBXlNBHje/m4/s16uaahMl/JO7k1IEXBqnDxfWpZ7vHMDMFGtu6qj+fZaZSr5ftFqpLo/iJKgHyPqtWyTbUGEfDEkr1QLMo1DzEAjWE5IjH0b2dBT+wsxBUsV3OZuSpbLigNdV34OrXUKwciuq6oML2X42KCsBisjpHGgBc0YNTTsMZXd4F5ZztbOBCoFuVV+lIJDhQknifsKHUmsn95kUmZDweGSQEnwIDAQAB";
@@ -98,9 +99,10 @@ public class MainActivity extends AppCompatActivity{
     private MainActivity activity;
     private static final int RC_REQUEST = 07746;
     private static boolean mSubscribed = false;
+    private static Long oneweek = new Long (604800000);
     private static Long twoweeks = new Long(1209600000);
 
-    private static Long time_interval; 
+    private static Long time_interval;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -221,8 +223,16 @@ public class MainActivity extends AppCompatActivity{
                     Calendar current_time = Calendar.getInstance();
 
                     Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
-                    pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
+
+
                     AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+
+
+                    if (user_type.equals("basic")) {
+                        time_interval = oneweek;
+                    } else {
+                        time_interval = AlarmManager.INTERVAL_DAY;
+                    }
 
                     Calendar new_time = Calendar.getInstance();
                     new_time.set(Calendar.HOUR_OF_DAY,notification_hour);
@@ -236,17 +246,18 @@ public class MainActivity extends AppCompatActivity{
                     createPurchaseHelper();
 
                     boolean alarmUp = (PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent, PendingIntent.FLAG_NO_CREATE) != null);
+                    boolean alarmUp_week = (PendingIntent.getBroadcast(getApplicationContext(), 2 , myIntent , PendingIntent.FLAG_NO_CREATE)!=null);
 
-                    if (alarmUp)
+                    if (alarmUp || alarmUp_week)
                     {
                         Log.d(TAG, "Alarm is already active");
-                    } else {
-                        Log.d(TAG,"Alarm is not active, please set it");
-
-
-
-                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,new_time.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
-
+                    } else if (!alarmUp_week && user_type.equals("basic")){
+                        Log.d(TAG,"week Alarm is not active, please set it");
+                        pendingIntent_week = PendingIntent.getBroadcast(getApplicationContext(),2,myIntent,0);
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,new_time.getTimeInMillis(),time_interval,pendingIntent_week);
+                    } else if (!alarmUp && (user_type.equals("premium") || user_type.equals("premium_trial"))) {
+                        pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,new_time.getTimeInMillis(),time_interval,pendingIntent);
                     }
                 }
 
@@ -280,10 +291,13 @@ public class MainActivity extends AppCompatActivity{
 
         Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
+        pendingIntent_week = PendingIntent.getBroadcast(getApplicationContext(),2,myIntent,0);
 
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
 
         alarmManager.cancel(pendingIntent);
+        alarmManager.cancel(pendingIntent_week);
+        pendingIntent_week.cancel();
         pendingIntent.cancel();
 
         FirebaseUser user = auth.getCurrentUser();
@@ -618,8 +632,7 @@ public class MainActivity extends AppCompatActivity{
             old_time.clear(Calendar.SECOND); //reset seconds to zero
 
             Calendar current_time = Calendar.getInstance();
-
-
+            
             Intent myIntent = new Intent(getActivity(), NotificationReceiver.class);
             pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, myIntent,0);
             PendingIntent old_pending = PendingIntent.getBroadcast(getActivity(),1,myIntent,0);
@@ -636,10 +649,6 @@ public class MainActivity extends AppCompatActivity{
             notification_minute=new_time.get(Calendar.MINUTE);
 
             Toast.makeText(getActivity(),R.string.time_updated,Toast.LENGTH_SHORT).show();
-
-
-
-
         }
     }
 
@@ -655,12 +664,18 @@ public class MainActivity extends AppCompatActivity{
 
 
         mUser = mUserRef.child(auth.getCurrentUser().getUid());
-
         mUser.child("Old_Time").setValue(old_time_sec);
 
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getFragmentManager(),"TimePicker");
-
+        if (user_type.equals("basic")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle(R.string.premium_feature);
+            LayoutInflater inflater = getLayoutInflater();
+            builder.setView(inflater.inflate(R.layout.premium_dialog,null));
+            builder.show();
+        } else {
+            DialogFragment newFragment = new TimePickerFragment();
+            newFragment.show(getFragmentManager(), "TimePicker");
+        }
     }
 
     public void viewSavedQuestions(View view){
@@ -721,7 +736,8 @@ public class MainActivity extends AppCompatActivity{
                 user_type = "basic";
 
                 Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
-                pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
+
+
                 AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
 
                 Calendar new_time = Calendar.getInstance();
@@ -733,8 +749,19 @@ public class MainActivity extends AppCompatActivity{
                     new_time.add(Calendar.DATE, 1);
                 }
 
-                alarmManager.cancel(pendingIntent);
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,new_time.getTimeInMillis(),new Long(604800000),pendingIntent);
+                boolean alarmUp = (PendingIntent.getBroadcast(getApplicationContext(), 2, myIntent, PendingIntent.FLAG_NO_CREATE) != null);
+                boolean alarmUp_week = (PendingIntent.getBroadcast(getApplicationContext(),2,myIntent,PendingIntent.FLAG_NO_CREATE) != null);
+
+                if (alarmUp) {
+                    Log.d(TAG, "alarm up is up");
+                    pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
+                    alarmManager.cancel(pendingIntent);
+                }
+                if (!alarmUp_week) {
+                    Log.d(TAG, "alarm up week is not active");
+                    pendingIntent_week = PendingIntent.getBroadcast(getApplicationContext(),2,myIntent,0);
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, new_time.getTimeInMillis(), time_interval, pendingIntent_week);
+                }
 
                 //TODO Basic User
                 //TODO change alarms and let them pick a date

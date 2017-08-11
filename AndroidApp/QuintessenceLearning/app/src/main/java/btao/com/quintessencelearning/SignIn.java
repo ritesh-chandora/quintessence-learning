@@ -38,6 +38,10 @@ public class SignIn extends AppCompatActivity {
     static DatabaseReference mUser;
 
     static PendingIntent pendingIntent;
+    static PendingIntent pendingIntent_week;
+
+    static Long time_interval = new Long(0);
+    static final Long oneweek = new Long(604800000);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +77,7 @@ public class SignIn extends AppCompatActivity {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         Long time = (Long) dataSnapshot.child("Time").getValue();
+                                        String user_type = (String) dataSnapshot.child("Type").getValue();
                                         Calendar old_time = Calendar.getInstance();
                                         old_time.setTimeInMillis(time*1000L);
                                         Integer hour = old_time.get(Calendar.HOUR_OF_DAY);
@@ -92,9 +97,19 @@ public class SignIn extends AppCompatActivity {
 
                                         Intent myIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
                                         pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent,0);
+                                        pendingIntent_week = PendingIntent.getBroadcast(getApplicationContext(),2,myIntent,0);
 
                                         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
-                                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,new_time.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+
+                                        if (user_type.equals("basic")) {
+                                            time_interval = oneweek;
+                                            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,new_time.getTimeInMillis(),time_interval,pendingIntent_week);
+                                        } else {
+                                            time_interval = AlarmManager.INTERVAL_DAY;
+                                            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,new_time.getTimeInMillis(),time_interval,pendingIntent);
+                                        }
+
+
                                     }
 
                                     @Override
