@@ -140,17 +140,14 @@ class QuestionViewController: UIViewController {
                 }
                 
                 let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                let components = calendar.dateComponents([.weekday], from: Date())
+                let components = calendar.dateComponents([.weekday], from: self.notifyTime!)
                 //multiplier is needed because with old_time daysMissed will be off by one
                 var multiplier = 0
                 var daysMissed = 0
                 
                 //if it is friday thru sunday, don't notify and add appropriate time to next question
                 if (Common.weekend.contains(components.weekday!) && Common.timeInterval == Common.dayInSeconds) {
-                    if(components.weekday == 6) {
-                        //friday, add 3 days to it
-                        multiplier+=3
-                    } else if (components.weekday == 7){
+                    if (components.weekday == 7){
                         //saturday, add 2 days
                         multiplier+=2
                     } else if (components.weekday == 1) {

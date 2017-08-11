@@ -31,7 +31,7 @@ class ProfileViewController: UITableViewController {
         //set value of time label
         if (time != nil){
             ref!.child(Common.USER_PATH).child(user!.uid).child("Time").observeSingleEvent(of: .value, with: { (notifyTime) in
-                let timeToShow = Date(timeIntervalSince1970: notifyTime.value as! TimeInterval)
+                let timeToShow = Date(timeIntervalSince1970: notifyTime.value as? TimeInterval ?? 0)
                 self.time.text = self.dateFormatter.string(from: timeToShow)
             })
         }
@@ -39,10 +39,9 @@ class ProfileViewController: UITableViewController {
         ref!.child(Common.USER_PATH).child(user!.uid).child("Type").observeSingleEvent(of: .value, with: { (snapshot) in
             let type = snapshot.value as? String ?? ""
             print(type)
-            if (type == "premium") {
+            if (!(type == "basic")) {
                 if (!SubscriptionService.shared.hasReceiptData!) {
                     //show premium screen if not
-                    print("why")
                     let premiumScreen = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
                     self.present(premiumScreen, animated: true)
                     return

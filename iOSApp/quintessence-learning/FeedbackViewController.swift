@@ -32,9 +32,14 @@ class FeedbackViewController: UITableViewController {
                     self.navigationController?.pushViewController(ebook!, animated: true)
                 } else {
                     let premiumScreen = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
-                    self.present(premiumScreen, animated: true)
+                    premiumScreen.basicIsHidden = true
+                    self.navigationController?.pushViewController(premiumScreen, animated: true)
                 }
             })
+        } else if indexPath.row == 3 {
+            //FAQ
+            let FAQ = FAQViewController()
+            self.navigationController?.pushViewController(FAQ, animated: true)
         }
     }
 }

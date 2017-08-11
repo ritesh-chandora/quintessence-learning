@@ -19,7 +19,8 @@ class WelcomeViewController: UIViewController {
     
     @IBAction func getStartedPress(_ sender: UIButton) {
         //set it to initially trigger the next day
-        debugPrint(timePicker.date)
+        debugPrint(Common.timeInterval)
+        Common.timeInterval = Common.dayInSeconds
         timePicker.date.addTimeInterval(Common.timeInterval)
         
         if timePicked {
@@ -44,9 +45,10 @@ class WelcomeViewController: UIViewController {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
             (granted, error) in
             if granted {
+                UserDefaults.standard.set(true, forKey: "AskedForNotifications")
                 debugPrint("permission granted")
                 Common.showSuccess(message: "Warning: First notification may be off by 24 hours!")
-                Common.setNotificationTimer(date: self.timePicker.date, repeating: true)
+                Common.setNotificationTimer(date: self.timePicker.date, repeating: true, daily: true)
             } else {
                 debugPrint("denied")
             }

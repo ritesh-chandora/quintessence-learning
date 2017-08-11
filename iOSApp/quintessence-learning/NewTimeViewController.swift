@@ -93,10 +93,10 @@ class NewTimeViewController: ModalViewController {
                             self.userRef!.child("Old_Time").setValue(currNotifyTime.timeIntervalSince1970)
                             
                             //set one notification timer for this last notification at that time
-                            Common.setNotificationTimer(date: currNotifyTime, repeating: false)
+                            Common.setNotificationTimer(date: currNotifyTime, repeating: false, daily: false)
                         }
                         //set new notification timer
-                        Common.setNotificationTimer(date: newNotifyTime, repeating: true)
+                        Common.setNotificationTimer(date: newNotifyTime, repeating: true, daily: true)
                         
                         //update the label on ProfileViewController
                         self.timeLabelDelegate?.updateTimeLabel(newDate: newNotifyTime)

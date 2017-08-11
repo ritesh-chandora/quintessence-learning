@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -2315,9 +2314,6 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="mSp-xo-cdA" kind="show" id="5Yn-Nh-JdO"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="FpJ-77-Hz6">
                                         <rect key="frame" x="0.0" y="176" width="375" height="44"/>
@@ -2417,108 +2413,6 @@ With standardized testing results as the barometer of a teacher’s success, we 
                 <placeholder placeholderIdentifier="IBFirstResponder" id="anJ-CE-EuO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4505" y="3493"/>
-        </scene>
-        <!--FAQ-->
-        <scene sceneID="SE8-6t-Qlp">
-            <objects>
-                <viewController title="FAQ" id="mSp-xo-cdA" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="qr5-lb-d7Z"/>
-                        <viewControllerLayoutGuide type="bottom" id="V9v-4E-AsF"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="mxD-oW-LEq">
-                        <rect key="frame" x="0.0" y="64" width="375" height="554"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tFu-Pd-4Wb">
-                                <rect key="frame" x="16" y="0.0" width="343" height="554"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t4S-uv-uv3">
-                                        <rect key="frame" x="-18" y="0.0" width="378" height="660"/>
-                                        <subviews>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xg7-gH-fij">
-                                                <rect key="frame" x="23" y="65" width="329" height="102"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <string key="text">If you miss a question, it will automatically be saved under "Saved Questions". You can view your saved questions by going to the Question tab and pressing the folder icon in the top right corner and selecting, "View Saved Questions".</string>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                            </textView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="How can I view past questions?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fgU-0o-aya">
-                                                <rect key="frame" x="23" y="175" width="253" height="22"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" text="Past questions can be viewed by pressing the folder icon in the top right corner under the &quot;Questions&quot; Tab. " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZw-Ti-aLv">
-                                                <rect key="frame" x="23" y="205" width="329" height="67"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                            </textView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="How does changing notification time work?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pqc-9h-pzT">
-                                                <rect key="frame" x="23" y="280" width="329" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="When do I receive questions?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lss-Qq-KLX">
-                                                <rect key="frame" x="25" y="415" width="225" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpM-q7-PlS">
-                                                <rect key="frame" x="23" y="307" width="329" height="100"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <string key="text">Once the time is changed, the current notification time will be kept for one more question. Then the questions will come at the new specified time. The notifications will take 24 hours to register properly</string>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                            </textView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="What happens if I miss a question?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vOh-vg-VRd">
-                                                <rect key="frame" x="23" y="35" width="281" height="22"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="You will receive questions once a day at the time you specified. However, you will not receive questions on the weekends." selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1TF-qf-jrh">
-                                                <rect key="frame" x="23" y="450" width="327" height="67"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                            </textView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="t4S-uv-uv3" firstAttribute="top" secondItem="tFu-Pd-4Wb" secondAttribute="top" id="2Cl-Ac-upR"/>
-                                    <constraint firstItem="t4S-uv-uv3" firstAttribute="trailing" secondItem="tFu-Pd-4Wb" secondAttribute="trailingMargin" id="7A2-aV-hth"/>
-                                    <constraint firstAttribute="bottom" secondItem="t4S-uv-uv3" secondAttribute="bottom" constant="-51" id="7gd-KL-3a5"/>
-                                    <constraint firstItem="t4S-uv-uv3" firstAttribute="leading" secondItem="tFu-Pd-4Wb" secondAttribute="leading" id="HbA-wy-S6B"/>
-                                </constraints>
-                            </scrollView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="tFu-Pd-4Wb" firstAttribute="leading" secondItem="mxD-oW-LEq" secondAttribute="leadingMargin" id="5Z1-nt-7gd"/>
-                            <constraint firstItem="tFu-Pd-4Wb" firstAttribute="top" secondItem="qr5-lb-d7Z" secondAttribute="bottom" id="O1d-ha-uHI"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="tFu-Pd-4Wb" secondAttribute="trailing" id="TNp-cl-HPr"/>
-                            <constraint firstItem="V9v-4E-AsF" firstAttribute="top" secondItem="tFu-Pd-4Wb" secondAttribute="bottom" constant="-50" id="e5b-UI-NrR"/>
-                        </constraints>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9ie-XO-71W" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4504.8000000000002" y="4201.3493253373317"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="VyR-Uh-A0i">

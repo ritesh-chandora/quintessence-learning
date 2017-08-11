@@ -38,10 +38,10 @@ class Common: NSObject {
     }
     
     //sets the notification timer
-    static func setNotificationTimer(date:Date, repeating:Bool){
+    static func setNotificationTimer(date:Date, repeating:Bool, daily:Bool){
         let calendar = Calendar.current
         
-        var dateComponents = calendar.dateComponents([.weekday, .hour, .minute, .second], from: date)
+        var dateComponents = calendar.dateComponents([.hour, .minute, .second], from: date)
         
         let notificationContent = UNMutableNotificationContent()
         notificationContent.title = "New Question Today!"
@@ -53,18 +53,20 @@ class Common: NSObject {
         
         //if repeating, repeat for every weekday
         if(repeating){
-//            if (daily) {
+            if (daily) {
                 for day in 2...6{
                     dateComponents.weekday = day
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
                     let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
                     UNUserNotificationCenter.current().add(request)
                 }
-//            } else {
-//                //TODO set it for the current day every week
-//            }
+            } else {
+                dateComponents.weekday = Common.dayOfWeek
+                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
+                UNUserNotificationCenter.current().add(request)
+            }
         } else {
-            print("set for \(dateComponents)")
             dateComponents = calendar.dateComponents([.day, .hour, .minute, .second], from: date)
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)

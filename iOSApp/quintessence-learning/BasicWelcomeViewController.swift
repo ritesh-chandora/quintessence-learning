@@ -53,7 +53,7 @@ class BasicWelcomeViewController: UIViewController, UIPickerViewDelegate, UIPick
             let newTime = Calendar.current.date(from: components)
             self.ref!.child("Time").setValue(newTime?.timeIntervalSince1970)
             
-            Common.setNotificationTimer(date: newTime!, repeating: true)
+            Common.setNotificationTimer(date: newTime!, repeating: true, daily: false)
             //initialize the account to be a user and initializes the time
             ref!.child("Type").setValue("basic")
             self.present(userView, animated: true)

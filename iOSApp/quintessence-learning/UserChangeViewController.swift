@@ -43,13 +43,12 @@ class UserChangeViewController: ProfileViewController {
                 //Firebase uses milliseconds while Swift uses seconds, need to do conversion
                 let joinDate = Date(timeIntervalSince1970: (joinDateSinceEpoch/1000))
                 self.joinLabel.text! = dateFormatter.string(from: joinDate)
-                
-                let isTrial = userInfo["Trial"] as! Bool
-                if (isTrial) {
+                let type = userInfo["Type"] as! String
+                if (type == "premium_trial") {
                     //calculate number of days left in trial
                     let numDays = Common.trialLength - Int((Date().timeIntervalSince1970 - joinDateSinceEpoch/1000)/Common.timeInterval)
                     self.typeLabel.text! = "Free Trial (\(numDays) days left)" 
-                } else if userInfo["Type"] as! String == "premium"{
+                } else if (type == "premium"){
                     //TODO add days remaining in subscription
                     self.typeLabel.text! = "Premium, Expires \(dateFormatter.string(from: Date(timeIntervalSince1970: Common.expireDate)))"
                 } else {

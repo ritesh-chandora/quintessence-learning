@@ -10,18 +10,35 @@ import UIKit
 import StoreKit
 import FirebaseAuth
 import FirebaseDatabase
+import UserNotifications
 class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObserver  {
 
     @IBOutlet weak var premiumButton: UIButton!
     @IBOutlet weak var basicButton: UIButton!
+    
     var basicIsHidden = false
     var ref:DatabaseReference?
+    var user:User?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref = Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid)
-        SKPaymentQueue.default().add(self)
-        if (basicIsHidden) {
-            basicButton.isHidden = true
+        user = Auth.auth().currentUser
+        if (user != nil) {
+            ref = Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid)
+            SKPaymentQueue.default().add(self)
+            if (basicIsHidden) {
+                basicButton.isHidden = true
+            }
+        }
+    }
+    
+    func toggleButtons(toggle:Bool){
+        premiumButton.isEnabled = toggle
+        basicButton.isEnabled = toggle
+        if (!toggle){
+            premiumButton.setTitle("Processing...", for: .normal)
+        } else {
+            premiumButton.setTitle("Purchase Premium or Restore", for: .normal)
         }
     }
     
@@ -69,9 +86,17 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
     func handlePurchasedState(for transaction:SKPaymentTransaction, in queue: SKPaymentQueue){
         
         Common.timeInterval = Common.dayInSeconds
-        //TODO change notifications
         print("purchased!")
         queue.finishTransaction(transaction)
+        
+        //set local notification timer
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
+        ref!.child("Time").observeSingleEvent(of: .value, with: { (value) in
+            let time = value.value as! TimeInterval
+            let currTime = Date(timeIntervalSince1970: time)
+            Common.setNotificationTimer(date: currTime, repeating: true, daily: true)
+        })
         SubscriptionService.shared.uploadReceipt { (success) in
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: SubscriptionService.purchaseSuccessfulNotification, object: nil)
@@ -90,6 +115,7 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
     }
     
     @IBAction func purchasePremium(_ sender: UIButton) {
+        toggleButtons(toggle: false)
         SubscriptionService.shared.purchase(product: Common.PREMIUM_ID)
     }
     
@@ -98,6 +124,10 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
         
         ac.addAction(UIAlertAction(title: "Cancel", style: .destructive))
         ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: { (action) in
+            
+            let center = UNUserNotificationCenter.current()
+            center.removeAllPendingNotificationRequests()
+
             self.ref!.child("Type").setValue("basic")
             self.updateEmail(premium: false)
             Common.timeInterval = Common.weekInSeconds
@@ -142,6 +172,10 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
     }
     
     func updateTime(){
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
+
+        
         self.ref!.child("Time").observeSingleEvent(of: .value, with: { (value) in
             let time = value.value as! TimeInterval
             let currTime = Date().timeIntervalSince1970
@@ -154,6 +188,9 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
             let minute = comp.minute
             var newTime = Calendar.current.date(byAdding: .day, value: 0, to: Date())
             newTime = Calendar.current.date(bySettingHour: hour!, minute: minute!, second: 0, of: newTime!)
+            
+            //schedule notifs
+            Common.setNotificationTimer(date: newTime!, repeating: true, daily: true)
             self.ref!.child("Time").setValue(newTime?.timeIntervalSince1970)
         })
     }

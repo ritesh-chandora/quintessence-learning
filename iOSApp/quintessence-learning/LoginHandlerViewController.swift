@@ -56,13 +56,27 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
                         
                         if (oldTime != nil){
                             let oldDate = Date(timeIntervalSince1970: oldTime!)
-                            Common.setNotificationTimer(date: oldDate, repeating: false)
+                            Common.setNotificationTimer(date: oldDate, repeating: false, daily: false)
                         }
                         
                         let currTime = time.value as? TimeInterval ?? nil
                         
                         //if currTime is nil, then user hasn't initiailzed a time and bring them to the welcome screen
                         if (currTime != nil) {
+                            
+                            //Check if notifications have been asked for before
+                            
+                            if (!UserDefaults.standard.bool(forKey: "AskedForNotifications")) {
+                                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
+                                    (granted, error) in
+                                    if granted {
+                                        UserDefaults.standard.set(true, forKey: "AskedForNotifications")
+                                        Common.showSuccess(message: "Warning: First notification may be off by 24 hours!")
+                                    } else {
+                                    }
+                                }
+                            }
+                            
                             self.ref!.reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (value) in
                                 let value = value.value as? NSDictionary
                                 let type = value?["Type"] as? String ?? ""
@@ -70,6 +84,7 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
                                 //if basic, then redirect normally with week as the interval
                                 if (type == "basic"){
                                     Common.timeInterval = Common.weekInSeconds
+                                    Common.setNotificationTimer(date: Date(timeIntervalSince1970: currTime!), repeating: true, daily: false)
                                     let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
                                     self.present(userViewController, animated: true)
                                 } else if (type == "premium"){
@@ -82,9 +97,8 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
                                     } else {
                                         Common.timeInterval = Common.dayInSeconds
                                         
-                                        //TODO set notification time properly
                                         let notifyTime = Date(timeIntervalSince1970: currTime!)
-                                        Common.setNotificationTimer(date: notifyTime, repeating: true)
+                                        Common.setNotificationTimer(date: notifyTime, repeating: true, daily: true)
                                         let profileView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
                                         self.present(profileView, animated:true)
                                         return
@@ -100,6 +114,7 @@ class LoginHandlerViewController: UIViewController, UITextFieldDelegate {
                                         let premiumScreen = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
                                         self.present(premiumScreen, animated: true)
                                     } else {
+                                        Common.setNotificationTimer(date: Date(timeIntervalSince1970: currTime!), repeating: true, daily: true)
                                         let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
                                         self.present(userViewController, animated: true)
                                     }
