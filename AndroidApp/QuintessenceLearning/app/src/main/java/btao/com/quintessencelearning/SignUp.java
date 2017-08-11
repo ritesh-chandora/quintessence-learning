@@ -139,7 +139,7 @@ public class SignUp extends AppCompatActivity {
         mUserRef.child(uid).child("Ebook").setValue(ebook);
         mUserRef.child(uid).child("Time").setValue(0);
 
-        mailChimpAdd(inputFirstName.getText().toString(),inputLastName.getText().toString(),email,"Premium",uid);
+        mailChimpAdd(inputFirstName.getText().toString(),inputLastName.getText().toString(),email,"trial",uid);
     }
 
     public void mailChimpAdd(String fName, String lName, String email, String status, String uid){
@@ -151,7 +151,7 @@ public class SignUp extends AppCompatActivity {
             merge_fields.addProperty("LNAME",lName);
             merge_fields.addProperty("STATUS",status);
             params.addProperty("email_address", email);
-            params.addProperty("status","subscribed");
+            params.addProperty("status","pending");
             params.add("merge_fields",merge_fields);
         } catch (JsonParseException e) {
             e.printStackTrace();
