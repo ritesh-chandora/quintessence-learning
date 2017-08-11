@@ -229,8 +229,10 @@ public class MainActivity extends AppCompatActivity{
 
 
                     if (user_type.equals("basic")) {
+                        Log.d(TAG,"one week");
                         time_interval = oneweek;
                     } else {
+                        Log.d(TAG,"one day");
                         time_interval = AlarmManager.INTERVAL_DAY;
                     }
 
@@ -632,7 +634,7 @@ public class MainActivity extends AppCompatActivity{
             old_time.clear(Calendar.SECOND); //reset seconds to zero
 
             Calendar current_time = Calendar.getInstance();
-            
+
             Intent myIntent = new Intent(getActivity(), NotificationReceiver.class);
             pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, myIntent,0);
             PendingIntent old_pending = PendingIntent.getBroadcast(getActivity(),1,myIntent,0);
@@ -668,7 +670,7 @@ public class MainActivity extends AppCompatActivity{
 
         if (user_type.equals("basic")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle(R.string.premium_feature);
+            builder.setTitle(R.string.premium_title);
             LayoutInflater inflater = getLayoutInflater();
             builder.setView(inflater.inflate(R.layout.premium_dialog,null));
             builder.show();
