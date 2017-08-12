@@ -59,7 +59,6 @@ class SubmitViewController: ModalViewController {
             self.textField.isEnabled = toggle
             self.listTagField.isEnabled = toggle
             self.submitButton.isEnabled = toggle
-            self.closeCreatButton.isEnabled = toggle
             if (toggle == false){
                 self.submitButton.setTitle("Submitting...", for: .normal)
             } else {
@@ -95,6 +94,14 @@ class SubmitViewController: ModalViewController {
                 
                 Server.post(urlRoute: Server.hostURL + "email/", params: params, callback: self.submitQuestionCallback(data:), errorMessage: "Could not submit question!")
                 
+                Common.showSuccess(message: "Submitted question!")
+                DispatchQueue.main.async {
+                    self.textField.text! = ""
+                    self.listTagField.text! = ""
+                    self.listTags.removeAllTags()
+                }
+                self.toggleButtons(toggle: true)
+            
             } else {
                 Server.showError(message: "Unable to retrieve user info!")
                 self.toggleButtons(toggle: true)
@@ -103,12 +110,6 @@ class SubmitViewController: ModalViewController {
     }
     
     func submitQuestionCallback(data:Data){
-        Common.showSuccess(message: "Submitted question!")
-        DispatchQueue.main.async {
-            self.textField.text! = ""
-            self.listTagField.text! = ""
-            self.listTags.removeAllTags()
-        }
-        toggleButtons(toggle: true)
+        
     }
 }

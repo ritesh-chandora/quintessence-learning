@@ -84,15 +84,16 @@ class ContactViewController: UIViewController, UITextViewDelegate {
         let params = ["subject":subject, "content":body] as [String:Any]
         
         Server.post(urlRoute: Server.hostURL + "email/", params: params, callback: self.submitQuestionCallback(data:), errorMessage: "Could not submit question!")
-    }
-    
-    func submitQuestionCallback(data:Data){
         Common.showSuccess(message: "Submitted feedback!")
         DispatchQueue.main.async {
             self.messageBody.text! = ""
             self.subjectField.text! = ""
         }
         toggleButtons(toggle: true)
+    }
+    
+    func submitQuestionCallback(data:Data){
+       
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
