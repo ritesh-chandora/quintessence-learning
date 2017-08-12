@@ -87,7 +87,7 @@ public class NotificationService extends Service {
                     user_type = (String) dataSnapshot.child("Type").getValue();
                     user_uid = (String) dataSnapshot.child("UID").getValue();
                     user_time = (Long) dataSnapshot.child("Time").getValue();
-                    user_current_question += 1;
+                    user_current_question += 3;
 
 
                     if (dataSnapshot.child("Old_Time") == null) {

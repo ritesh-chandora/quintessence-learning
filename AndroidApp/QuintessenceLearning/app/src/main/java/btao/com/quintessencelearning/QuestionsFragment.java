@@ -82,8 +82,8 @@ public class QuestionsFragment extends Fragment {
         //questionNav();
         final View view = inflater.inflate(R.layout.fragment_questions, container, false);
 
-        TextView text_question = (TextView) view.findViewById(R.id.text_message);
-        text_question.setOnLongClickListener(new View.OnLongClickListener() {
+        TextView text_question1 = (TextView) view.findViewById(R.id.text_message1);
+        text_question1.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -98,7 +98,7 @@ public class QuestionsFragment extends Fragment {
                         Log.d(TAG,"saved");
 
                         MainActivity.mUser = MainActivity.mUserRef.child(MainActivity.auth.getCurrentUser().getUid());
-                        MainActivity.mUser.child("Saved").child(MainActivity.current_question_key).setValue(true);
+                        MainActivity.mUser.child("Saved").child(MainActivity.current_question_key.get(0)).setValue(true);
 
                         Toast.makeText(getActivity().getApplicationContext(), "Question has been saved", Toast.LENGTH_SHORT).show();
 
@@ -106,8 +106,76 @@ public class QuestionsFragment extends Fragment {
                 });
 
                 text_tags = (TextView) dialogView.findViewById(R.id.text_tags);
-                Log.d(TAG,MainActivity.tags.toString());
-                text_tags.setText(MainActivity.tags.toString().replace("[","").replace("]",""));
+                Log.d(TAG,MainActivity.tags.get(0).toString());
+                text_tags.setText(MainActivity.tags.get(0).toString().replace("[","").replace("]",""));
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                //saveQuestion(view,getActivity().getApplicationContext());
+                return true;
+            }
+        });
+        TextView text_question2 = (TextView) view.findViewById(R.id.text_message2);
+        text_question2.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.question_properties_dialog,null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.question_properties);
+                builder.setView(dialogView);
+                builder.setPositiveButton(R.string.save_question, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d(TAG,"Positive click");
+                        Log.d(TAG,"saved");
+
+                        MainActivity.mUser = MainActivity.mUserRef.child(MainActivity.auth.getCurrentUser().getUid());
+                        MainActivity.mUser.child("Saved").child(MainActivity.current_question_key.get(1)).setValue(true);
+
+                        Toast.makeText(getActivity().getApplicationContext(), "Question has been saved", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+                text_tags = (TextView) dialogView.findViewById(R.id.text_tags);
+                Log.d(TAG,MainActivity.tags.get(1).toString());
+                text_tags.setText(MainActivity.tags.get(1).toString().replace("[","").replace("]",""));
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                //saveQuestion(view,getActivity().getApplicationContext());
+                return true;
+            }
+        });
+        TextView text_question3 = (TextView) view.findViewById(R.id.text_message3);
+        text_question3.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.question_properties_dialog,null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.question_properties);
+                builder.setView(dialogView);
+                builder.setPositiveButton(R.string.save_question, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d(TAG,"Positive click");
+                        Log.d(TAG,"saved");
+
+                        MainActivity.mUser = MainActivity.mUserRef.child(MainActivity.auth.getCurrentUser().getUid());
+                        MainActivity.mUser.child("Saved").child(MainActivity.current_question_key.get(2)).setValue(true);
+
+                        Toast.makeText(getActivity().getApplicationContext(), "Question has been saved", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+                text_tags = (TextView) dialogView.findViewById(R.id.text_tags);
+                Log.d(TAG,MainActivity.tags.get(2).toString());
+                text_tags.setText(MainActivity.tags.get(2).toString().replace("[","").replace("]",""));
 
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
@@ -121,9 +189,33 @@ public class QuestionsFragment extends Fragment {
 
     }
 
-    public void setQuestion(String text){
+    public void setQuestion1(String text){
         if(getView()!=null) {
-            TextView question = (TextView) getView().findViewById(R.id.text_message);
+            TextView question = (TextView) getView().findViewById(R.id.text_message1);
+            question.setText(text);
+        } else{
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    public void setQuestion2(String text){
+        if(getView()!=null) {
+            TextView question = (TextView) getView().findViewById(R.id.text_message2);
+            question.setText(text);
+        } else{
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    public void setQuestion3(String text){
+        if(getView()!=null) {
+            TextView question = (TextView) getView().findViewById(R.id.text_message3);
             question.setText(text);
         } else{
             try {

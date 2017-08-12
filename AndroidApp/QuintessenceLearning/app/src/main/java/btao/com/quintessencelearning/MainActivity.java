@@ -85,16 +85,16 @@ public class MainActivity extends AppCompatActivity{
     static Long user_old_time;
     static String user_email_id;
 
-    static String current_question_text;
-    static String current_question_key;
-    static List<String> tags = new ArrayList<String>();
+    static List<String> current_question_text = new ArrayList<>();
+    static List<String> current_question_key = new ArrayList<>();
+    static List<List<String>> tags = new ArrayList<>();
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     private static PendingIntent pendingIntent;
     private static PendingIntent pendingIntent_week;
 
-    static String email_post = "https://us-central1-test-project-692ad.cloudfunctions.net/email";
+    static String email_post = "https://us-central1-test-project-692ad.cloudfunctions.net/email/";
 
     static final String SKU_1 = "premium_subscription";
     private String public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmpFm/xgUcK4VRde8y1xCKYFZixqZoY0pQ9M8tXhWtLqoGaHCq+i1q7jf5np/6/iQwbNhnqXeeoL0VnJRKLcuPB4k1V7l4X3zD3BcrWedXTFfvvIpy/cBONBXlNBHje/m4/s16uaahMl/JO7k1IEXBqnDxfWpZ7vHMDMFGtu6qj+fZaZSr5ftFqpLo/iJKgHyPqtWyTbUGEfDEkr1QLMo1DzEAjWE5IjH0b2dBT+wsxBUsV3OZuSpbLigNdV34OrXUKwciuq6oML2X42KCsBisjpHGgBc0YNTTsMZXd4F5ZztbOBCoFuVV+lIJDhQknifsKHUmsn95kUmZDweGSQEnwIDAQAB";
@@ -330,25 +330,37 @@ public class MainActivity extends AppCompatActivity{
 
         final String userUID = user.getUid();
         mUser = mUserRef.child(userUID);
+        current_question_text = new ArrayList<>();
+        current_question_key = new ArrayList<>();
+        tags = new ArrayList<>();
 
 
         final ValueEventListener questionListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
+                int count = 0;
                 for (DataSnapshot question:dataSnapshot.getChildren()) {
                     Log.d(TAG, "Inside class");
                     String text = (String) question.child("Text").getValue();
 
                     String key = (String) question.child("Key").getValue();
-                    current_question_text = text;
-                    current_question_key = key;
+                    current_question_text.add(text);
+                    current_question_key.add(key);
+                    List<String> question_tags = new ArrayList<>();
                     for (DataSnapshot tag : question.child("Tags").getChildren()) {
-                        tags.add((String) tag.getValue());
+                        question_tags.add((String) tag.getValue());
+                    }
+                    tags.add(question_tags);
+                    count+=1;
+                    switch(count) {
+                        case 1: qFrag.setQuestion1(text);
+                            break;
+                        case 2: qFrag.setQuestion2(text);
+                            break;
+                        case 3: qFrag.setQuestion3(text);
+                            break;
                     }
 
-                    qFrag.setQuestion(text);
-                    return;
                 }
             }
 
@@ -368,7 +380,7 @@ public class MainActivity extends AppCompatActivity{
                 if (user_current_question.equals(new Long(-1))) {
                     user_current_question+=1L;
                 }
-                mQuestionRef.orderByChild("count").startAt(user_current_question).limitToFirst(1).addListenerForSingleValueEvent(questionListener);
+                mQuestionRef.orderByChild("count").startAt(user_current_question).limitToFirst(3).addListenerForSingleValueEvent(questionListener);
             }
 
             @Override
