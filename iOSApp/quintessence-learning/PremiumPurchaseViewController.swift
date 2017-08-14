@@ -58,12 +58,12 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
             case .purchased:
                 handlePurchasedState(for: transaction, in: queue)
                 showUserPanel()
-                break
             case .restored:
                 handleRestoredState(for: transaction, in: queue)
                 showUserPanel()
-                //            case .failed:
-            //                handleFailedState(for: transaction, in: queue)
+            case .failed:
+                toggleButtons(toggle: true)
+                print("wtf")
             default:
                 break
             }
@@ -76,15 +76,9 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
     }
     
     func handlePurchasingState(for transaction:SKPaymentTransaction, in queue: SKPaymentQueue){
-        //change state in firebase
-        self.ref!.child("Type").setValue("premium")
-        //change state in mailchimp
-        updateEmail(premium: true)
-        
         print("purchasing...")
-        Common.timeInterval = Common.dayInSeconds
-        updateTime()
         SubscriptionService.shared.uploadReceipt { (success) in
+            
         }
     }
     
@@ -94,9 +88,21 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
         print("purchased!")
         queue.finishTransaction(transaction)
         queue.remove(self)
-        updateEmail(premium: true)
         
         SubscriptionService.shared.hasReceiptData = true
+        print("success!")
+        
+        //change state in firebase
+        self.ref!.child("Type").setValue("premium")
+        //change state in mailchimp
+        self.updateEmail(premium: true)
+        
+        //give the user a question
+        updateTime()
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let userViewController = storyboard.instantiateViewController(withIdentifier: "User") as! UITabBarController
+        self.present(userViewController, animated: true)
         
         //set local notification timer
         let center = UNUserNotificationCenter.current()
@@ -108,6 +114,7 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
             
         })
         SubscriptionService.shared.uploadReceipt { (success) in
+            
         }
     }
     
@@ -115,6 +122,17 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
         print("Purchase restored for product id: \(transaction.payment.productIdentifier)")
         queue.finishTransaction(transaction)
         queue.remove(self)
+        
+        //set local notification timer
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
+        ref!.child("Time").observeSingleEvent(of: .value, with: { (value) in
+            let time = value.value as! TimeInterval
+            let currTime = Date(timeIntervalSince1970: time)
+            Common.setNotificationTimer(date: currTime, repeating: true, daily: true)
+            
+        })
+
         SubscriptionService.shared.uploadReceipt { (success) in
         }
     }
@@ -145,7 +163,6 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
     
     //sets status to "Premium" in mailchimp
     func updateEmail(premium:Bool){
-        print("hi")
         let status = premium ? "premium" : "basic"
         
         let fields = ["STATUS": status]

@@ -32,11 +32,6 @@ class BasicWelcomeViewController: UIViewController, UIPickerViewDelegate, UIPick
             Common.timeInterval = Common.weekInSeconds
             let userView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
             
-            let currTime = Date().timeIntervalSince1970
-            
-            //automatically give user a new question
-            self.ref!.child("Old_Time").setValue(currTime)
-            
             //set the new time to be at the designed weekday every week
             let calendar = Calendar.current
             let comp = calendar.dateComponents([.timeZone, .year, .weekOfYear, .hour, .minute], from: timePicker.date)

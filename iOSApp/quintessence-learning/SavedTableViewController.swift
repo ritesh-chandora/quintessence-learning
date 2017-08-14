@@ -18,6 +18,7 @@ class SavedTableViewController: UITableViewController {
     var tags = [String]()
     var filteredQuestions = [Question]()
     var tagFilteringActive = false
+    var emptyMessage = "No questions currently saved!"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +72,7 @@ class SavedTableViewController: UITableViewController {
             return 1
         } else {
             let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
-            messageLabel.text = "No questions currently saved!"
+            messageLabel.text = self.emptyMessage
             messageLabel.numberOfLines = 0
             messageLabel.textAlignment = NSTextAlignment.center
             messageLabel.sizeToFit()
@@ -101,14 +102,6 @@ class SavedTableViewController: UITableViewController {
         cell.detailTextLabel?.text = question.tags.joined(separator: ",")
         
         return cell
-    }
-    
-    //remove saved questions
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let question = questions[indexPath.row]
-            ref!.child(Common.USER_PATH).child(user!.uid).child("Saved").child(question.key).removeValue()
-        }
     }
     
     func showSearchOptions(){

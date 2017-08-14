@@ -23,6 +23,8 @@ class PastQuestionsTableViewController: SavedTableViewController {
         tableView.tableHeaderView = searchController.searchBar
         //---------end from superclass
         
+        emptyMessage = "No past questions!"
+        
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchOptions))
         
         ref!.child(Common.USER_PATH).child(user!.uid).child(Common.USER_COUNT).observeSingleEvent(of: .value, with: { snapshot in

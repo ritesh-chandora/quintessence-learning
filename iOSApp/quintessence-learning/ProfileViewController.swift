@@ -16,8 +16,10 @@ class ProfileViewController: UITableViewController {
     static var notifyTime:Date?
     var user:User?
     var premium = false
+    var userType:String?
     var ref:DatabaseReference?
     let dateFormatter = DateFormatter()
+    
     
     @IBOutlet weak var changeUserEmail: UILabel!
     @IBOutlet weak var changePass: UILabel!
@@ -52,6 +54,7 @@ class ProfileViewController: UITableViewController {
             } else {
                 self.changePayment.text = "Upgrade to Premium"
             }
+            self.userType = type
         })
     }
     
@@ -105,7 +108,7 @@ class ProfileViewController: UITableViewController {
                 }
             break
             case 1:
-                if (self.premium) {
+                if (self.premium || userType == "premium_trial") {
                     //change notif
                     let timeChangeView = self.storyboard?.instantiateViewController(withIdentifier: "TimeChange") as? NewTimeViewController
                     timeChangeView!.row = indexPath

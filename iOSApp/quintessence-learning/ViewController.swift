@@ -10,18 +10,18 @@ import UIKit
 import StoreKit
 import FirebaseAuth
 import FirebaseDatabase
-class ViewController: UIViewController {
+class AuthViewController: UIViewController {
 
     var ref : Database?
-    var didViewChange = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database()
+        
         if (Reachability.isConnectedToNetwork()){
             //redirects a logged in user to the appropriate view
-            Auth.auth().addStateDidChangeListener() { auth, user in
-                if user != nil {
+            let user = Auth.auth().currentUser
+            if user != nil {
                     self.ref!.reference().child(Common.USER_PATH).child(user!.uid).observe(.value, with: { (snapshot) in
                         let value = snapshot.value as? NSDictionary
 
@@ -50,7 +50,7 @@ class ViewController: UIViewController {
                                 //check if premium subscription is active
                                 if (!SubscriptionService.shared.hasReceiptData!) {
                                         //show premium screen if not
-                                        print("why")
+                                        print("why/")
                                         self.showPremiumScreen()
                                         return
                                 } else {
@@ -72,7 +72,6 @@ class ViewController: UIViewController {
                 else {
                     self.showLoginScreen()
                 }
-            }
         } else {
             Server.showError(message: "No internet connection detected! Please connect to the internet and try again.")
             showLoginScreen()
@@ -82,12 +81,13 @@ class ViewController: UIViewController {
     
     func showLoginScreen(){
         let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! UINavigationController
-        self.present(welcomeScreen, animated: true)
+
+        present(welcomeScreen, animated: true)
     }
     
     func showPremiumScreen() {
         let premiumScreen = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
-        self.present(premiumScreen, animated: true)
+        present(premiumScreen, animated: true)
     }
     
 }

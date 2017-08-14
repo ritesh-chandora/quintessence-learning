@@ -126,7 +126,6 @@ class QuestionTable extends Component {
                 <span> Filter by tags: </span>
                 <span>
                     <Tags sourceTags={this.props.tags} 
-                          onlyFromSource={true} 
                           onRemove={this.handleAddition}
                           onAdd={this.handleAddition}/>
                 </span>

@@ -42,17 +42,16 @@ class ContactViewController: UIViewController, UITextViewDelegate {
         messageBody.layer.borderColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0).cgColor
         messageBody.layer.borderWidth = 1.0
         
-        
-        Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            let userInfo = snapshot.value as? NSDictionary
-            if let userInfo = userInfo {
-                self.nameField.text! = userInfo["Name"] as! String
-                self.emailField.text! = userInfo["Email"] as! String
-                
-            } else {
-                Server.showError(message: "Unable to retrieve user info!")
-            }
-        })
+        if let user = Auth.auth().currentUser {
+            Database.database().reference().child(Common.USER_PATH).child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                let userInfo = snapshot.value as? NSDictionary
+                if let userInfo = userInfo {
+                    self.nameField.text! = userInfo["Name"] as? String ?? ""
+                    self.emailField.text! = userInfo["Email"] as? String ?? ""
+                    
+                }
+            })
+        }
     }
     
     func toggleButtons(toggle:Bool){
@@ -93,7 +92,7 @@ class ContactViewController: UIViewController, UITextViewDelegate {
     }
     
     func submitQuestionCallback(data:Data){
-       
+       //blank method
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {

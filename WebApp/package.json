@@ -31,7 +31,9 @@
     "react-tap-event-plugin": "^2.0.1",
     "react-transition-group": "^1.2.0",
     "reload": "^1.1.7",
-    "serve-favicon": "~2.4.2"
+    "serve-favicon": "~2.4.2",
+    "firebase-admin": "~4.2.1",
+    "firebase-functions": "^0.5.7"
   },
-  "proxy": "http://localhost:3001"
+  "proxy": "https://us-central1-test-project-692ad.cloudfunctions.net"
 }
