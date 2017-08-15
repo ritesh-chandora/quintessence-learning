@@ -87,7 +87,7 @@ class Console extends Component {
     }
 
     render() {
-        return (
+        return (  
             <div className="container container-padding">
                 <div className="row">
                     <div className="col-md-offset-10 col-md-2 text-right">
@@ -95,7 +95,7 @@ class Console extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-8">
+                    <div className="col-md-9">
                         <QuestionTable questions={this.state.questions} 
                                        ascending={this.state.ascending}
                                        getQuestions={this.getQuestions}
@@ -103,7 +103,7 @@ class Console extends Component {
                                        tagRefresh={this.getTags} 
                                        tags={this.state.tags} />
                     </div>
-                    <div className="col-md-4">
+                    <div className="col-md-3">
                         <CreateQuestionBox questions={this.state.questions} 
                                            tags={this.state.tags} 
                                            tagRefresh={this.getTags} 

@@ -34,6 +34,7 @@
 		2C72CB5C1F1DC15F009868D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C72CB5A1F1DC15F009868D6 /* Main.storyboard */; };
 		2C72CB5E1F1DC15F009868D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C72CB5D1F1DC15F009868D6 /* Assets.xcassets */; };
 		2C72CB611F1DC15F009868D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C72CB5F1F1DC15F009868D6 /* LaunchScreen.storyboard */; };
+		2CB35AA51F42A601003084FC /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB35AA41F42A601003084FC /* InfoViewController.swift */; };
 		2CDAFD1A1F34B77E00816D23 /* EmailVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDAFD191F34B77E00816D23 /* EmailVerificationViewController.swift */; };
 		2CDC3F121F365FCF00A87E3A /* PastQuestionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDC3F111F365FCF00A87E3A /* PastQuestionsTableViewController.swift */; };
 		2CF363B51F393873003BCF9C /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF363B41F393873003BCF9C /* Reachability.swift */; };
@@ -79,6 +80,7 @@
 		2C72CB5D1F1DC15F009868D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C72CB601F1DC15F009868D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2C72CB621F1DC15F009868D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2CB35AA41F42A601003084FC /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		2CDAFD191F34B77E00816D23 /* EmailVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailVerificationViewController.swift; sourceTree = "<group>"; };
 		2CDC3F111F365FCF00A87E3A /* PastQuestionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastQuestionsTableViewController.swift; sourceTree = "<group>"; };
 		2CF363B41F393873003BCF9C /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				2C5810F81F2D2CEF00B6C561 /* SubmitViewController.swift */,
 				2C5810FA1F2D2F0B00B6C561 /* ContactViewController.swift */,
 				2C08781C1F3D70A8008061CB /* FAQViewController.swift */,
+				2CB35AA41F42A601003084FC /* InfoViewController.swift */,
 			);
 			name = FeedbackViews;
 			sourceTree = "<group>";
@@ -389,6 +392,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C36AFC91F3025D7005B87F3 /* QuestionTableViewController.swift in Sources */,
+				2CB35AA51F42A601003084FC /* InfoViewController.swift in Sources */,
 				2C11B6D31F2646B90039CB0A /* Server.swift in Sources */,
 				2C36AFC11F30237F005B87F3 /* TagTableViewController.swift in Sources */,
 				2C72CB591F1DC15F009868D6 /* ViewController.swift in Sources */,

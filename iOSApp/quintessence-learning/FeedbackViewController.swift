@@ -25,17 +25,18 @@ class FeedbackViewController: UITableViewController {
             self.navigationController?.present(submitView, animated: true, completion: nil)
         } else if indexPath.row == 2 {
             //ebook
-            Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Type").observeSingleEvent(of: .value, with: { (snapshot) in
-                let type = snapshot.value as! String
-                if (type == "premium"){
-                    let ebook = self.storyboard?.instantiateViewController(withIdentifier: "ebook")
-                    self.navigationController?.pushViewController(ebook!, animated: true)
-                } else {
-                    let premiumScreen = self.storyboard?.instantiateViewController(withIdentifier: "Premium") as! PremiumPurchaseViewController
-                    premiumScreen.basicIsHidden = true
-                    self.navigationController?.pushViewController(premiumScreen, animated: true)
-                }
-            })
+            let ebookUrl = URL(string: "url")
+            if let ebookUrl = ebookUrl {
+                let ebookView = self.storyboard?.instantiateViewController(withIdentifier: "ebook")
+                
+                let webView = UIWebView(frame: ebookView!.view.frame)
+                let urlRequest = URLRequest(url: ebookUrl)
+                webView.loadRequest(urlRequest)
+                
+                ebookView!.view.addSubview(webView)
+                
+                self.navigationController?.pushViewController(ebookView!, animated: true)
+            }
         } else if indexPath.row == 3 {
             //FAQ
             let FAQ = FAQViewController()

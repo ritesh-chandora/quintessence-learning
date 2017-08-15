@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import UserNotifications
 class BasicWelcomeViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     let timePicker = UIDatePicker()
@@ -48,6 +49,8 @@ class BasicWelcomeViewController: UIViewController, UIPickerViewDelegate, UIPick
             let newTime = Calendar.current.date(from: components)
             self.ref!.child("Time").setValue(newTime?.timeIntervalSince1970)
             
+            let center = UNUserNotificationCenter.current()
+            center.removeAllPendingNotificationRequests()
             Common.setNotificationTimer(date: newTime!, repeating: true, daily: false)
             //initialize the account to be a user and initializes the time
             ref!.child("Type").setValue("basic")

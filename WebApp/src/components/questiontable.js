@@ -114,7 +114,7 @@ class QuestionTable extends Component {
                 return inTagFilter && inTextFilter;
             }
         );
-
+        console.log(filteredQuestions)
         let ascendingText = this.props.ascending ? "Oldest to Newest" : "Newest to Oldest";
 
         return(
@@ -134,7 +134,7 @@ class QuestionTable extends Component {
                 {filteredQuestions.map((question, index) => {
                   return (
                     <li className="list" key={index}>
-                      {question.text} 
+                      {question.text} [{question.taglist}]
                       <span>
                       <DeleteButton qkey={question.key} delete={this.deleteQuestion}/>
                       <EditButton qkey={question.key} text={question.text} tags={question.taglist} edit={this.editQuestion}/>

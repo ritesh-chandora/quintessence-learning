@@ -18,6 +18,7 @@ class FAQViewController: UIViewController {
         self.title = "FAQs"
         self.automaticallyAdjustsScrollViewInsets = false
         let items = [
+            FAQItem(question: "Can I search by categories?", answer: "If there is a certain category of questions you prefer, you can search them by tags! Just tap the folder icon in the top right corner, then \"All past questions\". Then tap the search icon in the top right corner to \"Search by category\". Tap on your favorite category to get all questions under that category!"),
             FAQItem(question: "What happens if I miss a day or two?", answer: "If you miss a set of questions, you can view them in past questions by navigating to \"Questions\" tab, then tapping the folder icon in the top right and then tapping \"View past questions\"."),
             FAQItem(question: "How can I view past questions?", answer: "Past questions can be viewed by pressing the folder icon in the top right corner under the \"Questions\" Tab. "),
             FAQItem(question: "How does changing notification time work?", answer: "This is a premium feature only, as you will receive daily sets of questions. Once the time is changed, the current notification time will be kept for one more set of questions. Then the questions will come at the new specified time. The notifications will take 24 hours to register properly."),
