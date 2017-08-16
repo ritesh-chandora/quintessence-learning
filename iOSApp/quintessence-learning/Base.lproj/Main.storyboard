@@ -1836,34 +1836,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4Mc-5P-gsd">
-                                <rect key="frame" x="112" y="269" width="97" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="97" id="aay-aD-EzX"/>
-                                </constraints>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="peoplegraphic" translatesAutoresizingMaskIntoConstraints="NO" id="GPf-J9-n4u">
-                                <rect key="frame" x="94" y="303" width="132" height="27"/>
+                                <rect key="frame" x="97.5" y="223.5" width="125" height="122"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="qzm-Ta-CCY" firstAttribute="top" secondItem="GPf-J9-n4u" secondAttribute="bottom" constant="238" id="0S8-5y-kGm"/>
-                            <constraint firstItem="GPf-J9-n4u" firstAttribute="centerX" secondItem="4Mc-5P-gsd" secondAttribute="centerX" id="Jvh-92-NlQ"/>
-                            <constraint firstItem="GPf-J9-n4u" firstAttribute="centerX" secondItem="pTd-xB-iDh" secondAttribute="centerX" id="YXJ-ar-kwL"/>
-                            <constraint firstItem="GPf-J9-n4u" firstAttribute="leading" secondItem="pTd-xB-iDh" secondAttribute="leadingMargin" constant="78" id="dKP-3b-hNx"/>
-                            <constraint firstItem="GPf-J9-n4u" firstAttribute="top" secondItem="r6K-rd-Z3l" secondAttribute="bottom" constant="239" id="mTp-s0-heo"/>
-                            <constraint firstItem="4Mc-5P-gsd" firstAttribute="centerY" secondItem="pTd-xB-iDh" secondAttribute="centerY" id="stN-x9-pY7"/>
+                            <constraint firstItem="GPf-J9-n4u" firstAttribute="centerY" secondItem="pTd-xB-iDh" secondAttribute="centerY" id="0Ng-om-KMc"/>
+                            <constraint firstItem="GPf-J9-n4u" firstAttribute="centerX" secondItem="pTd-xB-iDh" secondAttribute="centerX" id="gBj-ZJ-COl"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="t3s-MZ-R0B"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vvQ-iO-IHO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1298.4000000000001" y="34.632683658170919"/>
+            <point key="canvasLocation" x="1297.5" y="33.802816901408448"/>
         </scene>
         <!--Questions-->
         <scene sceneID="fjy-w8-QAW">
@@ -3029,8 +3016,8 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" text="Loading..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="F12-yJ-ta6">
-                                <rect key="frame" x="34.5" y="159" width="251" height="208"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Loading..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="F12-yJ-ta6">
+                                <rect key="frame" x="35" y="159" width="251" height="109"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -3041,7 +3028,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                                 </userDefinedRuntimeAttributes>
                             </textView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3V1-S9-u3W" customClass="TagListView" customModule="TagListView">
-                                <rect key="frame" x="34.5" y="276" width="251" height="26"/>
+                                <rect key="frame" x="35" y="276" width="251" height="26"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="tagBackgroundColor">
                                         <color key="value" red="0.75294117650000003" green="0.058823529409999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -3065,10 +3052,10 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Gi-or-5GO">
-                                <rect key="frame" x="34.5" y="310" width="73" height="30"/>
+                                <rect key="frame" x="35" y="310" width="73" height="30"/>
                                 <color key="backgroundColor" red="0.75294117650000003" green="0.058823529409999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="73" id="Ya1-g1-9xU"/>
+                                    <constraint firstAttribute="width" constant="73" id="uMm-ci-woD"/>
                                 </constraints>
                                 <state key="normal" title="Close">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -3083,7 +3070,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aQ8-3V-CTq">
-                                <rect key="frame" x="202.5" y="310" width="83" height="30"/>
+                                <rect key="frame" x="203" y="310" width="83" height="30"/>
                                 <color key="backgroundColor" red="0.75294117650000003" green="0.058823529409999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Save">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -3100,17 +3087,17 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="3Gi-or-5GO" firstAttribute="top" secondItem="3V1-S9-u3W" secondAttribute="bottom" constant="8" symbolic="YES" id="ARD-Th-pda"/>
-                            <constraint firstItem="3V1-S9-u3W" firstAttribute="leading" secondItem="3Gi-or-5GO" secondAttribute="leading" id="AdA-cf-Q4c"/>
-                            <constraint firstItem="3Gi-or-5GO" firstAttribute="baseline" secondItem="aQ8-3V-CTq" secondAttribute="baseline" id="Ift-sr-R8K"/>
-                            <constraint firstItem="F12-yJ-ta6" firstAttribute="trailing" secondItem="3V1-S9-u3W" secondAttribute="trailing" id="KwO-gr-IMA"/>
-                            <constraint firstItem="z2S-4j-O6G" firstAttribute="top" secondItem="3Gi-or-5GO" secondAttribute="bottom" constant="228" id="RdI-Nn-csj"/>
-                            <constraint firstItem="F12-yJ-ta6" firstAttribute="top" relation="greaterThanOrEqual" secondItem="mzK-aV-Exu" secondAttribute="bottom" constant="139" id="STn-HU-XAN"/>
-                            <constraint firstItem="aQ8-3V-CTq" firstAttribute="leading" relation="lessThanOrEqual" secondItem="3Gi-or-5GO" secondAttribute="trailing" constant="95" id="SdV-G8-odT"/>
-                            <constraint firstItem="3V1-S9-u3W" firstAttribute="top" secondItem="F12-yJ-ta6" secondAttribute="bottom" constant="8" symbolic="YES" id="XxE-IU-OtC"/>
-                            <constraint firstItem="F12-yJ-ta6" firstAttribute="centerX" secondItem="jCV-KO-KVi" secondAttribute="centerX" id="Z2N-Yy-6I1"/>
-                            <constraint firstItem="F12-yJ-ta6" firstAttribute="leading" secondItem="3V1-S9-u3W" secondAttribute="leading" id="pGy-Hf-8XC"/>
-                            <constraint firstItem="3V1-S9-u3W" firstAttribute="trailing" secondItem="aQ8-3V-CTq" secondAttribute="trailing" id="tZi-ok-pd4"/>
+                            <constraint firstItem="3Gi-or-5GO" firstAttribute="top" secondItem="3V1-S9-u3W" secondAttribute="bottom" constant="8" symbolic="YES" id="0yn-15-p1P"/>
+                            <constraint firstItem="F12-yJ-ta6" firstAttribute="centerX" secondItem="jCV-KO-KVi" secondAttribute="centerX" id="60y-7R-Mjk"/>
+                            <constraint firstItem="F12-yJ-ta6" firstAttribute="trailing" secondItem="3V1-S9-u3W" secondAttribute="trailing" id="GfI-gt-CQd"/>
+                            <constraint firstItem="z2S-4j-O6G" firstAttribute="top" secondItem="3Gi-or-5GO" secondAttribute="bottom" constant="228" id="HcK-Wu-3KI"/>
+                            <constraint firstItem="aQ8-3V-CTq" firstAttribute="leading" secondItem="3Gi-or-5GO" secondAttribute="trailing" constant="95" id="Hyk-fq-I8E"/>
+                            <constraint firstItem="3Gi-or-5GO" firstAttribute="baseline" secondItem="aQ8-3V-CTq" secondAttribute="baseline" id="NrJ-f7-sAo"/>
+                            <constraint firstItem="3V1-S9-u3W" firstAttribute="trailing" secondItem="aQ8-3V-CTq" secondAttribute="trailing" id="Rgg-dH-vVh"/>
+                            <constraint firstItem="F12-yJ-ta6" firstAttribute="leading" secondItem="3V1-S9-u3W" secondAttribute="leading" id="SDD-n1-aBt"/>
+                            <constraint firstItem="3V1-S9-u3W" firstAttribute="top" secondItem="F12-yJ-ta6" secondAttribute="bottom" constant="8" symbolic="YES" id="VCG-qg-qdK"/>
+                            <constraint firstItem="F12-yJ-ta6" firstAttribute="top" secondItem="mzK-aV-Exu" secondAttribute="bottom" constant="139" id="l0O-1R-JsR"/>
+                            <constraint firstItem="3V1-S9-u3W" firstAttribute="leading" secondItem="3Gi-or-5GO" secondAttribute="leading" id="opo-1R-JcX"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Create" id="fo6-0Q-Ibf"/>

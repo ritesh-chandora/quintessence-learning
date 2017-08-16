@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 import FirebaseAuth
 import FirebaseDatabase
 class FeedbackViewController: UITableViewController {
@@ -25,13 +26,14 @@ class FeedbackViewController: UITableViewController {
             self.navigationController?.present(submitView, animated: true, completion: nil)
         } else if indexPath.row == 2 {
             //ebook
-            let ebookUrl = URL(string: "url")
+            let ebookUrl = URL(string: "http://www.familyhuddles.com/wp-content/uploads/2017/08/History-of-Family-Huddles.pdf")
+            print(ebookUrl!)
             if let ebookUrl = ebookUrl {
                 let ebookView = self.storyboard?.instantiateViewController(withIdentifier: "ebook")
                 
-                let webView = UIWebView(frame: ebookView!.view.frame)
+                let webView = WKWebView(frame: ebookView!.view.frame)
                 let urlRequest = URLRequest(url: ebookUrl)
-                webView.loadRequest(urlRequest)
+                webView.load(urlRequest)
                 
                 ebookView!.view.addSubview(webView)
                 
