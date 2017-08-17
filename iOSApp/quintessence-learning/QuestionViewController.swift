@@ -99,6 +99,18 @@ class QuestionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //check if user has reinstalled the app, where notification permissions have been cleared
+        if (!UserDefaults.standard.bool(forKey: "AskedForNotifications")) {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
+                (granted, error) in
+                if granted {
+                    UserDefaults.standard.set(true, forKey: "AskedForNotifications")
+                    Common.showSuccess(message: "Warning: First notification may be off by 24 hours!")
+                } else {
+                }
+            }
+        }
+        
         //listener for when app enters background to invalidate timer
         NotificationCenter.default.addObserver(self, selector: #selector(invalidateTimer), name:NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(checkIfNeedUpdate), name:NSNotification.Name.UIApplicationWillEnterForeground, object: nil)

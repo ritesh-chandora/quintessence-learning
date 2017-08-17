@@ -373,7 +373,7 @@
                                     <action selector="onResend:" destination="qUe-2Z-fvo" eventType="touchUpInside" id="NmY-bg-K93"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="If you are having trouble finding it, please check your spam inbox." translatesAutoresizingMaskIntoConstraints="NO" id="0hB-i7-xPX">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="If you are having trouble finding it, please check your spam inbox." selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0hB-i7-xPX">
                                 <rect key="frame" x="16" y="193" width="288" height="50"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -1554,6 +1554,9 @@
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                         <real key="value" value="5"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="point" keyPath="contentOffset">
+                                        <point key="value" x="0.0" y="0.0"/>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Categories:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6wS-eq-s73">
@@ -2434,6 +2437,11 @@
                                         </accessibility>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="point" keyPath="contentOffset">
+                                                <point key="value" x="0.0" y="0.0"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </textView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact Us" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9z1-bn-Q5l">
                                         <rect key="frame" x="16" y="0.0" width="232" height="62"/>
@@ -3016,8 +3024,8 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Loading..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="F12-yJ-ta6">
-                                <rect key="frame" x="35" y="159" width="251" height="109"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Loading..." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F12-yJ-ta6">
+                                <rect key="frame" x="59.5" y="159" width="202" height="109"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -3025,10 +3033,13 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                         <real key="value" value="5"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="point" keyPath="contentOffset">
+                                        <point key="value" x="0.0" y="0.0"/>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </textView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3V1-S9-u3W" customClass="TagListView" customModule="TagListView">
-                                <rect key="frame" x="35" y="276" width="251" height="26"/>
+                                <rect key="frame" x="59.5" y="276" width="202" height="26"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="tagBackgroundColor">
                                         <color key="value" red="0.75294117650000003" green="0.058823529409999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -3052,7 +3063,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Gi-or-5GO">
-                                <rect key="frame" x="35" y="310" width="73" height="30"/>
+                                <rect key="frame" x="59.5" y="310" width="73" height="30"/>
                                 <color key="backgroundColor" red="0.75294117650000003" green="0.058823529409999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="73" id="uMm-ci-woD"/>
@@ -3070,7 +3081,7 @@ Before I left teaching in the public school, I wrote an editorial for a local co
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aQ8-3V-CTq">
-                                <rect key="frame" x="203" y="310" width="83" height="30"/>
+                                <rect key="frame" x="227.5" y="310" width="34" height="30"/>
                                 <color key="backgroundColor" red="0.75294117650000003" green="0.058823529409999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Save">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
