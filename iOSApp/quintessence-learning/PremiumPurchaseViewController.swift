@@ -11,6 +11,7 @@ import StoreKit
 import FirebaseAuth
 import FirebaseDatabase
 import UserNotifications
+import WebKit
 class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObserver  {
 
     @IBOutlet weak var premiumButton: UIButton!
@@ -30,6 +31,37 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
                 basicButton.isHidden = true
             }
         }
+    }
+    @IBAction func termsOfService(_ sender: UIButton) {
+        let pUrl = URL(string: "http://familyhuddles.com/terms/")
+        if let pUrl = pUrl {
+            let pView = self.storyboard?.instantiateViewController(withIdentifier: "ebook")
+            
+            let webView = WKWebView(frame: pView!.view.frame)
+            let urlRequest = URLRequest(url: pUrl)
+            webView.load(urlRequest)
+            
+            pView!.view.addSubview(webView)
+            
+            self.navigationController?.pushViewController(pView!, animated: true)
+        }
+
+    }
+    
+    @IBAction func privacyPolicyLink(_ sender: UIButton) {
+        let pUrl = URL(string: "http://familyhuddles.com/privacy/")
+        if let pUrl = pUrl {
+            let pView = self.storyboard?.instantiateViewController(withIdentifier: "ebook")
+            
+            let webView = WKWebView(frame: pView!.view.frame)
+            let urlRequest = URLRequest(url: pUrl)
+            webView.load(urlRequest)
+            
+            pView!.view.addSubview(webView)
+            
+            self.navigationController?.pushViewController(pView!, animated: true)
+        }
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {

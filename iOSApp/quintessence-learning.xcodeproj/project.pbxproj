@@ -34,6 +34,7 @@
 		2C72CB5C1F1DC15F009868D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C72CB5A1F1DC15F009868D6 /* Main.storyboard */; };
 		2C72CB5E1F1DC15F009868D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C72CB5D1F1DC15F009868D6 /* Assets.xcassets */; };
 		2C72CB611F1DC15F009868D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C72CB5F1F1DC15F009868D6 /* LaunchScreen.storyboard */; };
+		2CA0376C1F47713B00C9B58F /* PremiumFAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0376B1F47713B00C9B58F /* PremiumFAQViewController.swift */; };
 		2CB35AA51F42A601003084FC /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB35AA41F42A601003084FC /* InfoViewController.swift */; };
 		2CDAFD1A1F34B77E00816D23 /* EmailVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDAFD191F34B77E00816D23 /* EmailVerificationViewController.swift */; };
 		2CDC3F121F365FCF00A87E3A /* PastQuestionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDC3F111F365FCF00A87E3A /* PastQuestionsTableViewController.swift */; };
@@ -80,6 +81,7 @@
 		2C72CB5D1F1DC15F009868D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C72CB601F1DC15F009868D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2C72CB621F1DC15F009868D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2CA0376B1F47713B00C9B58F /* PremiumFAQViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PremiumFAQViewController.swift; sourceTree = "<group>"; };
 		2CB35AA41F42A601003084FC /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		2CDAFD191F34B77E00816D23 /* EmailVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailVerificationViewController.swift; sourceTree = "<group>"; };
 		2CDC3F111F365FCF00A87E3A /* PastQuestionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastQuestionsTableViewController.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				2CDAFD191F34B77E00816D23 /* EmailVerificationViewController.swift */,
 				2C45FE0E1F1FACD5004C6332 /* LoginHandlerViewController.swift */,
 				2CF363D01F3BA7F1003BCF9C /* PremiumPurchaseViewController.swift */,
+				2CA0376B1F47713B00C9B58F /* PremiumFAQViewController.swift */,
 				2C11B6E41F27E88B0039CB0A /* WelcomeViewController.swift */,
 				2C72CB581F1DC15F009868D6 /* ViewController.swift */,
 				2C36AFCA1F3025DC005B87F3 /* Admin */,
@@ -407,6 +410,7 @@
 				2C08781D1F3D70A8008061CB /* FAQViewController.swift in Sources */,
 				2CDC3F121F365FCF00A87E3A /* PastQuestionsTableViewController.swift in Sources */,
 				2CF363B71F3AABB4003BCF9C /* PrivateConstants.swift in Sources */,
+				2CA0376C1F47713B00C9B58F /* PremiumFAQViewController.swift in Sources */,
 				2C36AFC81F3025D7005B87F3 /* DetailViewController.swift in Sources */,
 				2C5810FB1F2D2F0B00B6C561 /* ContactViewController.swift in Sources */,
 				2C36AFC71F3025D7005B87F3 /* CreateViewController.swift in Sources */,
