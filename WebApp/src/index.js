@@ -1,8 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Redirect, Switch, Route, BrowserRouter } from 'react-router-dom'
-import axios from 'axios'
-import Home from './components/home'
 import Login from './components/login'
 import Signup from './components/signup'
 import Console from './components/console'
@@ -15,7 +13,7 @@ class Main extends React.Component {
       loggedIn: false
     }
 
-    var config = {
+ /*    var config = {
     apiKey: "AIzaSyAyMljTvlnQh3VpGPOkGVxErzCBFWzRwoE",
     authDomain: "test-project-692ad.firebaseapp.com",
     databaseURL: "https://test-project-692ad.firebaseio.com",
@@ -24,7 +22,18 @@ class Main extends React.Component {
     messagingSenderId: "53496239189"
   };
 
-  firebase.initializeApp(config); 
+  firebase.initializeApp(config);  */
+  
+  var config = {
+    apiKey: "AIzaSyCkifZrvBhkt9kM4sfE7sdAZuu7QPR5R5E",
+    authDomain: "test-commvault.firebaseapp.com",
+    databaseURL: "https://test-commvault.firebaseio.com",
+    projectId: "test-commvault",
+    storageBucket: "test-commvault.appspot.com",
+    messagingSenderId: "604044529089"
+  };
+  
+firebase.initializeApp(config); 
 
     this.toggleLoginState = this.toggleLoginState.bind(this);
   }
@@ -39,7 +48,7 @@ class Main extends React.Component {
     return( this.state.loggedIn !== null ? 
     <Switch>
       <Route exact path='/' render={() => (
-          this.state.loggedIn ? (<Redirect to="/profile"/>) : (<Home/>)
+          this.state.loggedIn ? (<Redirect to="/profile"/>) : (<Login toggleLogin={this.toggleLoginState}/>)
         )}/>
       <Route exact path='/login' render={() => (
           this.state.loggedIn ? (<Redirect to="/profile"/>) : (<Login toggleLogin={this.toggleLoginState}/>)

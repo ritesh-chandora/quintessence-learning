@@ -3,7 +3,7 @@ import '../css/console.css'
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import firebase from 'firebase'
 
-class Menu extends Component {
+class Filter extends Component {
     constructor(props){
         super(props);
 
@@ -38,7 +38,7 @@ class Menu extends Component {
                 window.alert("Password email sent!")
               }).catch(function(error) {
                 window.alert(error);
-              });
+              }); 
         }
     }
 

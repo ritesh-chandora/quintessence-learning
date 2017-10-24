@@ -18,15 +18,16 @@ var exphbs = require('express-handlebars');
 var app = express();
 
 var firebase = require('firebase');
+  
 var config = {
-    apiKey: "AIzaSyAyMljTvlnQh3VpGPOkGVxErzCBFWzRwoE",
-    authDomain: "test-project-692ad.firebaseapp.com",
-    databaseURL: "https://test-project-692ad.firebaseio.com",
-    projectId: "test-project-692ad",
-    storageBucket: "test-project-692ad.appspot.com",
-    messagingSenderId: "53496239189"
+    apiKey: "AIzaSyCkifZrvBhkt9kM4sfE7sdAZuu7QPR5R5E",
+    authDomain: "test-commvault.firebaseapp.com",
+    databaseURL: "https://test-commvault.firebaseio.com",
+    projectId: "test-commvault",
+    storageBucket: "test-commvault.appspot.com",
+    messagingSenderId: "604044529089"
   };
-
+  
 firebase.initializeApp(config); 
 
 app.use(express.static(path.resolve(__dirname, '../build')));
