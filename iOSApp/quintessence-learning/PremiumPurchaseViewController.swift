@@ -129,22 +129,24 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
         //change state in mailchimp
         self.updateEmail(premium: true)
         
-        //give the user a question
+        //give the user a question and set the local notific
         updateTime()
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let userViewController = storyboard.instantiateViewController(withIdentifier: "User") as! UITabBarController
         self.present(userViewController, animated: true)
         
+        //Above UpdateTime function is already setting the notifications. No need to set it again.
         //set local notification timer
-        let center = UNUserNotificationCenter.current()
-        center.removeAllPendingNotificationRequests()
-        ref!.child("Time").observeSingleEvent(of: .value, with: { (value) in
-            let time = value.value as! TimeInterval
-            let currTime = Date(timeIntervalSince1970: time)
-            Common.setNotificationTimer(date: currTime, repeating: true, daily: true)
-            
-        })
+//        let center = UNUserNotificationCenter.current()
+//        center.removeAllPendingNotificationRequests()
+//        ref!.child("Time").observeSingleEvent(of: .value, with: { (value) in
+//            let time = value.value as! TimeInterval
+//            let currTime = Date(timeIntervalSince1970: time)
+//            //Common.setNotificationTimer(date: currTime, isRepeating: true, repeatingDays: nil)
+//            //Common.setNotificationTimer(date: currTime, repeating: true, daily: true)
+//
+//        })
         SubscriptionService.shared.uploadReceipt { (success) in
             
         }
@@ -158,12 +160,20 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
         //set local notification timer
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests()
-        ref!.child("Time").observeSingleEvent(of: .value, with: { (value) in
-            let time = value.value as! TimeInterval
-            let currTime = Date(timeIntervalSince1970: time)
-            Common.setNotificationTimer(date: currTime, repeating: true, daily: true)
-            
+        
+
+        self.ref!.child("Time").observeSingleEvent(of: .value, with: { (time) in
+             self.ref!.child("NotificationDays").observeSingleEvent(of: .value, with: { (notiDays) in
+                let time = time.value as! TimeInterval
+                let time_Date = Date(timeIntervalSince1970: time)
+                
+                let notifyDays = notiDays.value as! String
+                
+                //Common.setNotificationTimer(date: newTime!, repeating: true, daily: true)
+                Common.setNotificationTimer(date: time_Date, isRepeating: true, repeatingDays: notifyDays.components(separatedBy: ",").map({ (x:String) -> Int in return Int(x)! }))
+            })
         })
+
 
         SubscriptionService.shared.uploadReceipt { (success) in
         }
@@ -185,7 +195,7 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
 
             self.ref!.child("Type").setValue("basic")
             self.updateEmail(premium: false)
-            Common.timeInterval = Common.weekInSeconds
+            //Common.timeInterval = Common.weekInSeconds
             let basicVC = self.storyboard?.instantiateViewController(withIdentifier: "Basic") as! BasicWelcomeViewController
             self.present(basicVC, animated: true)
         }))
@@ -230,21 +240,39 @@ class PremiumPurchaseViewController: UIViewController, SKPaymentTransactionObser
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests()
 
-        
-        self.ref!.child("Time").observeSingleEvent(of: .value, with: { (value) in
-            let time = value.value as! TimeInterval
-            let currTime = Date().timeIntervalSince1970
-            
-            //automatically give user a new question
-            self.ref!.child("Old_Time").setValue(currTime)
-            let calendar = Calendar.current
-            let comp = calendar.dateComponents([.hour, .minute], from: Date(timeIntervalSince1970: time))
-            let hour = comp.hour
-            let minute = comp.minute
-            var newTime = Calendar.current.date(byAdding: .day, value: -1, to: Date())
-            newTime = Calendar.current.date(bySettingHour: hour!, minute: minute!, second: 0, of: newTime!)
-            Common.setNotificationTimer(date: newTime!, repeating: true, daily: true)
-            self.ref!.child("Time").setValue(newTime?.timeIntervalSince1970)
+        Database.database().reference(withPath: ".info/serverTimeOffset").observeSingleEvent(of: .value, with: { dateSnapShot in
+            if let offset = dateSnapShot.value as? TimeInterval {
+                let currentTimeStamp = (Date().timeIntervalSince1970*1000 + offset) / 1000 //GetItFromServer
+                print("Preimum Purchase UpdateTime CurrentTimeStamp \(currentTimeStamp)")
+                
+                self.ref!.child("Time").observeSingleEvent(of: .value, with: { (value) in
+                    let time = value.value as! TimeInterval
+                    //let currTime = Date().timeIntervalSince1970 // Removed.
+                    
+                    //automatically give user a new question
+                    self.ref!.child("Old_Time").setValue(currentTimeStamp)
+                    
+                    let OldNotifyDays = [1,1,1,1,1,1,1] // anyway this is going to be deleted. But need to make sure user get some kind of notification
+                    self.ref!.child("Old_NotificationDays").setValue(OldNotifyDays.map(String.init).joined(separator: ","))
+                    
+                    let calendar = Calendar.current
+                    let comp = calendar.dateComponents([.hour, .minute], from: Date(timeIntervalSince1970: time))
+                    let hour = comp.hour
+                    let minute = comp.minute
+                    let notifyDays = [0,1,1,1,1,1,0]
+                    
+                    var newTime = Calendar.current.date(byAdding: .day, value: -1, to: Date())
+                    newTime = Calendar.current.date(bySettingHour: hour!, minute: minute!, second: 0, of: newTime!)
+                    //Common.setNotificationTimer(date: newTime!, repeating: true, daily: true)
+                    Common.setNotificationTimer(date: newTime!, isRepeating: true, repeatingDays: notifyDays)
+                    
+                    self.ref!.child("Time").setValue(newTime?.timeIntervalSince1970)
+                    
+                    
+                    self.ref!.child("NotificationDays").setValue(notifyDays.map(String.init).joined(separator: ","))
+                })
+            }
         })
+        
     }
 }

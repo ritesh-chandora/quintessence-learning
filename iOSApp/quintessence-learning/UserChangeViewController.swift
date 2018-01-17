@@ -23,8 +23,9 @@ class UserChangeViewController: ProfileViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        SubscriptionService.shared.loadReceipt()
+        _ = SubscriptionService.shared.loadReceipt()
         getUserData()
+        self.tableView.separatorColor = UIColor.clear
     }
     
     //populates user data (name, email, join date, account type)

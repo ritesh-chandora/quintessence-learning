@@ -33,10 +33,11 @@ class SubscriptionService: UIViewController {
   
   static let shared = SubscriptionService()
   
-    var products = [String:SKProduct]()
+  var products = [String:SKProduct]()
     
   var hasReceiptData: Bool?
-  
+
+    
   var currentSessionId: String? {
     didSet {
       NotificationCenter.default.post(name: SubscriptionService.sessionIdSetNotification, object: currentSessionId)
@@ -103,6 +104,7 @@ class SubscriptionService: UIViewController {
     }
   }
 }
+
 
 // MARK: - SKProductsRequestDelegate
 

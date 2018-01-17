@@ -13,7 +13,6 @@ class EmailVerificationViewController: UIViewController {
 
     var email:String?
     var first:String?
-    var last:String?
     
     @IBOutlet weak var emailText: UILabel!
     @IBOutlet weak var continueButton: UIButton!
@@ -25,8 +24,7 @@ class EmailVerificationViewController: UIViewController {
                 Server.showError(message: "Could not verify state of user!")
             } else {
                 if (Auth.auth().currentUser!.isEmailVerified) {
-                    
-                    self.createEmail(email:self.email!, first:self.first!, last:self.last!)
+                    self.createEmail(email:self.email!, first:self.first!)
                     Common.showSuccess(message: "We sent another email to you. Please subscribe to our mailing list to get the latest updates!")
                     let welcomeScreen = self.storyboard?.instantiateViewController(withIdentifier: "Welcome") as! WelcomeViewController
                     self.present(welcomeScreen, animated: true)
@@ -59,8 +57,8 @@ class EmailVerificationViewController: UIViewController {
     }
     
     //handling creation of email in mailchimp to subscribe 
-    func createEmail(email:String, first:String, last:String) {
-        let fields = ["FNAME":first, "LNAME":last, "STATUS":"trial"]
+    func createEmail(email:String, first:String) {
+        let fields = ["FNAME":first, "STATUS":"trial"]
         let params = ["email_address":email, "status":"pending", "merge_fields":fields] as [String : Any]
         let urlRoute = Server.mailChimpURL + "lists/" + PrivateConstants.list_id + "/members"
         print(urlRoute)
@@ -84,7 +82,7 @@ class EmailVerificationViewController: UIViewController {
                     let json = try JSONSerialization.jsonObject(with: data, options: [])
                     if let dict = json as? [String:Any] {
                         let id = dict["id"] as? String ?? nil
-                        if (id != nil) {
+                        if (id != nil){
                             Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Email_ID").setValue(id)
                         }
                     }
@@ -100,6 +98,5 @@ class EmailVerificationViewController: UIViewController {
         super.viewDidLoad()
         emailText!.text = email
     }
-
 
 }

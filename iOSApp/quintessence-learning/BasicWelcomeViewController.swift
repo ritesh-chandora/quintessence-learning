@@ -15,11 +15,7 @@ class BasicWelcomeViewController: UIViewController, UIPickerViewDelegate, UIPick
     let timePicker = UIDatePicker()
     let dayPicker = UIPickerView()
     var dayPickerIndex = 0
-    let dayPickerData = ["Monday",
-                         "Tuesday",
-                         "Wednesday",
-                         "Thursday",
-                         "Friday"]
+
     var timePicked = false
     var dayPicked = false
     var ref:DatabaseReference?
@@ -30,7 +26,7 @@ class BasicWelcomeViewController: UIViewController, UIPickerViewDelegate, UIPick
     
     @IBAction func setTimeButton(_ sender: UIButton) {
         if (timePicked && dayPicked){
-            Common.timeInterval = Common.weekInSeconds
+            //Common.timeInterval = Common.weekInSeconds
             let userView = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
             
             //set the new time to be at the designed weekday every week
@@ -39,7 +35,7 @@ class BasicWelcomeViewController: UIViewController, UIPickerViewDelegate, UIPick
             var components = DateComponents()
             components.hour = comp.hour
             components.minute = comp.minute
-            components.weekday = dayPickerIndex + 2
+            components.weekday = dayPickerIndex + 1
             components.weekOfYear = comp.weekOfYear!
             components.year = comp.year
             components.timeZone = comp.timeZone!
@@ -49,13 +45,22 @@ class BasicWelcomeViewController: UIViewController, UIPickerViewDelegate, UIPick
             let newTime = Calendar.current.date(from: components)
             self.ref!.child("Time").setValue(newTime?.timeIntervalSince1970)
             
+            print("DayPicketIndex \(dayPickerIndex)")
+            
+            var notifyDays = [0,1,0,0,0,0,0]
+            notifyDays[dayPickerIndex] = 1
+            self.ref!.child("NotificationDays").setValue(notifyDays.map(String.init).joined(separator: ","))
+            
+            
             let center = UNUserNotificationCenter.current()
             center.removeAllPendingNotificationRequests()
-            Common.setNotificationTimer(date: newTime!, repeating: true, daily: false)
+//            Common.setNotificationTimer(date: newTime!, repeating: true, daily: false)
+            Common.setNotificationTimer(date: newTime!, isRepeating: true, repeatingDays: notifyDays)
             //initialize the account to be a user and initializes the time
             ref!.child("Type").setValue("basic")
             self.present(userView, animated: true)
-        } else {
+        }
+        else {
             Server.showError(message: "Please set both!")
         }
     }
@@ -66,11 +71,11 @@ class BasicWelcomeViewController: UIViewController, UIPickerViewDelegate, UIPick
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return dayPickerData.count
+        return Common.weekDays.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return dayPickerData[row]
+        return Common.weekDays[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -78,7 +83,7 @@ class BasicWelcomeViewController: UIViewController, UIPickerViewDelegate, UIPick
     }
     
     func updateLabel(){
-        dayField.text = dayPickerData[dayPicker.selectedRow(inComponent: 0)]
+        dayField.text = Common.weekDays[dayPicker.selectedRow(inComponent: 0)]
         dayPickerIndex = dayPicker.selectedRow(inComponent: 0)
     }
     

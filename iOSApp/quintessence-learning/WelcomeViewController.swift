@@ -42,17 +42,21 @@ class WelcomeViewController: UIViewController {
     
     //request notifications and then advances to user dashboard
     func enableNotifications(sender: UIAlertAction){
+        let notifyDays = [0,1,1,1,1,1,0]
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
             (granted, error) in
             if granted {
                 UserDefaults.standard.set(true, forKey: "AskedForNotifications")
                 debugPrint("permission granted")
                 Common.showSuccess(message: "First notification may be off by 24 hours!")
-                Common.showSuccess(message: "You're all set! Your 14 day trial begins now. You will be given the option to convert to basic or continue premium once the trial period is over. You will NOT be automatically charged")
-                Common.showSuccess(message: "Your premium trial has started! You will begin receiving questions once a day, not including weekends.")
-                Common.setNotificationTimer(date: self.timePicker.date, repeating: true, daily: true)
+                Common.showSuccess(message: "You're all set! Your 90 day trial begins now. You will be given the option to convert to basic or continue premium once the trial period is over. You will NOT be automatically charged")
+                Common.showSuccess(message: "Your premium trial has started! You will begin receiving questions once a day, not including weekends. You can change time/day as you want")
+               //Common.setNotificationTimer(date: self.timePicker.date, repeating: true, daily: true)
+               Common.setNotificationTimer(date: self.timePicker.date, isRepeating: true, repeatingDays: notifyDays)
+                
             } else {
                 debugPrint("denied")
+                print("WelcomeView User did not provide the required permission to show notificaiton")
             }
         }
         
@@ -60,7 +64,8 @@ class WelcomeViewController: UIViewController {
         
         //initialize the account to be a user and initializes the time
         Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Type").setValue("premium_trial")
-        Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Time").setValue(timePicker.date.timeIntervalSince1970)
+    Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("Time").setValue(timePicker.date.timeIntervalSince1970)
+    Database.database().reference().child(Common.USER_PATH).child(Auth.auth().currentUser!.uid).child("NotificationDays").setValue(notifyDays.map(String.init).joined(separator: ","))
         self.present(userView, animated: true)
     }
 

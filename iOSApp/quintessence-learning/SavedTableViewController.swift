@@ -91,6 +91,7 @@ class SavedTableViewController: UITableViewController {
         savedQuestionView.row = indexPath
         savedQuestionView.modalPresentationStyle = .overFullScreen
         self.navigationController?.present(savedQuestionView, animated: true)
+        print("showing the question.")
     }
     
     //question display in cell

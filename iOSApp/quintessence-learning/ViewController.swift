@@ -17,7 +17,6 @@ class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database()
-        
         if (Reachability.isConnectedToNetwork()){
             //redirects a logged in user to the appropriate view
             let user = Auth.auth().currentUser
@@ -28,7 +27,7 @@ class AuthViewController: UIViewController {
                         let userType = value?["Type"] as? String ?? ""
                         if (userType != "none") {
                             if (userType == "basic") {
-                                Common.timeInterval = Common.weekInSeconds
+                                //Common.timeInterval = Common.weekInSeconds
                                 let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
                                 self.present(userViewController, animated: true)
                             }
@@ -49,10 +48,9 @@ class AuthViewController: UIViewController {
                             } else {
                                 //check if premium subscription is active
                                 if (!SubscriptionService.shared.hasReceiptData!) {
-                                        //show premium screen if not
-                                        print("why/")
-                                        self.showPremiumScreen()
-                                        return
+                                    //show premium screen if not
+                                    self.showPremiumScreen()
+                                    return
                                 } else {
                                     Common.timeInterval = Common.dayInSeconds
                                     let userViewController = self.storyboard?.instantiateViewController(withIdentifier: "User") as! UITabBarController
@@ -91,8 +89,6 @@ class AuthViewController: UIViewController {
     }
     
 }
-
-
 
 
 extension UIViewController {

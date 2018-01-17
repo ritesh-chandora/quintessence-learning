@@ -25,10 +25,16 @@ class FAQViewController: UIViewController {
             FAQItem(question: "When do I receive questions?", answer:"If you have a premium account, you will receive one set of three questions once a day at the time you specified. Otherwise, with a basic account, you will receive only one set of three questions per week at day and time you specified. No questions will be sent on the weekends."),
             FAQItem(question: "How do I access the E-book?", answer:"The E-book is included with an account. Pressing on \"E-book\" will direct to you a password-protected page. The password will be sent to you in an initial welcome email."),
             FAQItem(question: "I'm not getting any notifications?", answer:"If you are not receiving notifications and you have accepted to receive notifications, then try relogging in and it should prompt if you want to enable notifications.")]
-    faqView = FAQView(frame: view.frame, items: items)
+        faqView = FAQView(frame: view.frame,title:"", items: items)
         faqView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(faqView)
         addFaqViewConstraints()
+        
+        faqView.questionTextColor = UIColor.white
+        faqView.answerTextColor = UIColor.white
+        faqView.viewBackgroundColor = UIColor(red: 233/255, green: 127/255, blue: 1/255, alpha: 1)
+        faqView.cellBackgroundColor = UIColor(red: 239/255, green: 166/255, blue: 77/255, alpha: 1)
+        faqView.separatorColor = UIColor(red: 233/255, green: 127/255, blue: 1/255, alpha: 1)
     }
     
     func addFaqViewConstraints() {

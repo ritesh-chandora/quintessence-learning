@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,18 +17,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
+        print("application from AppDeligate")
         let navigationBarAppearace = UINavigationBar.appearance()
         
         SubscriptionService.shared.loadSubscriptionOptions()
         
-        SubscriptionService.shared.loadReceipt()
+        _ = SubscriptionService.shared.loadReceipt()
         while(SubscriptionService.shared.hasReceiptData == nil){
             //TODO there needs to be a more elegant solution to this
         }
         
         navigationBarAppearace.tintColor = UIColor.white
         navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
-        navigationBarAppearace.barTintColor = UIColor(red: 192/255, green: 15/255, blue: 0/255, alpha: 1)
+        navigationBarAppearace.barTintColor = UIColor(red: 170/255, green: 60/255, blue: 0/255, alpha: 1)
         return true
     }
 

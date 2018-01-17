@@ -14,15 +14,18 @@ class Common: NSObject {
     
     static var expireDate:Double = 0
     static var userEmail:String = ""
-    static let weekInSeconds:Double = 604800
+    //static let weekInSeconds:Double = 604800
     static let dayInSeconds:Double = 86400
     static var timeInterval:Double = 86400
-    static let trialLength = 14
+    static let trialLength = 90
     static let USER_PATH = "Users"
     static let QUESTION_PATH = "Questions"
     static let USER_COUNT = "Current_Question"
     static let weekend = [1,7]
     static var dayOfWeek = 1
+    static var weekDays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+    static var dailyQuestionCount = 3
+    static var daysAllowedForPaidSubs = 5
     
     static func showSuccess(message:String) {
         DispatchQueue.main.async {
@@ -38,10 +41,48 @@ class Common: NSObject {
     }
     
     //sets the notification timer
-    static func setNotificationTimer(date:Date, repeating:Bool, daily:Bool){
+//    static func setNotificationTimer(date:Date, repeating:Bool, daily:Bool){
+//        let calendar = Calendar.current
+//
+//        var dateComponents = calendar.dateComponents([.hour, .minute, .second], from: date)
+//
+//        let notificationContent = UNMutableNotificationContent()
+//        notificationContent.title = "New Question Today!"
+//        notificationContent.body = "Swipe to open question..."
+//        notificationContent.categoryIdentifier = "alarm"
+//        notificationContent.userInfo = ["DateCreated":date]
+//        notificationContent.sound = UNNotificationSound.default()
+//
+//
+//        //if repeating, repeat for every weekday
+//        if(repeating){
+//            if (daily) {
+//                for day in 2...6{
+//                    dateComponents.weekday = day
+//                    let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
+//                    let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
+//                    UNUserNotificationCenter.current().add(request)
+//                }
+//            } else {
+//                dateComponents.weekday = calendar.dateComponents([.weekday], from: date).weekday
+//                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
+//                let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
+//                UNUserNotificationCenter.current().add(request)
+//            }
+//        } else {
+//            dateComponents = calendar.dateComponents([.day, .hour, .minute, .second], from: date)
+//            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
+//            let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
+//            UNUserNotificationCenter.current().add(request)
+//        }
+//        print("notification timer set!")
+//    }
+    
+    //sets the notification timer
+    static func setNotificationTimer(date:Date, isRepeating:Bool, repeatingDays:[Int]?) {
         let calendar = Calendar.current
-        
         var dateComponents = calendar.dateComponents([.hour, .minute, .second], from: date)
+        
         
         let notificationContent = UNMutableNotificationContent()
         notificationContent.title = "New Question Today!"
@@ -50,29 +91,25 @@ class Common: NSObject {
         notificationContent.userInfo = ["DateCreated":date]
         notificationContent.sound = UNNotificationSound.default()
         
-        
-        //if repeating, repeat for every weekday
-        if(repeating){
-            if (daily) {
-                for day in 2...6{
-                    dateComponents.weekday = day
-                    let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
+        if isRepeating == true {
+            for (index,day) in repeatingDays!.enumerated(){
+                if day == 1 {
+                    dateComponents.weekday = index+1 // Sundday start from 1 and RepeatingDays from 0
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: isRepeating)
                     let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
                     UNUserNotificationCenter.current().add(request)
+                    print("notification timer set! \(dateComponents) \(date) \(repeatingDays!)")
                 }
-            } else {
-                dateComponents.weekday = calendar.dateComponents([.weekday], from: date).weekday
-                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
-                let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
-                UNUserNotificationCenter.current().add(request)
             }
-        } else {
+            
+        }
+        else{
             dateComponents = calendar.dateComponents([.day, .hour, .minute, .second], from: date)
-            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeating)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: isRepeating)
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
             UNUserNotificationCenter.current().add(request)
+             print("notification timer set! \(date) ")
         }
-        print("notification timer set!")
     }
     
     //determines if the time selected to notify is later than current, and if so, 24 hr delay must be implemented

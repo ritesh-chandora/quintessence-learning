@@ -41,6 +41,7 @@ class ProfileViewController: UITableViewController {
         ref!.child(Common.USER_PATH).child(user!.uid).child("Type").observeSingleEvent(of: .value, with: { (snapshot) in
             let type = snapshot.value as? String ?? ""
             if ((type == "premium")) {
+                SubscriptionService.shared.hasReceiptData = true
                 if (!SubscriptionService.shared.hasReceiptData!) {
                     self.premium = false
                 } else {
@@ -194,6 +195,14 @@ class ProfileViewController: UITableViewController {
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(ac, animated: true)
     }
+    
+    
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        view.tintColor = UIColor(red: 233/255, green: 127/255, blue: 1/255, alpha: 1)
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.white
+    }
+    
 }
 
 extension ProfileViewController : ModalDelegate {
